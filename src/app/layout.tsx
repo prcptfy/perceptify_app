@@ -19,13 +19,7 @@ export default function RootLayout({
         <main className="flex min-h-screen flex-col">
           <Topbar />
           <div
-            className={`relative p-12 ${styles.dotBackground}`}
-            style={{
-              backgroundColor: '#ededed',
-              backgroundImage: 'radial-gradient(#d5d5d5 2px, transparent 2px)',
-              backgroundSize: '45px 45px',
-              backgroundRepeat: 'repeat',
-            }}
+            className={`relative min-h-screen p-12 ${styles.dotBackground}`}
           >
             {children}
           </div>
