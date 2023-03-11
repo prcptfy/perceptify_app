@@ -1,0 +1,17 @@
+.dotBackground {
+  background-color: #ededed;
+  background: radial-gradient(#d5d5d5 2px, transparent 2px);
+  background-size: 45px 45px;
+  background-repeat: repeat;
+
+  animation: dotShift 10s linear infinite;
+}
+
+@keyframes dotShift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 45px 90px;
+  }
+}
