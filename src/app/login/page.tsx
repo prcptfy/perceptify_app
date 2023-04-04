@@ -1,23 +1,31 @@
 'use client'
 
 import { useSupabase } from "@/components/supabase-provider"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NicePageContent from "@/components/NiceContent";
+import { Session } from "@supabase/supabase-js";
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-    const { supabase } = useSupabase();
+    const router = useRouter();
+    const { supabase, session } = useSupabase();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
 
     const handleEmailLogin = async () => {
         const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
+        error ? console.log('error', error) : router.push('/dashboard');
     };
 
-    return (
-        <NicePageContent title='Log In'>
+    useEffect(() => console.log(session), [session])
+
+
+    if (!session) return (
+        <NicePageContent title="Log In">
             <div className="flex flex-col w-1/3 max-w-[300px]">
                 <label>Email</label>
                 <input
@@ -33,7 +41,7 @@ const Login = () => {
                 />
                 <button
                     onClick={handleEmailLogin}
-                >Log in with Email</button>
+                >Log In</button>
             </div>
         </NicePageContent>
     )

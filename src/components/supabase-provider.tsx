@@ -7,7 +7,6 @@ import {
     ReactNode
 } from 'react';
 import { createClient } from '../utils/supabase-browser';
-
 import type { SupabaseClient, Session  } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/db_types';
 
