@@ -50,7 +50,7 @@ const SignUp = () => {
 
 
     return (
-        <NicePageContent title="Sign Up">
+        // <NicePageContent title="Sign Up">
             <div className="flex flex-col w-1/3 max-w-[300px]">
                 <label>Username</label>
                 <input
@@ -92,7 +92,7 @@ const SignUp = () => {
                     onClick={session ? handleEmailLogin : handleSignUp}
                 >{session ? `Log In` : `Sign Up`}</button>
             </div>
-        </NicePageContent>
+        // </NicePageContent>
     )
 }
 

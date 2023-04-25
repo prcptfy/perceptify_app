@@ -25,7 +25,7 @@ const Login = () => {
 
 
     if (!session) return (
-        <NicePageContent title="Log In">
+        // <NicePageContent title="Log In">
             <div className="flex flex-col w-1/3 max-w-[300px]">
                 <label>Email</label>
                 <input
@@ -43,7 +43,7 @@ const Login = () => {
                     onClick={handleEmailLogin}
                 >Log In</button>
             </div>
-        </NicePageContent>
+        // </NicePageContent>
     )
 }
 
