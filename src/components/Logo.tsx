@@ -12,6 +12,7 @@ const Logo = () => {
             height="250"
             width="250"
             src="/images/logo.png"
+            onClick={() => router.push('/home')}
         />
     )
 }
