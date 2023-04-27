@@ -50,6 +50,7 @@ const NavigationButton: FC<NavigationButtonProps> = ({
             className="
               font-light
               text-sm
+              text-[#5E6366]
             "
           >{subtext}</div>
         </div>
