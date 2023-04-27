@@ -1,7 +1,6 @@
 "use client"
 
 import { useRouter, usePathname } from "next/navigation";
-import Image from 'next/image';
 import Container from "../Container";
 import Logo from "../Logo";
 import NavigationButton from "./NavigationButton";
@@ -30,7 +29,7 @@ const Sidebar = () => {
 
 
     return (
-        <div className="fixed flex flex-col w-96 z-10 h-full border-r-[1px] border-[#F1F3F4]">
+        <div className="fixed flex flex-col w-96 max-w-1/3 z-10 h-full border-r-[1px] border-[#F1F3F4]">
             <Container>
                 <div className="gap-4 pr-8 pl-2">
                     <Logo />
