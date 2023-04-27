@@ -16,7 +16,7 @@ const BottomButton: FC<BottomButtonProps> = ({
     label,
     small,
     red,
-    onClick
+    onClick,
 }) => {
     const router = useRouter();
 
@@ -27,9 +27,10 @@ const BottomButton: FC<BottomButtonProps> = ({
             py-2
             cursor-pointer
             hover:font-semibold
+            flex
             "
         >
-            <div>{icon}</div>
+            <div className='flex px-4 self-center'>{icon}</div>
             {!small &&
             <div
             className={`
