@@ -1,61 +1,43 @@
-"use client"
+'use client';
 
-
-import { useRouter } from "next/navigation";
-import { FC, MouseEvent } from "react";
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface NavigationButtonProps {
-    label: string;
-    subtext: string;
-    onClick: (e: any) => void;
-    icon?: any;
-    small?: boolean;
-    selected: boolean;
+  label: string;
+  subtext: string;
+  link: string;
+  icon?: any;
+  small?: boolean;
+  selected: boolean;
 }
 
-const NavigationButton: FC<NavigationButtonProps> = ({
-    label,
-    subtext,
-    onClick,
-    icon,
-    small,
-    selected
-}) => {
-    const router = useRouter();
-    return (
+export default function NavigationButton({
+  label,
+  subtext,
+  link,
+  icon,
+  small,
+  selected,
+}: NavigationButtonProps) {
+  return (
+    <Link href={link}>
       <div
         className={`
-          flex
-          flex-row
-          relative
-          transition
-          hover:bg-[#F5F5F5]
-          ${selected ? "bg-[#F5F5F5]" : "bg-white"}
-          w-full
-          ${small ? "font-light" : "font-semibold"}
-          ${small ? "text-sm" : "text-md"}
-          cursor-pointer
-          min-h-fit
-          min-w-fit
-          py-4
-        `}
-        onClick={onClick}
+            flex transition hover:bg-[#F5F5F5] w-full
+            ${selected ? 'bg-[#F5F5F5]' : 'bg-white'}
+            ${small ? 'font-light' : 'font-semibold'}
+            ${small ? 'text-sm' : 'text-md'}
+            py-4 px-[19px] items-center gap-6
+            overflow-hidden justify-start
+          `}
       >
-        <div
-          className="flex justify-center self-center px-4 h-auto w-auto"
-        >{icon}</div>
-        <div>
+        <div className="w-7 h-7 grid place-items-center">{icon}</div>
+        <div className="whitespace-nowrap">
           <div className="font-semibold">{label}</div>
-          <div
-            className="
-              font-light
-              text-sm
-              text-[#5E6366]
-            "
-          >{subtext}</div>
+          <div className="font-light text-sm text-[#5E6366]">{subtext}</div>
         </div>
       </div>
-    )
+    </Link>
+  );
 }
-
-export default NavigationButton;

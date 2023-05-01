@@ -1,14 +1,27 @@
+'use client';
+
 import NicePageContent from '@/components/NiceContent';
 import Graph from './Graph';
 import Sidebar from '@/components/sidebar/Sidebar';
+import { useSupabase } from '@/components/supabase-provider';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
+  const { supabase } = useSupabase();
+  const [data2, setData] = useState<any | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from('notes')
+      .select()
+      .then(({ data, error }) => setData(data));
+  }, []);
 
   return (
     <div>
       <Sidebar />
     </div>
-  )
+  );
   // return (
   //   <div
   //     className="flex gap-3 rounded-md border border-dashed border-gray-300 p-3"

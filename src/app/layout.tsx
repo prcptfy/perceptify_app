@@ -1,4 +1,4 @@
-import 'server-only'
+import 'server-only';
 
 import SupabaseProvider from '@/components/supabase-provider';
 import SupabaseListener from '@/components/supabase-listener';
@@ -22,7 +22,9 @@ export default async function RootLayout({
 }) {
   const supabase = createServerClient();
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return (
     <html lang="en">
@@ -30,12 +32,6 @@ export default async function RootLayout({
         <SupabaseProvider session={session}>
           <SupabaseListener serverAccessToken={session?.access_token} />
           <main className="flex min-h-screen flex-col">
-              {/* <Topbar /> */}
-              {/* <div
-                className={`relative min-h-screen p-12 ${styles.dotBackground}`}
-              >
-                {children}
-              </div> */}
             <div>{children}</div>
           </main>
         </SupabaseProvider>
