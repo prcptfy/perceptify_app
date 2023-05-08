@@ -32,7 +32,7 @@ export default function NavigationButton({
             overflow-hidden justify-start
           `}
       >
-        <div className="w-7 h-7 grid place-items-center">{icon}</div>
+        <div className="flex align-center">{icon}</div>
         <div className="whitespace-nowrap">
           <div className="font-semibold">{label}</div>
           <div className="font-light text-sm text-[#5E6366]">{subtext}</div>

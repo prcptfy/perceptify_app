@@ -24,17 +24,17 @@ const BottomButton: FC<BottomButtonProps> = ({
         <div
             onClick={onClick}
             className="
-            py-2
-            cursor-pointer
-            hover:font-semibold
-            flex
+                flex transition hover:bg-[#F5F5F5] w-full
+                py-2 px-[23px] items-center gap-8
+                overflow-hidden justify-start
             "
         >
-            <div className='flex px-4 self-center'>{icon}</div>
+            <div className='flex align-center'>{icon}</div>
             {!small &&
             <div
             className={`
                 ${red ? "text-[#DB4437]" : "text-black"}
+                whitespace-nowrap
             `}
             >{label}</div>}
         </div>

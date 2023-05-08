@@ -170,7 +170,7 @@ const Sidebar = () => {
             icon={integrationsIcon}
           />
         </div>
-        <div className="divide-y py-4 absolute bottom-10 w-[75%]">
+        <div className="divide-y mt-16">
           <BottomButton
             label="Manage Team"
             onClick={() => {}}
