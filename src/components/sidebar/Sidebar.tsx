@@ -173,22 +173,23 @@ const Sidebar = () => {
         <div className="divide-y mt-16">
           <BottomButton
             label="Manage Team"
-            onClick={() => {}}
+            link="/manage"
             icon={teamIcon}
           />
           <BottomButton
             label="Settings"
-            onClick={() => {}}
+            link="/settings"
             icon={settingsIcon}
           />
           <BottomButton
             label="Customer Support"
-            onClick={() => {}}
+            link="/support"
             icon={supportIcon}
           />
           <BottomButton
             label="Log Out"
             onClick={() => {}}
+            link="/logout"
             red
             icon={logoutIcon}
           />
