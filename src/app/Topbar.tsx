@@ -28,6 +28,12 @@ export default function Topbar() {
           >
             Clusters
           </Link>
+          <Link
+            className="p-2 px-4 hover:bg-slate-900 transition-colors rounded-md"
+            href="/register"
+          >
+            Register
+          </Link>
         </div>
       </div>
     </>
