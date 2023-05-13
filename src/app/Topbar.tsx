@@ -1,6 +1,18 @@
+'use client'
+
 import Link from 'next/link';
+import { useSupabase } from '@/components/supabase-provider';
 
 export default function Topbar() {
+  const { supabase, session } = useSupabase();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <>
       {/* <div className='absolute -z-10 h-[40vh] w-screen bg-[#8915E4]'></div> */}
@@ -34,6 +46,18 @@ export default function Topbar() {
           >
             Register
           </Link>
+          {session ? <button
+            className="p-2 px-4 hover:bg-slate-900 transition-colors rounded-md"
+            onClick={handleLogout}
+          >
+            Logout
+          </button> :
+          <Link
+            className="p-2 px-4 hover:bg-slate-900 transition-colors rounded-md"
+            href="/login"
+          >
+            Login
+          </Link>}
         </div>
       </div>
     </>

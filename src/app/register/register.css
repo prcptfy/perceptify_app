@@ -34,6 +34,13 @@
     border: none;
     border-radius: 5px;
     padding: 10px;
+    opacity: 0.9;
+    transition: opacity 0.1s ease-in-out;
+
+}
+
+.register-button:hover {
+    opacity: 1;
 }
 
 .hr-with-text {
@@ -85,6 +92,3 @@
   height: 18px;
   margin-right: 10px;
 }
-
-
-
