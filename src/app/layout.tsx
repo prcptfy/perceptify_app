@@ -7,6 +7,7 @@ import Topbar from './Topbar';
 import styles from './rootLayout.module.css';
 import './globals.css';
 import ClientOnly from '@/components/ClientOnly';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 // export const metadata = {
 //   title: 'Create Next App',
@@ -31,8 +32,13 @@ export default async function RootLayout({
       <body>
         <SupabaseProvider session={session}>
           <SupabaseListener serverAccessToken={session?.access_token} />
-          <main className="flex min-h-screen flex-col">
-            <div>{children}</div>
+          <main className="flex min-h-screen flex-col main">
+            <div className='sidebar'>
+              <Sidebar/>
+            </div>
+            <div className="children">
+              {children}
+            </div>
           </main>
         </SupabaseProvider>
       </body>

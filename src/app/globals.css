@@ -13,3 +13,21 @@
 :root {
   font-family: 'Montserrat', sans-serif;
 }
+
+
+main.main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+}
+
+.sidebar {
+  height: 100vh;
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+}
+
+.children {
+  height: 3000px;
+}
