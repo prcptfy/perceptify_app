@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import NicePageContent from "@/components/NiceContent";
 import { Session } from "@supabase/supabase-js";
 import { useRouter } from 'next/navigation';
+import AuthLeftPanel from "@/components/auth_left_panel/AuthLeftPanel";
 
 const Login = () => {
     const router = useRouter();
@@ -21,11 +22,12 @@ const Login = () => {
         error ? console.log('error', error) : router.push('/dashboard');
     };
 
-    useEffect(() => console.log(session), [session])
+    // useEffect(() => console.log(session), [session])
 
 
     if (!session) return (
-        // <NicePageContent title="Log In">
+        <div>
+            <AuthLeftPanel />
             <div className="flex flex-col w-1/3 max-w-[300px]">
                 <label>Email</label>
                 <input
@@ -43,7 +45,7 @@ const Login = () => {
                     onClick={handleEmailLogin}
                 >Log In</button>
             </div>
-        // </NicePageContent>
+        </div>
     )
 }
 
