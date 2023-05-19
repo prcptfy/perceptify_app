@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+@import "@fontsource/dm-sans";
 
 * {
   box-sizing: border-box;
@@ -11,7 +12,8 @@
 }
 
 :root {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'DM Sans';
+  --web-theme: rgb(232, 85, 232);
 }
 
 
@@ -26,8 +28,4 @@ main.main {
   height: 100dvh;
   position: sticky;
   top: 0;
-}
-
-.children {
-  height: 3000px;
 }

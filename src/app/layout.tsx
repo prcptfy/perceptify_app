@@ -32,11 +32,11 @@ export default async function RootLayout({
       <body>
         <SupabaseProvider session={session}>
           <SupabaseListener serverAccessToken={session?.access_token} />
-          <main className="flex min-h-screen flex-col main">
+          <main className="flex min-h-screen main">
             <div className='sidebar'>
               <Sidebar/>
             </div>
-            <div className="children">
+            <div className="p-20">
               {children}
             </div>
           </main>
