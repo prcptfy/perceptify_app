@@ -3,23 +3,29 @@
 interface ButtonProps {
     label: string;
     onClick: any;
+    light: boolean;
 }
 
 export default function Button ({
     label,
     onClick,
+    light,
 }: ButtonProps) {
     return (
         // create a button component that can be used throughout the app with a prop for the label
         <div
-            className="
-                flex transition min-w-fit-content w-40
+            className={`
+                flex transition w-60
                 px-6 py-2 items-center
                 overflow-hidden justify-center
-                bg-purple-500 text-white
                 rounded-md
                 font-semibold
-            "
+                cursor-pointer border
+                ${light ? "bg-white" : "bg-purple-450"}
+                ${light ? "text-purple-450" : "text-white"}
+                ${light ? "border-purple-450" : "border-white"}
+                ${light ? "hover:bg-gray-50" : "hover:bg-purple-450-600"}
+            `}
             onClick={onClick}
         >
             {label}

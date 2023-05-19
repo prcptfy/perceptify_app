@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import NicePageContent from "@/components/NiceContent";
 import { Session } from "@supabase/supabase-js";
 import { useRouter } from 'next/navigation';
-import AuthLeftPanel from "@/components/auth_left_panel/AuthLeftPanel";
+import AuthLeftPanel from "@/components/AuthLeftPanel";
 
 const Login = () => {
     const router = useRouter();
@@ -26,9 +26,9 @@ const Login = () => {
 
 
     if (!session) return (
-        <div>
+        <div className="flex">
             <AuthLeftPanel />
-            <div className="flex flex-col w-1/3 max-w-[300px]">
+            <div className="flex flex-col w-full">
                 <label>Email</label>
                 <input
                     type='text'
