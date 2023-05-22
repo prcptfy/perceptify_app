@@ -40,6 +40,14 @@ export default async function RootLayout({
               {children}
             </div>
           </main>
+          {/* <main className="grid grid-cols-12">
+            <div className='col-span-3'>
+              <Sidebar/>
+            </div>
+            <div className="p-20 col-span-9">
+              {children}
+            </div>
+          </main> */}
         </SupabaseProvider>
       </body>
     </html>

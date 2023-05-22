@@ -1,8 +1,51 @@
 "use client"
+
+import { Suspense } from 'react';
 import Graph from '../dashboard/Graph';
+
 import './analytics.css'
+// import ApexCharts from 'apexcharts'
+
+import dynamic from 'next/dynamic'
+// import Chart from "react-apexcharts";
+const Chart = dynamic(() => import("react-apexcharts"), {
+    ssr: false,
+    loading: () => <div>Loading</div>// Replace <Loading /> with your custom loading component
+  });
+
+
+// const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const Analytics = () => {
+    const chart = {
+        options: {
+            chart: {
+                id: "line",
+            },
+            xaxis: {
+                categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+            },
+            fill: {
+                gradient: {
+                    enabled: true,
+                    opacityFrom: 0.2,
+                    opacityTo: 0
+                }
+            },
+          
+        },
+        series: [
+          {
+            // type: 'area',
+            name: "series-1",
+            data: [30, 40, 45, 50, 49, 60, 70, 91],
+          }
+        ],
+        stroke: {
+            curve: 'smooth'
+        },
+    };
+    
     return (
         <div className='analytics'>
             <div className='relavance'>
@@ -16,13 +59,57 @@ const Analytics = () => {
                     </select>
                     <button>Download</button>
                 </div>
-                <div className='rest grid grid-cols-12 gap-4 p-10'>
-                    <div className='col-span-9'>
-                        <Graph />
+                <div className='rest grid grid-cols-12 gap-5 p-10'>
+                    <div className='col-span-8'>
+                        
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Chart
+                                options={chart.options}
+                                series={chart.series}
+                                type="area"
+                                width={'100%'}
+                                
+                            />
+                        </Suspense>
                     </div>
-                    <div className='information col-span-3'>
-                        <div className='header'>
-                            <h3>Relative Strength</h3>
+                    <div className='information col-span-4'>
+                        <div className='side-pannel grid gap-1'>
+                            <div className='header p-2 grid grid-cols-12'>
+                                <h3 className='col-span-11'>Relative Strength</h3>
+                                <h3 className='col-span-1'>X</h3>
+                            </div>
+                            <div className='caption p-2'>
+                                <p className='caption'>
+                                    Platform strength compared to historical performance.
+                                </p>
+                            </div>
+                            <div className='aggregate p-2'>
+                                <h6 className=''>Aggregate</h6>
+                                <progress max="100" value="80"></progress>
+                            </div>
+                            <div className='stats grid grid-cols-1 gap-4'>
+                                <div className='grid grid-cols-12 twitter'>
+                                    <h6 className='col-span-11'>Twitter</h6>
+                                    <h6 className='col-span-1'>62</h6>
+                                    <progress className='col-span-12 ' max="100" value="80"></progress>
+                                </div>
+                                <div className='grid grid-cols-12 facebook'>
+                                    <h6 className='col-span-11'>Facebook</h6>
+                                    <h6 className='col-span-1'>62</h6>
+                                    <progress className='col-span-12' max="100" value="80"></progress>
+                                </div>
+                                <div className='grid grid-cols-12 instagram'>
+                                    <h6 className='col-span-11'>Instagram</h6>
+                                    <h6 className='col-span-1'>62</h6>
+                                    <progress className='col-span-12' max="100" value="80"></progress>
+                                </div>
+                                <div className='grid grid-cols-12 linkedin'>
+                                    <h6 className='col-span-11'>LinkedIn</h6>
+                                    <h6 className='col-span-1'>62</h6>
+                                    <progress className='col-span-12' max="100" value="80"></progress>
+                                </div>
+                            </div>
+
                         </div>
                         <div>
 
@@ -66,7 +153,14 @@ const Analytics = () => {
                 </div>
                 <div className='rest grid grid-cols-12 gap-4 p-10'>
                     <div className='col-span-9'>
-                        <Graph />
+                    {/* {(typeof window !== 'undefined') &&
+                        <Chart
+                            options={chart.options}
+                            series={chart.series}
+                            type="line"
+                            width={'100%'}
+                        />
+                    } */}
                     </div>
                     <div className='col-span-3'>
                         <h3></h3>

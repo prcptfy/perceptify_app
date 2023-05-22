@@ -29,3 +29,12 @@ main.main {
   position: sticky;
   top: 0;
 }
+
+.text-center {
+  text-align: center;
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: lighter !important;
+}
