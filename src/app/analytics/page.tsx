@@ -20,7 +20,7 @@ const Analytics = () => {
     const chart = {
         options: {
             chart: {
-                id: "line",
+                id: "area",
             },
             xaxis: {
                 categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
@@ -28,7 +28,7 @@ const Analytics = () => {
             fill: {
                 gradient: {
                     enabled: true,
-                    opacityFrom: 0.2,
+                    opacityFrom: .8,
                     opacityTo: 0
                 }
             },
