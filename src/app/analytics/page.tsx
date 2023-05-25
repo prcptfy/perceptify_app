@@ -7,6 +7,7 @@ import './analytics.css'
 // import ApexCharts from 'apexcharts'
 
 import dynamic from 'next/dynamic'
+import SidePanel from '@/components/sidepanel';
 // import Chart from "react-apexcharts";
 const Chart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
@@ -45,6 +46,29 @@ const Analytics = () => {
             curve: 'smooth'
         },
     };
+
+    const socials = [
+        {
+            name: 'Twitter',
+            color: '#1DA1F2',
+            value: 62,
+        },
+        {
+            name: 'Facebook',
+            color: '#4267B2',
+            value: 62,
+        },
+        {
+            name: 'Instagram',
+            color: '#E1306C',
+            value: 62,
+        },
+        {
+            name: 'Linkedin',
+            color: '#2867B2',
+            value: 62,
+        },
+    ]
     
     return (
         <div className='analytics'>
@@ -72,48 +96,16 @@ const Analytics = () => {
                             />
                         </Suspense>
                     </div>
-                    <div className='information col-span-4'>
-                        <div className='side-pannel grid gap-1'>
-                            <div className='header p-2 grid grid-cols-12'>
-                                <h3 className='col-span-11'>Relative Strength</h3>
-                                <h3 className='col-span-1'>X</h3>
-                            </div>
-                            <div className='caption p-2'>
-                                <p className='caption'>
-                                    Platform strength compared to historical performance.
-                                </p>
-                            </div>
-                            <div className='aggregate p-2'>
-                                <h6 className=''>Aggregate</h6>
-                                <progress max="100" value="80"></progress>
-                            </div>
-                            <div className='stats grid grid-cols-1 gap-4'>
-                                <div className='grid grid-cols-12 twitter'>
-                                    <h6 className='col-span-11'>Twitter</h6>
-                                    <h6 className='col-span-1'>62</h6>
-                                    <progress className='col-span-12 ' max="100" value="80"></progress>
-                                </div>
-                                <div className='grid grid-cols-12 facebook'>
-                                    <h6 className='col-span-11'>Facebook</h6>
-                                    <h6 className='col-span-1'>62</h6>
-                                    <progress className='col-span-12' max="100" value="80"></progress>
-                                </div>
-                                <div className='grid grid-cols-12 instagram'>
-                                    <h6 className='col-span-11'>Instagram</h6>
-                                    <h6 className='col-span-1'>62</h6>
-                                    <progress className='col-span-12' max="100" value="80"></progress>
-                                </div>
-                                <div className='grid grid-cols-12 linkedin'>
-                                    <h6 className='col-span-11'>LinkedIn</h6>
-                                    <h6 className='col-span-1'>62</h6>
-                                    <progress className='col-span-12' max="100" value="80"></progress>
-                                </div>
-                            </div>
+                    <div className='information col-span-4 full-width'>
 
-                        </div>
-                        <div>
-
-                        </div>
+                        <SidePanel
+                            title="Panel Title"
+                            icon="X"
+                            tooltip="Panel Tooltip"
+                            caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et netus et."
+                            aggVal={10}
+                            socials={socials}
+                        />
                     </div>
                     <div className='col-span-12 icons grid grid-cols-12 gap-4'>
                         {/* <h1>Icons will be here</h1> */}
@@ -152,7 +144,16 @@ const Analytics = () => {
                     <button>Download</button>
                 </div>
                 <div className='rest grid grid-cols-12 gap-4 p-10'>
-                    <div className='col-span-9'>
+                    <div className='col-span-8'>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Chart
+                                options={chart.options}
+                                series={chart.series}
+                                type="area"
+                                width={'100%'}
+                                
+                            />
+                        </Suspense>
                     {/* {(typeof window !== 'undefined') &&
                         <Chart
                             options={chart.options}
@@ -162,9 +163,18 @@ const Analytics = () => {
                         />
                     } */}
                     </div>
-                    <div className='col-span-3'>
-                        <h3></h3>
+                    <div className='information col-span-4 full-width'>
+
+                        <SidePanel
+                            title="Panel Title"
+                            icon="X"
+                            tooltip="Panel Tooltip"
+                            caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et netus et."
+                            aggVal={10}
+                            socials={socials}
+                        />
                     </div>
+                
                     <div className='col-span-12'>
                         <h1>Icons will be here</h1>
                     </div>
