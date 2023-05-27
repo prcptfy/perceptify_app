@@ -35,8 +35,8 @@ const SidePanel: React.FC<SidePanelProps> = ({title, icon, tooltip, caption, agg
                     </div>
                 </div>
                 
-                <div className="hr-with-text text-xs font-bold"> Scroll Down </div>
-                <div className='grid gap-2 px-2 overflow-auto oveflow-y-scroll max-h-52 '>
+                <div className="hr-with-text text-xs font-bold my-4"> Scroll Down </div>
+                <div className='grid gap-2 px-2 overflow-auto oveflow-y-scroll max-h-40 '>
                     {
                         socials.map((social) => {
                             return (
