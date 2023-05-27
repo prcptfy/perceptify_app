@@ -9,6 +9,7 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'DM-Sans';
 }
 
 :root {
@@ -37,4 +38,26 @@ main.main {
 .caption {
   font-size: 12px;
   font-weight: lighter !important;
+}
+
+.hr-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: 'DM-Sans';
+}
+
+.hr-with-text::before,
+.hr-with-text::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid black;
+}
+
+.hr-with-text::before {
+  margin-right: 0.5em;
+}
+
+.hr-with-text::after {
+  margin-left: 0.5em;
 }

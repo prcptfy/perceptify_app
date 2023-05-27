@@ -36,7 +36,7 @@ export default async function RootLayout({
             <div className='sidebar'>
               <Sidebar/>
             </div>
-            <div className="p-20">
+            <div className="p-10">
               {children}
             </div>
           </main>
