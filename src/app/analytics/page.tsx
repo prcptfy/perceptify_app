@@ -108,7 +108,7 @@ const Analytics = () => {
                             title="Panel Title"
                             icon="X"
                             tooltip="Panel Tooltip"
-                            caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et netus et."
+                            caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
                             aggVal={62}
                             socials={socials}
                         />

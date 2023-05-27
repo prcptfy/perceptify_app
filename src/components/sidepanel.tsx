@@ -1,5 +1,9 @@
 "use client"
 
+
+import InfoIcon from "./icons/infoIcon"
+import ToolTip from './tooltip/tooltip'
+
 interface Aggregate {
     name: string,
     value: number,
@@ -21,7 +25,9 @@ const SidePanel: React.FC<SidePanelProps> = ({title, icon, tooltip, caption, agg
                 <div className="px-5 pt-8 flex flex-col">
                     <div className='flex flex-auto'>
                         <h3 className='basis-11/12 text-2xl font-bold'>{title}</h3>
-                        <h3 className='basis-1/12'>{icon}</h3>
+                        {/* <h3 className='basis-1/12'>{icon}</h3> */}
+                        <ToolTip icon={<InfoIcon stroke="#e855e8" size="30px"/>} tooltip="Some information here"/>
+                        {/* <InfoIcon stroke="#e855e8" size="30px"/> */}
                     </div>
                     <div className='caption my-2 flex-auto'>
                         <p className='caption'>
