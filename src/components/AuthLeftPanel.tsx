@@ -20,9 +20,9 @@ export default function AuthLeftPanel({
     const label = pathname.startsWith("/login") ? "Create an Account" : "Log In";
     useEffect(() => console.log("mounted"), [])
     return (
-        <div className="flex flex-col w-0 md:w-1/4 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500
+        <div className="flex flex-col w-0 md:w-1/4 z-10 h-screen border-r-[1px] border-[#F1F3F4] transition-all duration-500
                         px-12 bg-[#F5F5F5]
-        "
+                        "
         >
             <Logo />
             <Image className='mt-12 mb-10' src="/images/AuthLeftPanelFormIcons.png" width={500} height={500} alt="form-graphic" />

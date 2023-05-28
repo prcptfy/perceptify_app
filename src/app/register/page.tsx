@@ -66,6 +66,10 @@ const Register = () => {
             />
             <div className='flex items-center justify-center mt-6 w-full'>
                 <div className="flex flex-col gap-5 w-1/3">
+                    <div>
+                        <h1 className='font-bold text-3xl mb-2'>Creat an account</h1>
+                        <p className='text-lg font-extralight'>Start managing your business insights better and faster.</p>
+                    </div>
                     <Input
                         id='email'
                         label='Email'

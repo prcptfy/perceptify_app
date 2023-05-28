@@ -137,7 +137,7 @@ const Sidebar = () => {
   );
 
   return (
-    <div className="fixed flex flex-col w-24 hover:w-96 md:w-96 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
+    <div className="fixed flex flex-col w-24 hover:w-96 md:w-80 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
       <div className="p-4">
         <Logo />
         <div className="mt-16">
@@ -170,7 +170,7 @@ const Sidebar = () => {
             icon={integrationsIcon}
           />
         </div>
-        <div className="divide-y mt-16">
+        <div className="divide-y mt-96">
           <BottomButton
             label="Manage Team"
             link="/manage"
