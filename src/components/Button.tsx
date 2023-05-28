@@ -18,9 +18,9 @@ export default function Button ({
                 flex transition w-full
                 px-6 py-4 items-center
                 overflow-hidden justify-center
-                rounded-lg font-medium
+                rounded-lg font-semibold
                 text-lg
-                cursor-pointer border
+                cursor-pointer border-2
                 ${light ? "bg-white" : "bg-purple-450"}
                 ${light ? "text-purple-450" : "text-white"}
                 ${light ? "border-purple-450" : "border-white"}

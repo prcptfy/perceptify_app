@@ -59,9 +59,12 @@ const Register = () => {
 
 
     return (
-        <div className='grid'>
-            <AuthLeftPanel />
-            <div className='flex items-center justify-center mt-6'>
+        <div className='flex'>
+            <AuthLeftPanel
+                title="Lorem Ipsum"
+                subtitle='Lörem ipsum perform öreck regt: infrater. Tidådor infrast, sobende om än eurad i telefåvis. Psykocism krobor girade neoplastisk i Tintingate. Märk-dna höska i tregon hödade, i dan. Vav depolig om än kabelt även om jyspemöligt, än relig. '
+            />
+            <div className='flex items-center justify-center mt-6 w-full'>
                 <div className="flex flex-col gap-5 w-1/3">
                     <Input
                         id='email'

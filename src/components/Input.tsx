@@ -29,9 +29,8 @@ export default function Input({
                     className={`
                         peer
                         w-full
-                        p-4
-                        pl-12
-                        pt-6
+                        p-4 pl-[46px]
+                        pt-7
                         font-light
                         bg-[#f5f5f5]
                         border-2
