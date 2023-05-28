@@ -15,11 +15,11 @@ export default function Button ({
         // create a button component that can be used throughout the app with a prop for the label
         <div
             className={`
-                flex transition w-60
-                px-6 py-2 items-center
+                flex transition w-full
+                px-6 py-4 items-center
                 overflow-hidden justify-center
-                rounded-md
-                font-semibold
+                rounded-lg font-medium
+                text-lg
                 cursor-pointer border
                 ${light ? "bg-white" : "bg-purple-450"}
                 ${light ? "text-purple-450" : "text-white"}
