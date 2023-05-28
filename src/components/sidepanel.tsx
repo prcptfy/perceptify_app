@@ -12,25 +12,24 @@ interface Aggregate {
 
 type SidePanelProps = {
     title: string,
-    icon: string,
     tooltip: string,
     caption: string,
     aggVal: number,
     socials: Array<Aggregate>,
 }
 
-const SidePanel: React.FC<SidePanelProps> = ({title, icon, tooltip, caption, aggVal, socials}) => {
+const SidePanel: React.FC<SidePanelProps> = ({title, tooltip, caption, aggVal, socials}) => {
     return (
             <div className='side-pannel grid gap-1'>
                 <div className="px-5 pt-8 flex flex-col">
                     <div className='flex flex-auto'>
                         <h3 className='basis-11/12 text-2xl font-bold'>{title}</h3>
                         {/* <h3 className='basis-1/12'>{icon}</h3> */}
-                        <ToolTip icon={<InfoIcon stroke="#e855e8" size="30px"/>} tooltip="Some information here"/>
+                        <ToolTip icon={<InfoIcon stroke="#8915E4" size="25px"/>} tooltip="Some information here"/>
                         {/* <InfoIcon stroke="#e855e8" size="30px"/> */}
                     </div>
                     <div className='caption my-2 flex-auto'>
-                        <p className='caption'>
+                        <p className='text-sm'>
                             {caption}
                         </p>
                     </div>

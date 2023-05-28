@@ -36,9 +36,15 @@ export default async function RootLayout({
             <div className='sidebar'>
               <Sidebar/>
             </div>
-            <div className="p-10">
-              {children}
+            <div className="">
+              {/* <div className='sticky top-0 z-50'>
+                <Topbar/>
+              </div> */}
+              <div className='p-10'>
+                {children}
+              </div>
             </div>
+            
           </main>
           {/* <main className="grid grid-cols-12">
             <div className='col-span-3'>
