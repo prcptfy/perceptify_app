@@ -1,12 +1,19 @@
 'use client';
 
+import InsightBlock from '@/components/InsightBlock';
 import Sidebar from '@/components/sidebar/Sidebar';
+import './insights.css';
 
 const Insights = () => {
   return (
-    <div className="flex flex-row">
+    <>
       <Sidebar />
-    </div>
+      <div className="insights">
+        <InsightBlock />
+        <InsightBlock />
+        <InsightBlock />
+      </div>
+    </>
   );
 };
 
