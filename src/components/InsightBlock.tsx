@@ -43,7 +43,14 @@ const InsightBlock = (props: IProps) => {
         style={{ backgroundColor: `${leftBarColor}` }}
         className={'h-full w-[0.5rem] rounded-[10px_0px_0px_10px]'}
       />
-      <div className={'m-[2.5rem]'}>{logoComponent}</div>
+      <div className={'ml-[2.5rem] flex items-center'}>{logoComponent}</div>
+      <div className={'flex items-center'}>
+        <div
+          className={
+            'ml-[2.5em] h-[100px] w-[0.1rem] border-l-[2px] border-dashed border-l-[rgba(0,0,0,0.1)]'
+          }
+        />
+      </div>
     </div>
   );
 };
