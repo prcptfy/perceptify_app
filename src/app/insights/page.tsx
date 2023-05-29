@@ -1,19 +1,13 @@
 'use client';
 
 import InsightBlock from '@/components/InsightBlock';
-import Sidebar from '@/components/sidebar/Sidebar';
-import './insights.css';
 
 const Insights = () => {
   return (
-    <>
-      <Sidebar />
-      <div className="insights">
-        <InsightBlock />
-        <InsightBlock />
-        <InsightBlock />
-      </div>
-    </>
+    <div className={'flex flex-col gap-[2em]'}>
+      <InsightBlock percentage={15} />
+      <InsightBlock percentage={-15} />
+    </div>
   );
 };
 
