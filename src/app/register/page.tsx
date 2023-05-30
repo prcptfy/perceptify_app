@@ -7,7 +7,8 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
 import ClientOnly from '@/components/ClientOnly';
-import Logo from '@/components/Logo';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Register = () => {
     const { supabase } = useSupabase();
@@ -140,10 +141,18 @@ const Register = () => {
 
     return (
         <div>
-            <Logo />
-            <div className='flex flex-col border justify-center w-3/4'>
-                <h1 className='font-bold text-3xl'>Tell us about yourself!</h1>
-                <div className='grid grid-rows-2 grid-flow-col gap-4'>
+            <Link href="/home">
+                <Image
+                    alt="logo"
+                    className="h-24 w-max absolute"
+                    height="250"
+                    width="250"
+                    src="/images/logo.svg"
+                />
+            </Link>
+            <div className='flex flex-col border justify-center items-center h-screen'>
+                <h1 className='font-bold text-3xl p-5'>Tell us about yourself!</h1>
+                <div className='grid grid-rows-2 grid-flow-col gap-4 w-5/12'>
                     <Input
                         id='firstName'
                         label='First Name'
@@ -171,6 +180,13 @@ const Register = () => {
                         disabled={false}
                         errors={errors}
                         required
+                    />
+                </div>
+                <div className="m-5 w-80">
+                    <Button
+                        label='Next →'
+                        onClick={() => setStage(stage + 1)}
+                        light={false}
                     />
                 </div>
             </div>
