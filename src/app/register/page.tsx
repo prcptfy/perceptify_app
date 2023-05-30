@@ -19,6 +19,8 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [role, setRole] = useState('');
     const [errors, setErrors] = useState('')
     const [session, setSession] = useState<Session | null>(null);
 
@@ -159,6 +161,7 @@ const Register = () => {
                         disabled={false}
                         errors={errors}
                         required
+                        onChange={(e:any) => setFirstName(e.target.value)}
                     />
                     <Input
                         id='lastName'
@@ -166,6 +169,7 @@ const Register = () => {
                         disabled={false}
                         errors={errors}
                         required
+                        onChange={(e:any) => setLastName(e.target.value)}
                     />
                     <Input
                         id='companyName'
@@ -173,6 +177,7 @@ const Register = () => {
                         disabled={false}
                         errors={errors}
                         required
+                        onChange={(e:any) => setCompanyName(e.target.value)}
                     />
                     <Input
                         id='role'
@@ -180,6 +185,7 @@ const Register = () => {
                         disabled={false}
                         errors={errors}
                         required
+                        onChange={(e:any) => setRole(e.target.value)}
                     />
                 </div>
                 <div className="m-5 w-80">

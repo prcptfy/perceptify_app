@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import AuthLeftPanel from "@/components/AuthLeftPanel";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 const Login = () => {
     const router = useRouter();
@@ -65,6 +66,7 @@ const Login = () => {
                             icon={keyIcon}
                             onChange={(e:any) => setPassword(e.target.value)}
                         />
+                        <Link href="/forgot-password" className="text-purple-450 hover:font-semibold">Forgot Password?</Link>
                         <Button
                             label='Log In'
                             onClick={handleEmailLogin}
