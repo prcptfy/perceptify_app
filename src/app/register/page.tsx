@@ -191,7 +191,7 @@ const Register = () => {
                 <div className="m-5 w-80">
                     <Button
                         label='Next →'
-                        onClick={() => setStage(stage + 1)}
+                        onClick={() => stage < 3 && setStage(stage + 1)}
                         light={false}
                     />
                 </div>

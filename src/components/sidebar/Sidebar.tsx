@@ -8,6 +8,7 @@ import { useSupabase } from '../supabase-provider';
 
 const Sidebar = () => {
   const { supabase, session } = useSupabase();
+  console.log("session", session)
   const pathname = usePathname();
   const homeIcon = (
     <svg
@@ -173,7 +174,7 @@ const Sidebar = () => {
             icon={integrationsIcon}
           />
         </div>
-        <div className="divide-y mt-96">
+        <div className="divide-y mt-48">
           <BottomButton
             label="Manage Team"
             link="/manage"
