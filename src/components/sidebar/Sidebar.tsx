@@ -4,9 +4,10 @@ import { useRouter, usePathname } from 'next/navigation';
 import Logo from '../Logo';
 import NavigationButton from './NavigationButton';
 import BottomButton from './BottomButton';
+import { useSupabase } from '../supabase-provider';
 
 const Sidebar = () => {
-  const router = useRouter();
+  const { supabase, session } = useSupabase();
   const pathname = usePathname();
   const homeIcon = (
     <svg
@@ -136,6 +137,8 @@ const Sidebar = () => {
     </svg>
   );
 
+  const logout = async () => await supabase.auth.signOut();
+
   return (
     <div className="fixed flex flex-col w-24 hover:w-96 md:w-80 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
       <div className="p-4">
@@ -186,13 +189,13 @@ const Sidebar = () => {
             link="/support"
             icon={supportIcon}
           />
-          <BottomButton
+          {session && (<BottomButton
             label="Log Out"
-            onClick={() => {}}
-            link="/logout"
+            onClick={logout}
+            link="/login"
             red
             icon={logoutIcon}
-          />
+          />)}
         </div>
       </div>
     </div>
