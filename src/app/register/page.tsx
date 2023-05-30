@@ -141,9 +141,9 @@ const Register = () => {
     return (
         <div>
             <Logo />
-            <div className='flex flex-col border justify-center'>
+            <div className='flex flex-col border justify-center w-3/4'>
                 <h1 className='font-bold text-3xl'>Tell us about yourself!</h1>
-                <div className='grid grids-rows-2 grid-flow-col gap-4'>
+                <div className='grid grid-rows-2 grid-flow-col gap-4'>
                     <Input
                         id='firstName'
                         label='First Name'
