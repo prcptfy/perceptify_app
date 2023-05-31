@@ -7,6 +7,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
 import ClientOnly from '@/components/ClientOnly';
+import ImageUpload from '@/components/ImageUpload';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -142,61 +143,64 @@ const Register = () => {
     // );
 
     return (
-        <div>
-            <Link href="/home">
-                <Image
-                    alt="logo"
-                    className="h-24 w-max absolute"
-                    height="250"
-                    width="250"
-                    src="/images/logo.svg"
-                />
-            </Link>
-            <div className='flex flex-col border justify-center items-center h-screen'>
-                <h1 className='font-bold text-3xl p-5'>Tell us about yourself!</h1>
-                <div className='grid grid-rows-2 grid-flow-col gap-4 w-5/12'>
-                    <Input
-                        id='firstName'
-                        label='First Name'
-                        disabled={false}
-                        errors={errors}
-                        required
-                        onChange={(e:any) => setFirstName(e.target.value)}
+        <>
+            <div>
+                <Link href="/home">
+                    <Image
+                        alt="logo"
+                        className="h-24 w-max absolute"
+                        height="250"
+                        width="250"
+                        src="/images/logo.svg"
                     />
-                    <Input
-                        id='lastName'
-                        label='Last Name'
-                        disabled={false}
-                        errors={errors}
-                        required
-                        onChange={(e:any) => setLastName(e.target.value)}
-                    />
-                    <Input
-                        id='companyName'
-                        label='Company Name'
-                        disabled={false}
-                        errors={errors}
-                        required
-                        onChange={(e:any) => setCompanyName(e.target.value)}
-                    />
-                    <Input
-                        id='role'
-                        label='Your Position'
-                        disabled={false}
-                        errors={errors}
-                        required
-                        onChange={(e:any) => setRole(e.target.value)}
-                    />
-                </div>
-                <div className="m-5 w-80">
-                    <Button
-                        label='Next →'
-                        onClick={() => stage < 3 && setStage(stage + 1)}
-                        light={false}
-                    />
+                </Link>
+                <div className='flex flex-col border justify-center items-center h-screen'>
+                    <ImageUpload handleUpload="" />
+                    <h1 className='font-bold text-3xl p-5'>Tell us about yourself!</h1>
+                    <div className='grid grid-rows-2 grid-flow-col gap-4 w-5/12'>
+                        <Input
+                            id='firstName'
+                            label='First Name'
+                            disabled={false}
+                            errors={errors}
+                            required
+                            onChange={(e:any) => setFirstName(e.target.value)}
+                        />
+                        <Input
+                            id='lastName'
+                            label='Last Name'
+                            disabled={false}
+                            errors={errors}
+                            required
+                            onChange={(e:any) => setLastName(e.target.value)}
+                        />
+                        <Input
+                            id='companyName'
+                            label='Company Name'
+                            disabled={false}
+                            errors={errors}
+                            required
+                            onChange={(e:any) => setCompanyName(e.target.value)}
+                        />
+                        <Input
+                            id='role'
+                            label='Your Position'
+                            disabled={false}
+                            errors={errors}
+                            required
+                            onChange={(e:any) => setRole(e.target.value)}
+                        />
+                    </div>
+                    <div className="m-5 w-80">
+                        <Button
+                            label='Next →'
+                            onClick={() => stage < 3 && setStage(stage + 1)}
+                            light={false}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
