@@ -10,6 +10,20 @@ export default function ImageUpload({
   handleUpload,
 }: ImageUploadProps) {
 
+  const [file, setFile] = useState(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragOver = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e:any) => {
+    e.preventDefault();
+    setFile(e);
+    console.log(e)
+    // console.log(file)
+  };
+
 
   const uploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="76" height="76" fill="none">
     <path fill="#8915E4" d="M40.226 35.404a3.136 3.136 0 0 0-4.39 0l-9.408 9.094a3.136 3.136 0 1 0 4.328 4.516l4.108-3.983v17.687a3.136 3.136 0 1 0 6.271 0v-17.53l4.046 4.077a3.136 3.136 0 0 0 4.453 0 3.135 3.135 0 0 0 0-4.453l-9.408-9.408Z"/>
@@ -23,9 +37,17 @@ export default function ImageUpload({
         rounded-lg bg-[#F5F5F5] border-slate-300 border-dashed border-2
         cursor-pointer hover:border-slate-500
       `}
-      id="dropbox"
+      id="dropzone"
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      onClick={() => inputRef.current?.click()}
     >
-
+      <input
+        type="file"
+        onChange={(e:any) => setFile(e.target.file)}
+        hidden
+        ref={inputRef}
+      />
       <label
         className="flex flex-col transition duration-150 justify-center items-center text-purple-450 cursor-pointer"
       >
