@@ -7,7 +7,8 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
 import ClientOnly from '@/components/ClientOnly';
-import ImageUpload from '@/components/ImageUpload';
+import ImageUpload from '@/components/CoverImageUpload';
+import ProfileImageUpload from '@/components/ProfileImageUpload';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -156,7 +157,8 @@ const Register = () => {
                 </Link>
                 <div className='flex flex-col border justify-center items-center h-screen'>
                     <ImageUpload handleUpload="" />
-                    <h1 className='font-bold text-3xl p-5'>Tell us about yourself!</h1>
+                    <ProfileImageUpload />
+                    <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
                     <div className='grid grid-rows-2 grid-flow-col gap-4 w-5/12'>
                         <Input
                             id='firstName'
