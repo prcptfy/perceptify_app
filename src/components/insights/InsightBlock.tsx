@@ -6,6 +6,7 @@ import TwitterIcon from '../icons/TwitterIcon';
 import TikTokIcon from '../icons/TikTokIcon';
 import InstagramIcon from '../icons/InstagramIcon';
 import LinkedInIcon from '../icons/LinkedInIcon';
+import InsightAlert from './InsightAlert';
 
 type Logos =
   | 'facebook'
@@ -44,19 +45,21 @@ const InsightBlock = (props: IProps) => {
   }
 
   return (
-    <div
-      className={
-        'flex h-80 w-full flex-row rounded-[3rem] border-[2px] border-[#5E6366]'
-      }
-    >
+    <div className={'flex h-80 w-full flex-row rounded-[3rem]'}>
       <div
         className={
-          'flex h-full min-w-[500px] flex-col rounded-[3rem_0_0_3rem] bg-[#F8F8F8] p-5'
+          'flex h-full min-w-[500px] flex-col rounded-[3rem_0_0_3rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
         }
       >
         <div className={'flex flex-row p-3'}>{logoComponent}</div>
         <div className={'pl-3 text-[1.5rem] font-[700]'}>
           Traffic Pattern Alert
+        </div>
+        <div className={'flex flex-row p-[0.75rem_0.75rem_0.5rem_0.75rem]'}>
+          <InsightAlert alertType={'bad'} text={'Low activity'} />
+        </div>
+        <div className={'flex flex-row gap-[0.5rem] pl-3'}>
+          <InsightAlert alertType={'good'} text={'Post more on Wednesdays'} />
         </div>
       </div>
     </div>
