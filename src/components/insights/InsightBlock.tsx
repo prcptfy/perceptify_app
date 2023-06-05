@@ -16,13 +16,20 @@ type Logos =
   | 'twitter'
   | null;
 
+export type FullFeedback = {
+  goodFeedback: string[];
+  badFeedback: string[];
+};
+
 interface IProps {
   logo: Logos;
+  feedback: FullFeedback;
 }
 
 const InsightBlock = (props: IProps) => {
   let logoComponent;
 
+  //decide which logo to display
   switch (props.logo) {
     case 'facebook':
       logoComponent = <FacebookIcon sideLength={97} />;
@@ -44,6 +51,21 @@ const InsightBlock = (props: IProps) => {
       logoComponent = null;
   }
 
+  //seperate props.feedback into objects to individual components to be displayed
+  let goodFeedbackComponents = props.feedback.goodFeedback.map(
+    (text, index) => {
+      return (
+        <InsightAlert key={`good-${index}`} alertType="good" text={text} />
+      );
+    }
+  );
+  let badFeedbackComponents = props.feedback.badFeedback.map((text, index) => {
+    return <InsightAlert key={`bad-${index}`} alertType="bad" text={text} />;
+  });
+
+  console.log(goodFeedbackComponents);
+  console.log(badFeedbackComponents);
+
   return (
     <div className={'flex h-80 w-full flex-row rounded-[3rem]'}>
       <div
@@ -55,11 +77,27 @@ const InsightBlock = (props: IProps) => {
         <div className={'pl-3 text-[1.5rem] font-[700]'}>
           Traffic Pattern Alert
         </div>
-        <div className={'flex flex-row p-[0.75rem_0.75rem_0.5rem_0.75rem]'}>
-          <InsightAlert alertType={'bad'} text={'Low activity'} />
+        <div
+          className={
+            'flex flex-row gap-[0.5rem] p-[0.75rem_0.75rem_0.5rem_0.75rem]'
+          }
+        >
+          {goodFeedbackComponents}
         </div>
         <div className={'flex flex-row gap-[0.5rem] pl-3'}>
-          <InsightAlert alertType={'good'} text={'Post more on Wednesdays'} />
+          {badFeedbackComponents}
+        </div>
+        <div className={'flex flex-row p-[1rem_0.75rem_0.75rem_0.75rem]'}>
+          <button
+            className={
+              'rounded-[3rem] bg-[#8915E4] p-[0.2rem_0.8rem] text-[#FFFFFF]'
+            }
+            onClick={() => {
+              console.log(`button for InsightBlock ${props.logo} clicked`);
+            }}
+          >
+            Dismiss
+          </button>
         </div>
       </div>
     </div>

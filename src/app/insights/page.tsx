@@ -1,14 +1,23 @@
 'use client';
 
 import InsightBlock from '@/components/insights/InsightBlock';
-import FacebookIcon from '@/components/icons/FacebookIcon';
-import InstagramIcon from '@/components/icons/InstagramIcon';
+import { FullFeedback } from '@/components/insights/InsightBlock';
 
 const Insights = () => {
+  const facebookFeedback: FullFeedback = {
+    goodFeedback: ['Post more on Wednesdays', 'Lorum Ipsum'],
+    badFeedback: ['Low activity', 'Low interactions'],
+  };
+  const tiktokFeedback: FullFeedback = {
+    goodFeedback: ['Post more on Mondays', 'Lorum Ipsum'],
+    badFeedback: ['Low engagement with 55-60 year olds'],
+  };
+
   return (
     <div className={'flex flex-col gap-[1em]'}>
       <div className={'flex flex-col gap-[2em]'}>
-        <InsightBlock logo={'facebook'} />
+        <InsightBlock logo={'facebook'} feedback={facebookFeedback} />
+        <InsightBlock logo={'tiktok'} feedback={tiktokFeedback} />
       </div>
     </div>
   );
