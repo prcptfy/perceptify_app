@@ -21,6 +21,12 @@ export default function Input({
     icon,
     onChange
 }: InputProps) {
+                        //     peer-focus:-translate-y-4
+                        // peer-focus:translate-x-1
+
+                        //                         peer-focus:scale-75
+                        // scale-75
+                        // peer-focus:-translate-y-4
     return (
             <div className="w-full relative">
                 <input
@@ -36,7 +42,7 @@ export default function Input({
                         font-light
                         bg-[#f5f5f5]
                         border-2
-                        rounded-md
+                        rounded-lg
                         outline-none
                         transition
                         disabled:opacity-70
@@ -59,6 +65,7 @@ export default function Input({
                         ${icon ? 'left-12' : "left-4"}
                         peer-placeholder-shown:scale-100
                         peer-placeholder-shown:translate-y-0
+                        scale-75
                         peer-focus:scale-75
                         peer-focus:-translate-y-4
                         ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
@@ -79,12 +86,13 @@ export default function Input({
                         peer-placeholder-shown:scale-100
                         peer-placeholder-shown:translate-y-0
                         peer-focus:scale-[65%]
+                        scale-[65%]
                         peer-focus:-translate-y-4
-                        peer-focus:translate-x-1
                     "
                 >
                     {icon}
                 </div>
+
             </div>
     )
 }

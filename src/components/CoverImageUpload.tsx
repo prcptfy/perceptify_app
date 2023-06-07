@@ -6,7 +6,7 @@ interface ImageUploadProps {
   handleUpload: any;
 }
 
-export default function ImageUpload({
+export default function CoverImageUpload({
   handleUpload,
 }: ImageUploadProps) {
 
@@ -33,9 +33,9 @@ export default function ImageUpload({
   return (
     <div
       className={`
-        flex box-border items-center justify-center p-16 h-1/6 w-5/12
+        flex box-border items-center justify-center p-16 h-full w-full
         rounded-lg bg-[#F5F5F5] border-slate-300 border-dashed border-2
-        cursor-pointer hover:border-slate-500 m-5
+        cursor-pointer hover:border-slate-500
       `}
       id="dropzone"
       onDragOver={handleDragOver}

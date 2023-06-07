@@ -7,8 +7,9 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
 import ClientOnly from '@/components/ClientOnly';
-import ImageUpload from '@/components/CoverImageUpload';
+import CoverImageUpload from '@/components/CoverImageUpload';
 import ProfileImageUpload from '@/components/ProfileImageUpload';
+import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -25,6 +26,7 @@ const Register = () => {
     const [role, setRole] = useState('');
     const [errors, setErrors] = useState('')
     const [session, setSession] = useState<Session | null>(null);
+    const [members, setMembers] = useState([]);
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -134,16 +136,8 @@ const Register = () => {
             </div>
         </div>
     ));
-    stages.set(2, "stage 2");
-    stages.set(3, "stage 3");
 
-    // return (
-    //     <ClientOnly>
-    //         {stages.get(stage)}
-    //     </ClientOnly>
-    // );
-
-    return (
+    stages.set(2, (
         <>
             <div>
                 <Link href="/home">
@@ -155,11 +149,15 @@ const Register = () => {
                         src="/images/logo.svg"
                     />
                 </Link>
-                <div className='flex flex-col border justify-center items-center h-screen'>
-                    <ImageUpload handleUpload="" />
-                    <ProfileImageUpload />
-                    <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
-                    <div className='grid grid-rows-2 grid-flow-col gap-4 w-5/12'>
+                <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
+                    <div className='w-full h-48 mb-12'>
+                        <CoverImageUpload handleUpload="" />
+                        <ProfileImageUpload />
+                    </div>
+                    <div className='flex w-full justify-start'>
+                        <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
+                    </div>
+                    <div className='grid grid-rows-2 grid-flow-col gap-4 w-full'>
                         <Input
                             id='firstName'
                             label='First Name'
@@ -193,17 +191,61 @@ const Register = () => {
                             onChange={(e:any) => setRole(e.target.value)}
                         />
                     </div>
-                    <div className="m-5 w-80">
-                        <Button
-                            label='Next →'
-                            onClick={() => stage < 3 && setStage(stage + 1)}
-                            light={false}
-                        />
+                    <div className="flex w-full justify-end">
+                        <div className='w-48 mt-5'>
+                            <Button
+                                label='Next →'
+                                onClick={() => stage < 3 && setStage(stage + 1)}
+                                light={false}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         </>
-    )
+    ));
+    stages.set(3, (
+        <>
+            <div>
+                <Link href="/home">
+                    <Image
+                        alt="logo"
+                        className="h-24 w-max absolute"
+                        height="250"
+                        width="250"
+                        src="/images/logo.svg"
+                    />
+                </Link>
+                <div className='flex flex-col border justify-center items-center h-screen w-5/12 m-auto'>
+                    <div className='flex flex-col w-full p-4'>
+                        <h3 className='text-purple-450 mb-8 hover:underline' onClick={() => setStage(stage - 1)}>← Go back</h3>
+                        <h1 className='font-bold text-2xl mb-2'>One more thing...</h1>
+                        <h3>Let's invite the rest of the team!</h3>
+                        <div className='flex justify-center items-center w-full gap-4 py-4'>
+                            <Input id='addMember' errors={errors} type="text" label='Team member email' icon={emailIcon} disabled={false} />
+                            {/* ADD DROPDOWN SELECTOR */}
+                            <Dropdown />
+                        </div>
+                        <h3 className='text-purple-450 hover:underline cursor-pointer px-1'>+ Add a team member</h3>
+                    </div>
+                    <div className='flex flex-col w-full justify-center items-end'>
+                        <div className='w-48 p-4'>
+                            <Button label='Send Invites' onClick={() => setStage(stage + 1)} light={false} />
+                        </div>
+                        <p className='text-purple-450 cursor-pointer hover:underline px-5' onClick={() => setStage(stage + 1)}>Skip for now</p>
+                    </div>
+                </div>
+            </div>
+        </>
+    ));
+
+    return (
+        <ClientOnly>
+            {stages.get(stage)}
+        </ClientOnly>
+    );
+
+    return
 }
 
 export default Register;

@@ -9,7 +9,7 @@ export default function ProfileImageUpload() {
     return (
         <div
           className={`
-            flex items-center justify-center -mt-24 -ml-[36rem] p-16
+            flex items-center justify-center w-24 h-24 ml-16 -mt-12
             rounded-full bg-[#F5F5F5] border-slate-300 border-dashed border-2
             cursor-pointer hover:border-slate-500 z-50
           `}
