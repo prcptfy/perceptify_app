@@ -216,9 +216,9 @@ const Register = () => {
                         src="/images/logo.svg"
                     />
                 </Link>
-                <div className='flex flex-col border justify-center items-center h-screen w-5/12 m-auto'>
+                <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='flex flex-col w-full p-4'>
-                        <h3 className='text-purple-450 mb-8 hover:underline' onClick={() => setStage(stage - 1)}>← Go back</h3>
+                        <h3 className='text-purple-450 mb-8 hover:underline cursor-pointer' onClick={() => setStage(stage - 1)}>← Go back</h3>
                         <h1 className='font-bold text-2xl mb-2'>One more thing...</h1>
                         <h3>Let's invite the rest of the team!</h3>
                         <div className='flex justify-center items-center w-full gap-4 py-4'>
