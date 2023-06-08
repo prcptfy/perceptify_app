@@ -104,7 +104,7 @@ const InsightBlock = (props: IProps) => {
 
       {/*start of graph */}
       <div className={'flex w-full items-center justify-center'}>
-        <InsightGraph />
+        <InsightGraph activityValues={[10, 3, 6, 7, 17, 5, 1]} />
       </div>
     </div>
   );
