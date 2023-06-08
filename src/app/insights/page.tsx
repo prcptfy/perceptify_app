@@ -5,11 +5,11 @@ import { FullFeedback } from '@/components/insights/InsightBlock';
 
 const Insights = () => {
   const facebookFeedback: FullFeedback = {
-    goodFeedback: ['Post more on Wednesdays', 'Lorum Ipsum'],
-    badFeedback: ['Low activity', 'Low interactions'],
+    goodFeedback: ['Post more on Wednesdays'],
+    badFeedback: ['Low activity'],
   };
   const tiktokFeedback: FullFeedback = {
-    goodFeedback: ['Post more on Mondays', 'Lorum Ipsum'],
+    goodFeedback: ['Post more on Mondays'],
     badFeedback: ['Low engagement with 55-60 year olds'],
   };
 

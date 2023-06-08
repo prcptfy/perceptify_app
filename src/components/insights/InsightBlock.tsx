@@ -7,6 +7,7 @@ import TikTokIcon from '../icons/TikTokIcon';
 import InstagramIcon from '../icons/InstagramIcon';
 import LinkedInIcon from '../icons/LinkedInIcon';
 import InsightAlert from './InsightAlert';
+import InsightGraph from './InsightGraph';
 
 type Logos =
   | 'facebook'
@@ -32,7 +33,7 @@ const InsightBlock = (props: IProps) => {
   //decide which logo to display
   switch (props.logo) {
     case 'facebook':
-      logoComponent = <FacebookIcon sideLength={97} />;
+      logoComponent = <FacebookIcon sideLength={80} />;
       break;
     case 'twitter':
       logoComponent = <TwitterIcon sideLength={97} />;
@@ -67,10 +68,10 @@ const InsightBlock = (props: IProps) => {
   console.log(badFeedbackComponents);
 
   return (
-    <div className={'flex h-80 w-full flex-row rounded-[3rem]'}>
+    <div className={'flex h-80 w-full flex-row rounded-[1rem] border-[2px]'}>
       <div
         className={
-          'flex h-full min-w-[500px] flex-col rounded-[3rem_0_0_3rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
+          'flex h-full min-w-[400px] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
         }
       >
         <div className={'flex flex-row p-3'}>{logoComponent}</div>
@@ -82,10 +83,10 @@ const InsightBlock = (props: IProps) => {
             'flex flex-row gap-[0.5rem] p-[0.75rem_0.75rem_0.5rem_0.75rem]'
           }
         >
-          {goodFeedbackComponents}
+          {badFeedbackComponents}
         </div>
         <div className={'flex flex-row gap-[0.5rem] pl-3'}>
-          {badFeedbackComponents}
+          {goodFeedbackComponents}
         </div>
         <div className={'flex flex-row p-[1rem_0.75rem_0.75rem_0.75rem]'}>
           <button
@@ -99,6 +100,11 @@ const InsightBlock = (props: IProps) => {
             Dismiss
           </button>
         </div>
+      </div>
+
+      {/*start of graph */}
+      <div className={'flex w-full items-center justify-center'}>
+        <InsightGraph />
       </div>
     </div>
   );
