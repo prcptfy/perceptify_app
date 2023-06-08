@@ -1,6 +1,16 @@
 'use client';
 
-import React from 'react';
+/*
+
+TODOS
+
+Make full functionality of Assign dropdown
+
+Create assigned to catagory after Register stages are done
+
+*/
+
+import React, { useState } from 'react';
 import FacebookIcon from '../icons/FacebookIcon';
 import TwitterIcon from '../icons/TwitterIcon';
 import TikTokIcon from '../icons/TikTokIcon';
@@ -28,9 +38,14 @@ interface IProps {
   feedback: FullFeedback;
   graphValues: number[];
   title: string;
+  companyMembers: string[];
 }
 
 const InsightBlock = (props: IProps) => {
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
+
   let logoComponent;
   let sideLength = 80;
 
@@ -68,8 +83,14 @@ const InsightBlock = (props: IProps) => {
     return <InsightAlert key={`bad-${index}`} alertType="bad" text={text} />;
   });
 
-  console.log(goodFeedbackComponents);
-  console.log(badFeedbackComponents);
+  //create dropdown options
+  const dropdownOptions = props.companyMembers.map((member) => {
+    return (
+      <option value={member} key={member}>
+        {member}
+      </option>
+    );
+  });
 
   return (
     <div
@@ -98,7 +119,11 @@ const InsightBlock = (props: IProps) => {
         <div className={'flex flex-row gap-[0.5rem] pl-3'}>
           {goodFeedbackComponents}
         </div>
-        <div className={'flex flex-row p-[1rem_0.75rem_0.75rem_0.75rem]'}>
+        <div
+          className={
+            'flex flex-row gap-[0.5rem] p-[1rem_0.75rem_0.75rem_0.75rem]'
+          }
+        >
           <button
             className={
               'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] text-[#FFFFFF]'
@@ -109,6 +134,19 @@ const InsightBlock = (props: IProps) => {
           >
             Dismiss
           </button>
+          <select
+            className="min-w-32 rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-[0.3rem_0.9rem] font-[700] text-[#2D2D2D] transition-[border-color] ease-[ease-in-out] hover:border-[#2D2D2D]"
+            id={'assign'}
+            value={selectedOption}
+            onChange={(event) => {
+              setSelectedOption(event.target.value);
+            }}
+          >
+            <option value="" disabled hidden selected>
+              Assign
+            </option>
+            {dropdownOptions}
+          </select>
         </div>
       </div>
 
@@ -121,7 +159,7 @@ const InsightBlock = (props: IProps) => {
       <button
         className={'absolute right-[1.75rem] top-[1.75rem]'}
         onClick={() => {
-          console.log('CLOSE!!!!!!!!!!!!!!!');
+          console.log(selectedOption);
         }}
       >
         <CloseButtonIcon sideLength={30} />
