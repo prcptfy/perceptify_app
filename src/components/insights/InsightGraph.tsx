@@ -17,11 +17,6 @@ const InsightGraph = (props: IProps) => {
   //logic to determine biggest # and fill colors to
 
   const [maxValue] = useState(Math.max(...props.activityValues));
-  const [maxIndex] = useState(
-    props.activityValues.indexOf(Math.max(...props.activityValues))
-  );
-
-  console.log(maxIndex);
 
   const chart: ApexOptions = {
     chart: {

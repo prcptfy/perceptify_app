@@ -29,23 +29,24 @@ interface IProps {
 
 const InsightBlock = (props: IProps) => {
   let logoComponent;
+  let sideLength = 80;
 
   //decide which logo to display
   switch (props.logo) {
     case 'facebook':
-      logoComponent = <FacebookIcon sideLength={80} />;
+      logoComponent = <FacebookIcon sideLength={sideLength} />;
       break;
     case 'twitter':
-      logoComponent = <TwitterIcon sideLength={97} />;
+      logoComponent = <TwitterIcon sideLength={sideLength} />;
       break;
     case 'tiktok':
-      logoComponent = <TikTokIcon sideLength={97} />;
+      logoComponent = <TikTokIcon sideLength={sideLength} />;
       break;
     case 'instagram':
-      logoComponent = <InstagramIcon sideLength={97} />;
+      logoComponent = <InstagramIcon sideLength={sideLength} />;
       break;
     case 'linkedin':
-      logoComponent = <LinkedInIcon sideLength={97} />;
+      logoComponent = <LinkedInIcon sideLength={sideLength} />;
       break;
     default:
       // Default case if props.logo doesn't match any of the options (somehow)
