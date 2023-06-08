@@ -9,15 +9,25 @@ const Insights = () => {
     badFeedback: ['Low activity'],
   };
   const tiktokFeedback: FullFeedback = {
-    goodFeedback: ['Post more on Mondays'],
-    badFeedback: ['Low engagement with 55-60 year olds'],
+    goodFeedback: ['Public Relations Control'],
+    badFeedback: ['Negative Sentiment'],
   };
 
   return (
     <div className={'flex flex-col gap-[1em]'}>
       <div className={'flex flex-col gap-[2em]'}>
-        <InsightBlock logo={'facebook'} feedback={facebookFeedback} />
-        <InsightBlock logo={'tiktok'} feedback={tiktokFeedback} />
+        <InsightBlock
+          logo={'facebook'}
+          feedback={facebookFeedback}
+          graphValues={[10, 15, 27, 25, 13, 8, 3]}
+          title={'Traffic Pattern Alert'}
+        />
+        <InsightBlock
+          logo={'tiktok'}
+          feedback={tiktokFeedback}
+          graphValues={[10, 15, 27, 25, 13, 8, 3]}
+          title={'Sentiment Alert'}
+        />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -14,9 +14,22 @@ interface IProps {
 }
 
 const InsightGraph = (props: IProps) => {
-  //logic to determine biggest # and fill colors to
+  const [labels] = useState<string[]>([
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun',
+  ]);
+  const [maxValue, setMaxValue] = useState<number>(Number.MIN_SAFE_INTEGER);
 
-  const [maxValue] = useState(Math.max(...props.activityValues));
+  useEffect(() => {
+    setMaxValue(Math.max(...props.activityValues));
+  }, []);
+
+  console.log(maxValue);
 
   const chart: ApexOptions = {
     chart: {
@@ -36,7 +49,7 @@ const InsightGraph = (props: IProps) => {
     },
     plotOptions: {
       bar: {
-        // distributed: true,
+        columnWidth: '60%',
         borderRadius: 5,
         colors: {
           ranges: [
@@ -54,14 +67,25 @@ const InsightGraph = (props: IProps) => {
         },
       },
     },
+    annotations: {
+      xaxis: [
+        {
+          x: labels[props.activityValues.indexOf(maxValue)],
+          strokeDashArray: 10,
+          borderColor: '#000',
+          borderWidth: 1,
+        },
+      ],
+    },
     legend: {
       show: false,
     },
     xaxis: {
-      categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      categories: labels,
       labels: {
         style: {
           colors: '#000000',
+          fontFamily: 'DM Sans',
         },
       },
       axisBorder: {
@@ -80,15 +104,17 @@ const InsightGraph = (props: IProps) => {
   };
 
   return (
-    <div>
-      <div>Daily Activity</div>
+    <div className={'relative'}>
+      <div className={'absolute left-[1.75rem] top-0 font-semibold'}>
+        Daily Activity
+      </div>
       <Suspense fallback={<div>Loading...</div>}>
         <Chart
           options={chart}
           series={chart.series}
           type={'bar'}
-          width={'250%'}
-          height={'100%'}
+          width={'200%'}
+          height={'175%'}
         />
       </Suspense>
     </div>

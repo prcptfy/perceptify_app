@@ -14,7 +14,9 @@ const InsightAlert = (props: IProps) => {
   return (
     <div
       style={{ backgroundColor: `${bgColor}`, color: `${textColor}` }}
-      className={'rounded-[0.3rem] p-[0.1rem_0.4rem] font-[500]'}
+      className={
+        'rounded-[0.8rem] p-[0.25rem_0.65rem] text-[13px] font-semibold tracking-wide'
+      }
     >
       {props.text}
     </div>
