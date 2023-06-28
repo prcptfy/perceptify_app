@@ -2,12 +2,12 @@
 
 import './sentiment.css'
 
-const Sentiment = () => {
+const Overview = () => {
     
     return (
     <div className=''>
         <div>
-            This is   an overview of your performance across all connected social medias
+            This is an overview of your performance across all connected social medias
         </div>
         <div className='flex justify-center mt-3'>
             <button className='w-full py-3 px-5 rounded-md text-white font-bold'>
@@ -18,4 +18,4 @@ const Sentiment = () => {
     )
 }
 
-export default Sentiment;
+export default Overview;

@@ -13,10 +13,9 @@ const Home = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log()
     
     return (
-    <div>
+    <div className='min-h-screen'>
         <div className='profile '>
             <div className='banner w-full z-1'>
                 <img className="h-full w-full" src="https://unsplash.it/1000/1000/?random&pic=1" id="header-background-id" alt="background-img"/>
@@ -31,33 +30,58 @@ const Home = ({
                 </div>
             </div>
         </div>
-        <div className='flex'>
-            <div className='connected'>
-                <div className="parent">
-                    <img className="image1" src="https://via.placeholder.com/50" />
-                    <img className="image2" src="https://via.placeholder.com/50" />
-                    <img className="image3" src="https://via.placeholder.com/50" />
-                    <img className="image4" src="https://via.placeholder.com/50" />
-                    <img className="image5" src="https://via.placeholder.com/50" />
-                    <img className="image6" src="https://via.placeholder.com/50" />
-                    <img className="image7" src="https://via.placeholder.com/50" />
-                    <img className="image8" src="https://via.placeholder.com/50" />
-                    <img className="image9" src="https://via.placeholder.com/50" />
+        <div className='grid grid-cols-2 relative h-full'>
+            <div className='connected relative' style={{borderRight: '1px solid black'}}>
+                <div className='font-bold text-2xl text-center'>
+                    Connected Social Media
+                </div>
+                <div className="menu z-100">
+                    <input type="checkbox" id="toggle" />
+                    <label id="show-menu" htmlFor="toggle">
+                        <div className="btn company_logo">
+                            <img className=" toggleBtn menuBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
+                            <img className=" toggleBtn closeBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/linkedin-icon-2048x2048-ya5g47j2.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/facebook-v1-icon-512x512-hf7yrmum.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/br-tiktok-sq-icon-512x512-zq5t0njp.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/reddit-icon-512x512-q67bvjvq.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/instagram-icon-512x512-zomml8fn.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/pinterest-icon-512x512-1rw5biep.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/snapchat-icon-512x512-2prxdvz0.png" />
+                        </div>
+                        <div className="btn">
+                            <img className="image" src="https://static-00.iconduck.com/assets.00/twitter-icon-512x512-7o66iwws.png" />
+                        </div>
+                    </label>
                 </div>
             </div>
-            <div>
-                <div className='flex gap-2'>
-                    <Link href={{ pathname: "/home"}}>
-                        Overview
+            <div className='px-10 w-full h-full'>
+                <div className='grid grid-cols-3 gap-2 text-center'>
+                    <Link className={(pathname == "/home/overview" ? "active" : "")} href={{ pathname: "/home/overview"}}>
+                        <div className='p-2'>Overview</div>
                     </Link>
-                    <Link href={{ pathname: "/home/relevance" }}>
-                        Relevance
+                    <Link className={pathname == "/home/relevance" ? "active" : ""} href={{ pathname: "/home/relevance" }}>
+                    <div className='p-2'>Relevance</div>
                     </Link>
-                    <Link href={{ pathname: "/home/sentiment"}}>
-                        Sentiment
+                    <Link className={pathname == "/home/sentiment" ? "active" : ""} href={{ pathname: "/home/sentiment"}}>
+                    <div className='p-2'>Sentiment</div>
                     </Link>
                 </div>
-                <div>
+                <div className='mt-3 p-5 bg-gray-100 min-h-max'>
                     {children}
                 </div>
             </div>
