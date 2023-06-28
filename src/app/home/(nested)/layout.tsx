@@ -1,6 +1,6 @@
 "use client"
 
-import './home.css'
+import '../home.css'
 import NavigationButton from '@/components/sidebar/NavigationButton';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -58,7 +58,7 @@ const Home = ({
                     </Link>
                 </div>
                 <div>
-                    Overview
+                    {children}
                 </div>
             </div>
         </div>
