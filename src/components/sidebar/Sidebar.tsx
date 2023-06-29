@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import Logo from '../Logo';
+import SmallLogo from '../SmallLogo';
 import NavigationButton from './NavigationButton';
 import BottomButton from './BottomButton';
 import { useSupabase } from '../supabase-provider';
@@ -143,7 +144,12 @@ const Sidebar = () => {
   return (
     <div className="fixed flex flex-col w-24 hover:w-96 md:w-80 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
       <div className="p-4">
-        <Logo />
+        <div className='md:block hidden'>
+          <Logo />
+        </div>
+        <div className='md:hidden'>
+          <SmallLogo />
+        </div>
         <div className="mt-16">
           <NavigationButton
             label="Home"
