@@ -30,14 +30,14 @@ const Home = ({
                 </div>
             </div>
         </div>
-        <div className='grid grid-cols-2 relative h-full'>
-            <div className='connected relative' style={{borderRight: '1px solid black'}}>
-                <div className='font-bold text-2xl text-center'>
+        <div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 h-96'>
+            <div className='connected relative' >
+                <div className='font-bold text-2xl title'>
                     Connected Social Media
                 </div>
-                <div className="menu z-100">
+                <div className="menu z-10 bg-gray-200">
                     <input type="checkbox" id="toggle" />
-                    <label id="show-menu" htmlFor="toggle">
+                    <label className='z-3' id="show-menu" htmlFor="toggle">
                         <div className="btn company_logo">
                             <img className=" toggleBtn menuBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
                             <img className=" toggleBtn closeBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
@@ -69,7 +69,7 @@ const Home = ({
                     </label>
                 </div>
             </div>
-            <div className='px-10 w-full h-full'>
+            <div className='lg:px-10 xl:px-10 px-5 xl:mt-0 lg:mt-0 mt-10 w-full h-full'>
                 <div className='grid grid-cols-3 gap-2 text-center'>
                     <Link className={(pathname == "/home/overview" ? "active" : "")} href={{ pathname: "/home/overview"}}>
                         <div className='p-2'>Overview</div>
@@ -81,7 +81,7 @@ const Home = ({
                     <div className='p-2'>Sentiment</div>
                     </Link>
                 </div>
-                <div className='mt-3 p-5 bg-gray-100 min-h-max'>
+                <div className='mt-3 lg:p-5 xl:p-5 p-3 bg-gray-200 min-h-max rounded'>
                     {children}
                 </div>
             </div>

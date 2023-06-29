@@ -40,7 +40,7 @@ export default async function RootLayout({
               {/* <div className='sticky top-0 z-50'>
                 <Topbar/>
               </div> */}
-              <div className='p-10'>
+              <div className=''>
                 {children}
               </div>
             </div>
