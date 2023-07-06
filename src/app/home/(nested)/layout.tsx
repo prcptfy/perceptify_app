@@ -36,7 +36,7 @@ const Home = ({
                     Connected Social Media
                 </div>
                 <div className="menu z-10 bg-gray-200">
-                    <input type="checkbox" id="toggle" />
+                    <input type="checkbox" id="toggle" defaultChecked />
                     <label className='z-3' id="show-menu" htmlFor="toggle">
                         <div className="btn company_logo">
                             <img className=" toggleBtn menuBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
