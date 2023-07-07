@@ -4,6 +4,8 @@ import '../home.css'
 import NavigationButton from '@/components/sidebar/NavigationButton';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import { useRef, useState } from 'react';
+import Modal from '@/components/modal/modal';
 
 const Home = ({
     children,
@@ -12,6 +14,23 @@ const Home = ({
   }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [show, setShow] = useState(false);
+  const input = useRef<HTMLInputElement>(null);
+
+  const openModal = () => {
+    console.log('here')
+    setShow(true);
+  }
+
+  const closeModal = () => {
+    setShow(false);
+  }
+
+  const openSpeedDial = () => {
+    if(input.current) {
+        input.current.click();
+    }
+  }
 
     
     return (
@@ -36,34 +55,34 @@ const Home = ({
                     Connected Social Media
                 </div>
                 <div className="menu z-10 bg-gray-200">
-                    <input type="checkbox" id="toggle" defaultChecked />
-                    <label className='z-3' id="show-menu" htmlFor="toggle">
-                        <div className="btn company_logo">
+                    <input type="checkbox" id="toggle" defaultChecked ref={input} />
+                    <label className='z-3' id="show-menu">
+                        <div className="btn company_logo" onClick={() => openSpeedDial()}>
                             <img className=" toggleBtn menuBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
                             <img className=" toggleBtn closeBtn" src="https://static-00.iconduck.com/assets.00/youtube-round-2-icon-512x512-pd38fjru.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/linkedin-icon-2048x2048-ya5g47j2.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/facebook-v1-icon-512x512-hf7yrmum.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/br-tiktok-sq-icon-512x512-zq5t0njp.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/reddit-icon-512x512-q67bvjvq.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/instagram-icon-512x512-zomml8fn.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/pinterest-icon-512x512-1rw5biep.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/snapchat-icon-512x512-2prxdvz0.png" />
                         </div>
-                        <div className="btn">
+                        <div className="btn" onClick={() => openModal()}>
                             <img className="image" src="https://static-00.iconduck.com/assets.00/twitter-icon-512x512-7o66iwws.png" />
                         </div>
                     </label>
@@ -86,6 +105,23 @@ const Home = ({
                 </div>
             </div>
         </div>
+        <div>
+            <Modal title="My Modal" onClose={() => closeModal()} show={show}>
+                <div className='bg-white w-full'>
+                    <div className='flex w-full p-2'>
+                        <p className='basis-10/12 text-2xl'>Add link</p>
+                        <button className='basis-2/12 bg-transparent' onClick={() => closeModal()}>Close</button>
+                    </div>
+                    <hr className='border-black'/>
+                    <div className='content'>
+                        <form>
+                            <input type='text' className='w-full bg-black' placeholder='Link'/>
+                        </form>
+                    </div>
+                </div>
+            </Modal>
+        </div>
+        
     </div>
     )
 }
