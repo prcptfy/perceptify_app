@@ -7,7 +7,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,5 +42,8 @@
 .children {
   min-width: 400px !important;
   min-height: 500px !important;
+
+  /* box-shadow: 3px 3px 100px rgb(255,255,255,.6), -3px -3px 100px #ccc; */
+  box-shadow: 0 0 10px rgb(232, 85, 232);
 
 }

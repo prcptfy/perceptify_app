@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         timeout={{ enter: 0, exit: 300 }}
         
       >
-        <div className="modal z-50" onClick={props.onClose}>
+        <div className="modal backdrop-blur z-50" onClick={props.onClose}>
           <div className="modal-content flex justify-center">
             <div className="children flex justify-center" onClick={e => e.stopPropagation()}>
               {props.children}
