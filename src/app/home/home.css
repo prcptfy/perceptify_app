@@ -48,7 +48,7 @@
 .connected {
     position: relative;
     /* width: 50%; */
-    height: 400px;
+    height: 425px;
 }
 
 .active {
@@ -86,7 +86,7 @@ button {
   margin: 0 auto;
   position: absolute;
   top: 40%;
-  left: 50%;
+  left: 45%;
   margin-left: -25px;
   margin-top: 25px;
 }
@@ -242,7 +242,7 @@ input#toggle:checked ~ #show-menu .btn:nth-child(9) {
 }
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1200px) {
   input#toggle:checked ~ #show-menu .btn:nth-child(2) {
     top:-120px;
     left: 10px;

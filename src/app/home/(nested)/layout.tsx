@@ -50,7 +50,7 @@ const Home = ({
             </div>
         </div>
         <div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 h-96'>
-            <div className='connected relative' >
+            <div className='connected relative lg:border-r lg:border-black h-full' >
                 <div className='font-bold text-2xl title'>
                     Connected Social Media
                 </div>
@@ -113,10 +113,23 @@ const Home = ({
                         <button className='basis-2/12 bg-transparent' onClick={() => closeModal()}>Close</button>
                     </div>
                     <hr className='border-black'/>
-                    <div className='content'>
-                        <form>
-                            <input type='text' className='w-full bg-black' placeholder='Link'/>
-                        </form>
+                    <div>
+                        <div>
+                            <label>Name</label>
+                            <input className='bg-black w-full' type="text" name="name" placeholder='name' />
+                        </div>
+
+                        <div>
+                            <label>Email</label>
+                            <input type="text" name="email" />
+                        </div>
+
+                        <div>
+                            <label>Message</label>
+                            <textarea name="message"></textarea>
+                        </div>
+
+                        <button type="submit">Send message</button>
                     </div>
                 </div>
             </Modal>
