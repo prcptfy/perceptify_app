@@ -106,14 +106,14 @@ const Home = ({
             </div>
         </div>
         <div>
-            <Modal title="My Modal" onClose={() => closeModal()} show={show}>
+            <Modal persistant title="My Modal"  onClose={() => closeModal()} show={show}>
                 <div className='bg-white w-full'>
                     <div className='flex w-full p-2'>
                         <p className='basis-10/12 text-2xl'>Add link</p>
                         <button className='basis-2/12 bg-transparent' onClick={() => closeModal()}>Close</button>
                     </div>
                     <hr className='border-black'/>
-                    <div>
+                    <div className='p-2'>
                         <div>
                             <label>Name</label>
                             <input className='bg-black w-full' type="text" name="name" placeholder='name' />
