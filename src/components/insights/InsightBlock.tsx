@@ -19,6 +19,7 @@ import LinkedInIcon from '../icons/LinkedInIcon';
 import InsightAlert from './InsightAlert';
 import InsightGraph from './InsightGraph';
 import CloseButtonIcon from '../icons/closeButtonIcon';
+import './InsightBlock.css';
 
 type Logos =
   | 'facebook'
@@ -39,12 +40,11 @@ interface IProps {
   graphValues: number[];
   title: string;
   companyMembers: string[];
-}
+};
 
 const InsightBlock = (props: IProps) => {
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
+  const [isClosed, setIsClosed] = useState<boolean>(false);
 
   let logoComponent;
   let sideLength = 80;
@@ -93,11 +93,15 @@ const InsightBlock = (props: IProps) => {
   });
 
   return (
-    <div
-      className={
-        'relative flex h-80 w-full flex-row rounded-[1rem] border-[2px]'
-      }
-    >
+      <div
+        className={
+          `relative flex h-80 w-full flex-row rounded-[1rem] border border-[2px] ease-in-out duration-150 hover:border-[#8915E4] hover:cursor-pointer
+          ${isClosed
+            ? 'my-0 fade-out'
+            : 'my-[1em] fade-in'
+          }`
+        }
+      >
       <div
         className={
           'flex h-full min-w-[400px] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
@@ -126,16 +130,17 @@ const InsightBlock = (props: IProps) => {
         >
           <button
             className={
-              'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] text-[#FFFFFF]'
+              'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] text-[#FFFFFF] font-[700] transition-[background-color] ease-[ease-in-out] duration-150 hover:bg-[#2D2D2D] hover:cursor-pointer'
             }
             onClick={() => {
               console.log(`button for InsightBlock ${props.logo} clicked`);
+              setIsClosed(true);
             }}
           >
             Dismiss
           </button>
           <select
-            className="min-w-32 rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-[0.3rem_0.9rem] font-[700] text-[#2D2D2D] transition-[border-color] ease-[ease-in-out] hover:border-[#2D2D2D]"
+            className="ring-0 outline-0 text-center rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-0 font-[500] text-[#2D2D2D] transition-[border-color] ease-[ease-in-out] duration-150 hover:border-[#2D2D2D] hover:cursor-pointer"
             id={'assign'}
             value={selectedOption}
             onChange={(event) => {
@@ -151,7 +156,7 @@ const InsightBlock = (props: IProps) => {
       </div>
 
       {/*start of graph */}
-      <div className={'flex w-full items-center justify-start pl-[12rem]'}>
+      <div className={'flex w-full items-center justify-start pl-[6.25rem]'}>
         <InsightGraph activityValues={props.graphValues} />
       </div>
 
@@ -159,7 +164,8 @@ const InsightBlock = (props: IProps) => {
       <button
         className={'absolute right-[1.75rem] top-[1.75rem]'}
         onClick={() => {
-          console.log(selectedOption);
+          console.log("x button clicked.");
+          setIsClosed(true);
         }}
       >
         <CloseButtonIcon sideLength={30} />

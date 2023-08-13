@@ -14,17 +14,19 @@ const Insights = () => {
   };
 
   const companyMembers: string[] = [
-    'Alex Z.',
+    'Alex Z.', // 🤓
     'Bill X.',
     'Suyogya P.',
     'Aleks D.',
     'Kevin Z.',
     'Gene I.',
+    'Ashish V.' // yawn
   ];
 
   return (
     <div className={'flex flex-col gap-[1em]'}>
-      <div className={'flex flex-col gap-[2em]'}>
+      1!
+      <div className={'flex flex-col'}>
         <InsightBlock
           logo={'facebook'}
           feedback={facebookFeedback}
@@ -33,6 +35,27 @@ const Insights = () => {
           companyMembers={companyMembers}
         />
         <InsightBlock
+          logo={'tiktok'}
+          feedback={tiktokFeedback}
+          graphValues={[10, 15, 27, 25, 13, 8, 3]}
+          title={'Sentiment Alert'}
+          companyMembers={companyMembers}
+        />
+                <InsightBlock
+          logo={'tiktok'}
+          feedback={tiktokFeedback}
+          graphValues={[10, 15, 27, 25, 13, 8, 3]}
+          title={'Sentiment Alert'}
+          companyMembers={companyMembers}
+        />
+                <InsightBlock
+          logo={'tiktok'}
+          feedback={tiktokFeedback}
+          graphValues={[10, 15, 27, 25, 13, 8, 3]}
+          title={'Sentiment Alert'}
+          companyMembers={companyMembers}
+        />
+                <InsightBlock
           logo={'tiktok'}
           feedback={tiktokFeedback}
           graphValues={[10, 15, 27, 25, 13, 8, 3]}
