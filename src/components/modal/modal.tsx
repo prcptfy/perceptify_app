@@ -15,7 +15,6 @@ const Modal: React.FC<ModalProps> = (props) => {
   const children = useRef<HTMLDivElement>(null)
 
   const closeModal = () => {
-    console.log(children.current)
     if(props.persistant) {
       const div = children.current
       if (div && !div.classList.contains('shake')) {
@@ -30,7 +29,14 @@ const Modal: React.FC<ModalProps> = (props) => {
   }
 
   useEffect(() => {
-  }, []);
+    if(props.show) {
+      document.body.style.position = "fixed"
+      console.log(document.body.style.position)
+    }
+    else {
+      document.body.style.position = "relative"
+    }
+  }, [props.show]);
 
   return (
     <CSSTransition
@@ -39,7 +45,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         timeout={{ enter: 0, exit: 300 }}
       >
         <div className="modal backdrop-blur z-50" onClick={closeModal}>
-          <div className="modal-content flex justify-center">
+          <div className="modal-content flex justify-center relative">
             <div ref={children} className="children flex justify-center" onClick={e => e.stopPropagation()}>
               {props.children}
             </div>

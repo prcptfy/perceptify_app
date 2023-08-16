@@ -75,7 +75,7 @@
 
 
 /* body {overflow: hidden;} */
-input {position: absolute; display: none}
+input[type="checkbox"] {position: absolute; display: none}
 
 
 button {

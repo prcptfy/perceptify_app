@@ -5,7 +5,9 @@ import NavigationButton from '@/components/sidebar/NavigationButton';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import Modal from '@/components/modal/modal';
+// import Modal from '@/components/modal/modal';
+import { Modal } from '@nextui-org/react';
+
 
 const Home = ({
     children,
@@ -16,9 +18,9 @@ const Home = ({
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+  const modal = useRef<HTMLDivElement>(null);
 
   const openModal = () => {
-    console.log('here')
     setShow(true);
   }
 
@@ -106,33 +108,56 @@ const Home = ({
             </div>
         </div>
         <div>
-            <Modal persistant title="My Modal"  onClose={() => closeModal()} show={show}>
-                <div className='bg-white w-full'>
+            {/* <Modal persistant title="My Modal"  onClose={() => closeModal()} show={show}>
+                <div ref={modal} className='bg-white w-mix'>
                     <div className='flex w-full p-2'>
-                        <p className='basis-10/12 text-2xl'>Add link</p>
-                        <button className='basis-2/12 bg-transparent' onClick={() => closeModal()}>Close</button>
+                        <p className='basis-10/12 text-2xl'>Add [social media]</p>
+                        <button className='basis-2/12 text-white' onClick={() => closeModal()}>Close</button>
                     </div>
                     <hr className='border-black'/>
-                    <div className='p-2'>
+                    <div className='p-2 flex flex-col gap-5'>
                         <div>
-                            <label>Name</label>
-                            <input className='bg-black w-full' type="text" name="name" placeholder='name' />
+                            Would you like to add [social media] to your list of social medias to get data from?
                         </div>
-
-                        <div>
-                            <label>Email</label>
-                            <input type="text" name="email" />
+                        <div className='flex'>
+                            <button className='px-5 py-2 text-base font-bold text-white flex-end' >Add</button>
                         </div>
-
-                        <div>
-                            <label>Message</label>
-                            <textarea name="message"></textarea>
-                        </div>
-
-                        <button type="submit">Send message</button>
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
+
+<Modal
+        // closeButton
+        aria-labelledby="modal-title"
+        open={show}
+        onClose={closeModal}
+        blur
+      >
+        <Modal.Header>
+          {/* <Text id="modal-title" size={18}>
+            Welcome to
+            <Text b size={18}>
+              NextUI
+            </Text>
+          </Text> */}
+          <div className='flex w-full p-2'>
+                <p className='basis-10/12 text-3xl font-bold text-left'>Add [social media]</p>
+                <button className='basis-2/12 text-xl text-black bg-transparent' onClick={() => closeModal()}>Close</button>
+            </div>
+        </Modal.Header>
+        <hr className='border-black'/>
+        <Modal.Body>
+          <span className='text-xl font-normal'>
+            Would you like to add [social media] to your analytics?
+          </span>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className='flex gap-1'>
+                <button className='px-5 py-2 text-base font-bold text-white flex-end' >Cancel</button>
+                <button className='px-5 py-2 text-base font-bold text-white flex-end' >Confirm</button>
+            </div>
+        </Modal.Footer>
+      </Modal>
         </div>
         
     </div>
