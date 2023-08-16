@@ -32,6 +32,15 @@ const Login = () => {
         error ? console.log('error', error) : router.push('/dashboard');
     };
 
+    async function handleGoogleLogin(e:any) {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google"
+        });
+
+        error ? console.log("error", error) : router.push('/dashboard');
+    }
+
     useEffect(() => console.log(session), [session]);
 
 
@@ -72,6 +81,23 @@ const Login = () => {
                             onClick={handleEmailLogin}
                             light={false}
                         />
+                        {/* divider */}
+                        <div className="relative flex py-5 items-center">
+                            <div className="flex-grow border-t border-gray-400"></div>
+                            <span className="flex-shrink mx-4 text-gray-400">or</span>
+                            <div className="flex-grow border-t border-gray-400"></div>
+                        </div>
+                        <div className="w-full flex justify-center items-center">
+                        <button className="flex items-center bg-white text-[#737373] text-[14px]
+                                            cursor-pointer pt-[10px] pr-[20px] pb-[10px] pl-[20px]
+                                            text-center rounded-md
+                                            shadow"
+                                onClick={handleGoogleLogin}
+                        >
+                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" className="w-[18px] h-[18px] mr-[10px]"/>
+                            Sign in with Google
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

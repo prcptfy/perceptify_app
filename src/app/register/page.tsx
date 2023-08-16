@@ -12,9 +12,11 @@ import ProfileImageUpload from '@/components/ProfileImageUpload';
 import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Register = () => {
     const { supabase } = useSupabase();
+    const router = useRouter();
     const [stage, setStage] = useState(1)
     const [username, setUsername] = useState('');
     const [credential, setCredential] = useState('');
@@ -22,6 +24,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [profilePicture, setProfilePicture] = useState("");
     const [companyName, setCompanyName] = useState('');
     const [role, setRole] = useState('');
     const [errors, setErrors] = useState('')
@@ -63,12 +66,25 @@ const Register = () => {
                     username,
                     first_name: firstName,
                     last_name: lastName,
+                    email: credential,
+                    password,
+                    profile_picture: profilePicture,
                 }
             }
         });
         if (error) {
             console.log('error', error);
             setErrors(JSON.stringify(error));
+        }
+    }
+
+    const signInOauth = async (e:any) => {
+        const { data, error } = await supabase.auth.signInWithOAuth({ provider: "google" });
+        if (error) {
+            console.log("error", error);
+            setErrors(JSON.stringify(error));
+        } else {
+            router.push("/dashboard")
         }
     }
 
@@ -127,7 +143,9 @@ const Register = () => {
                         <button className="flex items-center bg-white text-[#737373] text-[14px]
                                             cursor-pointer pt-[10px] pr-[20px] pb-[10px] pl-[20px]
                                             text-center rounded-md
-                                            shadow">
+                                            shadow"
+                                onClick={signInOauth}
+                        >
                             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" className="w-[18px] h-[18px] mr-[10px]"/>
                             Sign up with Google
                         </button>
@@ -244,8 +262,6 @@ const Register = () => {
             {stages.get(stage)}
         </ClientOnly>
     );
-
-    return
 }
 
 export default Register;
