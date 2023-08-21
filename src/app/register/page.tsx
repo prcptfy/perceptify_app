@@ -63,18 +63,20 @@ const Register = () => {
             password,
             options: {
                 data: {
-                    username,
-                    first_name: firstName,
-                    last_name: lastName,
+                    // username,
+                    // first_name: firstName,
+                    // last_name: lastName,
                     email: credential,
                     password,
-                    profile_picture: profilePicture,
+                    // profile_picture: profilePicture,
                 }
             }
         });
         if (error) {
             console.log('error', error);
             setErrors(JSON.stringify(error));
+        } else {
+            router.push("/login");
         }
     }
 
@@ -108,6 +110,7 @@ const Register = () => {
                         errors={errors}
                         required
                         icon={emailIcon}
+                        onChange={updateCredential}
                     />
                     <Input
                         id='password'
@@ -117,6 +120,7 @@ const Register = () => {
                         errors={errors}
                         required
                         icon={keyIcon}
+                        onChange={updatePassword}
                     />
                     <Input
                         id='confirmPassword'
@@ -126,11 +130,14 @@ const Register = () => {
                         errors={errors}
                         required
                         icon={keyIcon}
+                        onChange={(e:any) => setConfirmPassword(e.target.value)}
                     />
                     <Button
                         label='Next →'
-                        onClick={() => setStage(stage + 1)}
+                        // onClick={() => setStage(stage + 1)}
+                        onClick={handleRegister}
                         light={false}
+                        disabled={confirmPassword === password}
                     />
                     {/* divider */}
                     <div className="relative flex py-5 items-center">

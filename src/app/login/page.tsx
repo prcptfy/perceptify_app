@@ -2,7 +2,6 @@
 
 import { useSupabase } from "@/components/supabase-provider"
 import { useState, useEffect } from 'react';
-import { Session } from "@supabase/supabase-js";
 import { useRouter } from 'next/navigation';
 import AuthLeftPanel from "@/components/AuthLeftPanel";
 import Input from "@/components/Input";
@@ -35,13 +34,16 @@ const Login = () => {
     async function handleGoogleLogin(e:any) {
         e.preventDefault();
         const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google"
+            provider: "google",
+            // options: {
+            //     redirectTo: "http://localhost:3000/home"
+            // }
         });
 
         error ? console.log("error", error) : router.push('/dashboard');
     }
 
-    useEffect(() => console.log(session), [session]);
+    useEffect(() => console.log(`session: ${session}`), [session]);
 
 
     if (!session) return (
