@@ -4,6 +4,8 @@ import InsightBlock from '@/components/insights/InsightBlock';
 import { FullFeedback } from '@/components/insights/InsightBlock';
 
 const Insights = () => {
+  //TODO: make delete buttons make insight blocks dissappear in this file, have discarded blocks stored elsewere. confer with me on slack abt how to do this
+
   const facebookFeedback: FullFeedback = {
     goodFeedback: ['Post more on Wednesdays'],
     badFeedback: ['Low activity'],
