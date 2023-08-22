@@ -20,48 +20,66 @@ const Insights = () => {
     'Aleks D.',
     'Kevin Z.',
     'Gene I.',
-    'Ashish V.' // yawn
+    'Ashish V.', // yawn
   ];
+
+  const insightData = {
+    sections: [
+      {
+        logo: 'facebook',
+        feedback: facebookFeedback,
+        graphValues: [10, 15, 27, 25, 13, 8, 3],
+        title: 'Traffic Pattern Alert',
+        companyMembers: companyMembers,
+      },
+      {
+        logo: 'tiktok',
+        feedback: tiktokFeedback,
+        graphValues: [12, 18, 12, 10, 7, 4, 2],
+        title: 'Engagement Analysis',
+        companyMembers: companyMembers,
+      },
+      {
+        logo: 'tiktok',
+        feedback: tiktokFeedback,
+        graphValues: [12, 18, 12, 10, 7, 4, 2],
+        title: 'Engagement Analysis',
+        companyMembers: companyMembers,
+      },
+      {
+        logo: 'tiktok',
+        feedback: tiktokFeedback,
+        graphValues: [12, 18, 12, 10, 7, 4, 2],
+        title: 'Engagement Analysis',
+        companyMembers: companyMembers,
+      },
+      {
+        logo: 'tiktok',
+        feedback: tiktokFeedback,
+        graphValues: [12, 18, 12, 10, 7, 4, 2],
+        title: 'Engagement Analysis',
+        companyMembers: companyMembers,
+      },
+    ],
+  };
 
   return (
     <div className={'flex flex-col gap-[1em]'}>
       1!
       <div className={'flex flex-col'}>
-        <InsightBlock
-          logo={'facebook'}
-          feedback={facebookFeedback}
-          graphValues={[10, 15, 27, 25, 13, 8, 3]}
-          title={'Traffic Pattern Alert'}
-          companyMembers={companyMembers}
-        />
-        <InsightBlock
-          logo={'tiktok'}
-          feedback={tiktokFeedback}
-          graphValues={[10, 15, 27, 25, 13, 8, 3]}
-          title={'Sentiment Alert'}
-          companyMembers={companyMembers}
-        />
-                <InsightBlock
-          logo={'tiktok'}
-          feedback={tiktokFeedback}
-          graphValues={[10, 15, 27, 25, 13, 8, 3]}
-          title={'Sentiment Alert'}
-          companyMembers={companyMembers}
-        />
-                <InsightBlock
-          logo={'tiktok'}
-          feedback={tiktokFeedback}
-          graphValues={[10, 15, 27, 25, 13, 8, 3]}
-          title={'Sentiment Alert'}
-          companyMembers={companyMembers}
-        />
-                <InsightBlock
-          logo={'tiktok'}
-          feedback={tiktokFeedback}
-          graphValues={[10, 15, 27, 25, 13, 8, 3]}
-          title={'Sentiment Alert'}
-          companyMembers={companyMembers}
-        />
+        {insightData.sections.map((section) => {
+          const { logo, feedback, graphValues, title, companyMembers } =
+            section;
+          return (
+            <InsightBlock
+              logo={logo}
+              feedback={feedback}
+              graphValues={graphValues}
+              title={title}
+              companyMembers={companyMembers}
+            />
+          );
+        })}
       </div>
     </div>
   );

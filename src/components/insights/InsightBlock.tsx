@@ -27,6 +27,7 @@ type Logos =
   | 'linkedin'
   | 'tiktok'
   | 'twitter'
+  | string
   | null;
 
 export type FullFeedback = {
@@ -40,10 +41,12 @@ interface IProps {
   graphValues: number[];
   title: string;
   companyMembers: string[];
-};
+}
 
 const InsightBlock = (props: IProps) => {
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(undefined);
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
   const [isClosed, setIsClosed] = useState<boolean>(false);
 
   let logoComponent;
@@ -93,15 +96,10 @@ const InsightBlock = (props: IProps) => {
   });
 
   return (
-      <div
-        className={
-          `relative flex h-80 w-full flex-row rounded-[1rem] border border-[2px] ease-in-out duration-150 hover:border-[#8915E4] hover:cursor-pointer
-          ${isClosed
-            ? 'my-0 fade-out'
-            : 'my-[1em] fade-in'
-          }`
-        }
-      >
+    <div
+      className={`relative flex h-80 w-full flex-row rounded-[1rem] border-[2px] duration-150 ease-in-out hover:cursor-pointer hover:border-[#8915E4]
+          ${isClosed ? 'fade-out my-0' : 'fade-in my-[1em]'}`}
+    >
       <div
         className={
           'flex h-full min-w-[400px] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
@@ -130,7 +128,7 @@ const InsightBlock = (props: IProps) => {
         >
           <button
             className={
-              'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] text-[#FFFFFF] font-[700] transition-[background-color] ease-[ease-in-out] duration-150 hover:bg-[#2D2D2D] hover:cursor-pointer'
+              'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] font-[700] text-[#FFFFFF] transition-[background-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:bg-[#2D2D2D]'
             }
             onClick={() => {
               console.log(`button for InsightBlock ${props.logo} clicked`);
@@ -140,7 +138,7 @@ const InsightBlock = (props: IProps) => {
             Dismiss
           </button>
           <select
-            className="ring-0 outline-0 text-center rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-0 font-[500] text-[#2D2D2D] transition-[border-color] ease-[ease-in-out] duration-150 hover:border-[#2D2D2D] hover:cursor-pointer"
+            className="rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-0 text-center font-[500] text-[#2D2D2D] outline-0 ring-0 transition-[border-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:border-[#2D2D2D]"
             id={'assign'}
             value={selectedOption}
             onChange={(event) => {
@@ -164,7 +162,7 @@ const InsightBlock = (props: IProps) => {
       <button
         className={'absolute right-[1.75rem] top-[1.75rem]'}
         onClick={() => {
-          console.log("x button clicked.");
+          console.log('x button clicked.');
           setIsClosed(true);
         }}
       >
