@@ -67,19 +67,48 @@ const Insights = () => {
 
   return (
     <div className={'flex flex-col gap-[1em]'}>
-      1!
-      <div className={'flex flex-col'}>
-        {insightData.sections.map((section) => {
+      {/* div with a search bar on the right side */}
+      <div className={'flex flex-row justify-between items-center'}>
+        {/* div with an all/filter button */}
+        <div className={'flex flex-row gap-[1em] items-center'}>
+          <button
+            className={
+              'bg-[#8915E4] hover:bg-[#000] duration-150 rounded-md w-24 h-12 text-md text-white'
+            }
+          >
+            All
+          </button>
+          <button
+            className={
+              'bg-[#8915E4] hover:bg-[#000] duration-150 rounded-md w-24 h-12 text-md text-white'
+            }
+          >
+            Filter
+          </button>
+        </div>
+        <div className={'flex flex-row gap-[1em] items-center'}>
+          <input
+            className={
+              'bg-[#F5F5F5] px-8 rounded-md w-56 h-12 text-md text-gray-600'
+            }
+            placeholder={'Search'}
+          />
+        </div>
+      </div>
+      <div className={'flex flex-col overflow-y-scroll max-h-[calc(100vh-200px)]'}>
+        {insightData.sections.map((section, idx) => {
           const { logo, feedback, graphValues, title, companyMembers } =
             section;
           return (
-            <InsightBlock
-              logo={logo}
-              feedback={feedback}
-              graphValues={graphValues}
-              title={title}
-              companyMembers={companyMembers}
-            />
+            <div key={idx} className='mr-12'>
+              <InsightBlock
+                logo={logo}
+                feedback={feedback}
+                graphValues={graphValues}
+                title={title}
+                companyMembers={companyMembers}
+              />
+            </div>
           );
         })}
       </div>
