@@ -1,0 +1,89 @@
+.modal {
+    position: fixed;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    width: 100%;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* backdrop-filter: blur(10px); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  
+  .modal.enter-done {
+    opacity: 1;
+    pointer-events: visible;
+  }
+  
+  .modal.exit {
+    opacity: 0;
+  }
+  
+  .modal-content {
+    width: inherit;
+    transition: all 0.3s ease-in-out;
+    transform: scale(0);
+  }
+  
+  .modal.enter-done .modal-content {
+    transform: scale(1);
+  }
+  
+  .modal.exit .modal-content {
+    transform: scale(0);
+  }
+
+  .children {
+    width: fit-content;
+    height: fit-content;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; */
+  }
+
+
+.children > *:first-child {
+  /* Your styles for the first child here */
+  box-shadow: 0 0 10px var(--web-theme);
+  /* width: inherit;
+  height: inherit; */
+}
+
+@media screen and (max-width: 500px) {
+  /* .children {
+    min-width: 100% !important;
+    min-height: 500px !important;
+  } */
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

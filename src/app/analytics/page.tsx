@@ -76,7 +76,7 @@ const Analytics = () => {
     ]
     
     return (
-        <div className='analytics'>
+        <div className='analytics p-10'>
             <div className='relavance'>
                 <div className='flex '>
                     <h1 className='text-3xl basis-9/12 font-bold flex-start'>Relevance</h1>
