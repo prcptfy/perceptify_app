@@ -180,7 +180,8 @@ const Sidebar = () => {
             icon={integrationsIcon}
           />
         </div>
-        <div className="divide-y mt-48">
+      </div>
+        <div className="divide-y mt-auto p-4">
           <BottomButton
             label="Manage Team"
             link="/manage"
@@ -204,7 +205,6 @@ const Sidebar = () => {
             icon={logoutIcon}
           />)}
         </div>
-      </div>
     </div>
   );
 };
