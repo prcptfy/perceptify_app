@@ -1,11 +1,26 @@
+'use client'
+
 import Image from 'next/image'
 import { DM_Sans } from 'next/font/google'
 import styles from './page.module.css'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useSupabase } from '@/components/supabase-provider';
 
 // font
 const dmSans = DM_Sans({ subsets: ["latin", "latin-ext"], weight: "500"})
 
 export default function Home() {
+  const router = useRouter();
+  const supabase = useSupabase();
+
+  // async function getProfile() {
+  //   const sessionUser = await supabase.auth.user()
+  // }
+
+  // useEffect(() => {
+  //   if (session)
+  // }, [])
   return (
     <main className={styles.main}>
       <div className={styles.description}>

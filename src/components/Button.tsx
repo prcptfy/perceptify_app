@@ -4,12 +4,14 @@ interface ButtonProps {
     label: string;
     onClick: any;
     light: boolean;
+    disabled: boolean;
 }
 
 export default function Button ({
     label,
     onClick,
     light,
+    disabled,
 }: ButtonProps) {
     return (
         // create a button component that can be used throughout the app
@@ -27,6 +29,7 @@ export default function Button ({
                 ${light ? "hover:bg-gray-50" : "hover:bg-purple-600"}
             `}
             onClick={onClick}
+
         >
             {label}
         </div>

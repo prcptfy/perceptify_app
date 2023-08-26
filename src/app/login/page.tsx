@@ -35,12 +35,17 @@ const Login = () => {
         e.preventDefault();
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
-            // options: {
-            //     redirectTo: "http://localhost:3000/home"
-            // }
-        });
+            options: {
+                redirectTo: "http://localhost:3000/home"
+            }
+        },
+);
 
-        error ? console.log("error", error) : router.push('/dashboard');
+        if (error) {
+            console.log(error)
+        } else {
+            router.push("/home")
+        }
     }
 
     useEffect(() => console.log(`session: ${session}`), [session]);
@@ -82,6 +87,7 @@ const Login = () => {
                             label='Log In'
                             onClick={handleEmailLogin}
                             light={false}
+                            disabled={false}
                         />
                         {/* divider */}
                         <div className="relative flex py-5 items-center">

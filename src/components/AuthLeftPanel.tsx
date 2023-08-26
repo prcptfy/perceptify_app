@@ -28,7 +28,7 @@ export default function AuthLeftPanel({
             <Image className='mt-12 mb-10' src="/images/AuthLeftPanelFormIcons.png" width={500} height={500} alt="form-graphic" />
             <div className='mb-5 text-xl font-semibold'>{title}</div>
             <div className='mb-10'>{subtitle}</div>
-            <Button label={label} onClick={onClick} light />
+            <Button label={label} onClick={onClick} light disabled={false} />
         </div>
     )
 }

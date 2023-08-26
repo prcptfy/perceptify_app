@@ -76,7 +76,7 @@ const Register = () => {
             console.log('error', error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/login");
+            router.push("/home");
         }
     }
 
@@ -135,7 +135,7 @@ const Register = () => {
                     <Button
                         label='Next →'
                         // onClick={() => setStage(stage + 1)}
-                        onClick={handleRegister}
+                        onClick={() => setStage(stage + 1)}
                         light={false}
                         disabled={confirmPassword === password}
                     />
@@ -222,6 +222,7 @@ const Register = () => {
                                 label='Next →'
                                 onClick={() => stage < 3 && setStage(stage + 1)}
                                 light={false}
+                                disabled={false}
                             />
                         </div>
                     </div>
@@ -255,7 +256,7 @@ const Register = () => {
                     </div>
                     <div className='flex flex-col w-full justify-center items-end'>
                         <div className='w-48 p-4'>
-                            <Button label='Send Invites' onClick={() => setStage(stage + 1)} light={false} />
+                            <Button label='Send Invites' onClick={() => setStage(stage + 1)} light={false} disabled={false} />
                         </div>
                         <p className='text-purple-450 cursor-pointer hover:underline px-5' onClick={() => setStage(stage + 1)}>Skip for now</p>
                     </div>
