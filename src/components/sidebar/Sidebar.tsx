@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Logo from '../Logo';
 import SmallLogo from '../SmallLogo';
 import NavigationButton from './NavigationButton';
@@ -11,6 +11,7 @@ const Sidebar = () => {
   const { supabase, session } = useSupabase();
   console.log("session", session)
   const pathname = usePathname();
+
   const homeIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -144,10 +145,10 @@ const Sidebar = () => {
   return (
     <div className="fixed flex flex-col w-24 hover:w-96 md:w-80 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
       <div className="p-4">
-        <div className='md:block hidden'>
+        <div className='md:block hidden pl-4'>
           <Logo />
         </div>
-        <div className='md:hidden'>
+        <div className='md:hidden pl-4'>
           <SmallLogo />
         </div>
         <div className="mt-16">
