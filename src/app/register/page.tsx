@@ -42,6 +42,18 @@ const Register = () => {
 
     useEffect(() => console.log(stage), [stage]);
 
+    useEffect(() => {
+        console.log(
+            `
+                email: ${credential}\n
+                password: ${password}\n
+                firstName: ${firstName}\n
+                lastName: ${lastName}\n
+            `
+
+        )
+    }, [credential, password, firstName, lastName]);
+
     const updateCredential = (e:any) => {
         e.preventDefault();
         setCredential(e.target.value);
@@ -63,12 +75,8 @@ const Register = () => {
             password,
             options: {
                 data: {
-                    // username,
-                    // first_name: firstName,
-                    // last_name: lastName,
-                    email: credential,
-                    password,
-                    // profile_picture: profilePicture,
+                    first_name: firstName,
+                    last_name: lastName,
                 }
             }
         });
@@ -78,16 +86,18 @@ const Register = () => {
         } else {
             router.push("/home");
         }
+        console.log(data)
     }
 
     const signInOauth = async (e:any) => {
-        const { data, error } = await supabase.auth.signInWithOAuth({ provider: "google" });
+        const { data, error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: "http://localhost:3000/home" } });
         if (error) {
             console.log("error", error);
             setErrors(JSON.stringify(error));
         } else {
             router.push("/dashboard")
         }
+        console.log(data)
     }
 
     const stages = new Map();
@@ -175,10 +185,10 @@ const Register = () => {
                     />
                 </Link>
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
-                    <div className='w-full h-48 mb-12'>
+                    {/* <div className='w-full h-48 mb-12'>
                         <CoverImageUpload handleUpload="" />
                         <ProfileImageUpload />
-                    </div>
+                    </div> */}
                     <div className='flex w-full justify-start'>
                         <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
                     </div>
@@ -199,7 +209,7 @@ const Register = () => {
                             required
                             onChange={(e:any) => setLastName(e.target.value)}
                         />
-                        <Input
+                        {/* <Input
                             id='companyName'
                             label='Company Name'
                             disabled={false}
@@ -214,13 +224,15 @@ const Register = () => {
                             errors={errors}
                             required
                             onChange={(e:any) => setRole(e.target.value)}
-                        />
+                        /> */}
                     </div>
                     <div className="flex w-full justify-end">
                         <div className='w-48 mt-5'>
                             <Button
-                                label='Next →'
-                                onClick={() => stage < 3 && setStage(stage + 1)}
+                                // label='Next →'
+                                // onClick={() => stage < 3 && setStage(stage + 1)}
+                                label="Register"
+                                onClick={handleRegister}
                                 light={false}
                                 disabled={false}
                             />

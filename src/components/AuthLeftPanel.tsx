@@ -21,7 +21,7 @@ export default function AuthLeftPanel({
     useEffect(() => console.log("mounted"), [])
     return (
         <div className="flex flex-col w-0 md:w-1/4 z-10 h-screen border-r-[1px] border-[#F1F3F4] transition-all duration-500
-                        px-12 bg-[#F5F5F5]
+                        px-12 pt-4 bg-[#F5F5F5]
                         "
         >
             <Logo />
