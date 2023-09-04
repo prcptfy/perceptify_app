@@ -104,8 +104,8 @@ const InsightGraph = (props: IProps) => {
   };
 
   return (
-    <div className={'relative'}>
-      <div className={'absolute left-[1.75rem] top-0 font-semibold'}>
+    <div className="relative border border-2 rounded-lg border-[#8915E460]">
+      <div className={'absolute left-[1.75rem] pt-2 font-semibold'}>
         Daily Activity
       </div>
       <Suspense fallback={<div>Loading...</div>}>
