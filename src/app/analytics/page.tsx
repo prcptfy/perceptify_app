@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, Suspense } from 'react';
-import { Tabs, Tab, Progress, Spinner } from '@nextui-org/react';
+import { Tabs, Tab, Progress, Spinner, toggle } from '@nextui-org/react';
 import Chart from 'react-apexcharts';
+
 const Analytics = () => {
     const [timeRange, setTimeRange] = useState('1D');
-    const generateMockData = (n) => {
+    const generateMockData = (n: number) => {
         return Array.from({ length: n }, () => Math.floor(Math.random() * 100));
     };
     const generateSingleRandomNumber = () => Math.floor(Math.random() * 100) + 1;
@@ -83,7 +84,7 @@ const Analytics = () => {
 
     };
 
-    const handleTimeRangeChange = (key) => {
+    const handleTimeRangeChange = (key: string) => {
         setTimeRange(key);
     };
 
@@ -101,7 +102,7 @@ const Analytics = () => {
         <div className=" p-10">
             <h1 className="text-4xl mb-8">Relevance</h1>
             <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-8 h-[70vh]">
+                <div className="col-span-8 h-[50vh]">
                     <Suspense fallback={<Spinner />}>
                         <Chart
                             options={chartOptions}
@@ -110,36 +111,33 @@ const Analytics = () => {
                             height="100%"
                             width="100%"
                         />
+
+                        <Tabs
+                            variant='bordered'
+                            value={timeRange}
+                            onSelectionChange={handleTimeRangeChange}
+                            classNames={{
+                                tabList: "w-full relative border-b border-divider overflow-x-auto",
+                                cursor: "cursor-none",
+                                tab: "border rounded-md text-black",
+                            }}
+                        >
+                            {Object.keys(dataByTimeRange).map((key) => (
+                                <Tab key={key} title={key}></Tab>
+                            ))}
+                        </Tabs>
                     </Suspense>
                 </div>
-                <div className="col-span-4 h-[70vh] p-6 rounded-lg shadow-lg">
-                    <h2 className="text-2xl mb-4">Relative Strength</h2>
+                <div className="col-span-4 p-6 rounded-lg shadow-lg h-full">
+                    <h2 className="mb-4">Relative Strength</h2>
                     {Object.keys(currentRelativeStrength).map((social) => (
-                        <div className="my-2" key={social}>
-                            <label>{social.toUpperCase()}</label>
-                            <Progress value={currentRelativeStrength[social]} />
+                        <div className="my-2 text-sm" key={social}>
+                            <Progress label={social.toUpperCase()} value={currentRelativeStrength[social]} />
                         </div>
                     ))}
                 </div>
-                <div className="col-span-12 mt-8 w-full">
-                    <Tabs
-                        variant='bordered'
-                        value={timeRange}
-                        onSelectionChange={handleTimeRangeChange}
-                        classNames={{
-                            tabList: " w-full relative border-b border-divider",
-                            cursor: "cursor-none",
-                            tab: "border rounded-md hover:border-purple-custom group-data-[selected=true]:bg-purple-custom",
-                            tabContent: "text-black group-data-[selected=true]:text-black"
-                        }}
-                    >
-                        {Object.keys(dataByTimeRange).map((key) => (
-                            <Tab key={key} title={key}></Tab>
-                        ))}
-                    </Tabs>
-                </div>
 
-                <div className="col-span-12 flex flex-nowrap overflow-auto overflow-x-scroll gap-6 p-1 mt-8">
+                <div className="col-span-12 flex flex-nowrap overflow-auto overflow-x-auto gap-6 p-1 mt-8">
                     {Object.keys(currentSocials).map((key) => (
                         currentSocials[key].enabled && (
                             <div className="icon flex-initial flex flex-col justify-center items-center shrink-0" key={key}>
