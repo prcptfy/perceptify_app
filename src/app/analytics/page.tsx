@@ -120,7 +120,7 @@ const Analytics = () => {
 
                 interface chartDataValue {
                     value: number,
-                    date: number
+                    period: number
                 } 
 
                 data.data.forEach(d => {
@@ -132,13 +132,17 @@ const Analytics = () => {
                     const validRanges = Object.keys(ranges).filter(r => date > ranges[r].start && date < Date.now());
 
                     validRanges.forEach(r => {
-                        const chart = ranges[r].chartData;
-                        const existingData = chart.filter((v: chartDataValue) => v.date === date);
+                        const range = ranges[r];
 
-                        ranges[r].socials[social].enabled = true;
+                        const period = Math.floor((date - range.start) / ((Date.now() - range.start) / range.categories.length));
+
+                        const chart = range.chartData;
+                        const existingData = chart.filter((v: chartDataValue) => v.period === period);
+
+                        range.socials[social].enabled = true;
                         // TODO: Do relative strength calculations
-                        if (existingData.length > 0) existingData[0].value ++;
-                        else chart.push({ value: parseInt(d["mention_count"]), date: date });
+                        if (existingData.length > 0) existingData[0].value += parseInt(d["mention_count"]);
+                        else chart.push({ value: parseInt(d["mention_count"]), period: period });
                     })
                 })
 
@@ -146,7 +150,6 @@ const Analytics = () => {
 
                 Object.keys(ranges).forEach(k => ranges[k].chartData = padArray(ranges[k].chartData.map((v: chartDataValue) => v.value), ranges[k].categories.length, 0));
                 console.log(ranges);
-                // TODO: Sort items by date
 
                 setDataByTimeRange(ranges);
                 setLoading(false);
