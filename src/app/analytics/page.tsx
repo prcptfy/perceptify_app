@@ -45,7 +45,7 @@ const Analytics = () => {
 
                 const ranges = {
                     '1D': {
-                        start: Date.now() - 8.64e7,
+                        start: new Date().setHours(0, 0, 0, 0),
                         label: "Last 24 hours",
                         categories: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
                         chartData: [],
