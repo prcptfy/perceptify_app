@@ -30,7 +30,6 @@ const Analytics = () => {
     const [firstLoad, setFirstLoad] = useState(true);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState(true);
-    const [socials, setSocials] = useState<Array<{ name: string, enabled: boolean, value: number, icon: string }>>([]);
     
     const { supabase } = useSupabase();
 
@@ -169,7 +168,7 @@ const Analytics = () => {
         <div className=" p-10">
             <h1 className="text-4xl mb-8">Relevance</h1>
             <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-8 h-[50vh]">
+                <div className="col-span-8 h-max min-h-[50vh]">
                     <Suspense fallback={<Spinner />}>
                         <Chart
                             options={chartOptions}
@@ -184,9 +183,9 @@ const Analytics = () => {
                             value={timeRange}
                             onSelectionChange={handleTimeRangeChange}
                             classNames={{
-                                tabList: "w-full relative border-b border-divider overflow-x-auto border-none shadow-none",
-                                cursor: "cursor-none",
-                                tab: "border rounded-md text-black",
+                                tabList: "w-full relative overflow-x-auto shadow-none",
+                                cursor: "cursor-auto",
+                                tab: "rounded-md text-black",
                             }}
                         >
                             {Object.keys(dataByTimeRange).map((key) => (
