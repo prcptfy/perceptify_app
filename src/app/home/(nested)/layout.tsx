@@ -91,13 +91,11 @@ const Home = ({
                 </div>
             </div>
             <div className='lg:px-10 xl:px-10 px-5 xl:mt-0 lg:mt-0 mt-10 w-full h-full'>
-                <div className='grid grid-cols-3 gap-2 text-center'>
-        <Tabs  variant="underlined" color="secondary" aria-label="Tabs variants">
+                 <Tabs fullWidth variant="underlined" color="secondary"  aria-label="Tabs variants">
           <Tab key="Relevance" title="Relevance"/>
           <Tab key="Sentiment" title="Sentiment"/>
           <Tab key="Other" title="Other"/>
         </Tabs>
-                </div>
                 <div className='mt-3 lg:p-5 xl:p-5 p-3 bg-gray-200 min-h-max rounded'>
                     {children}
                 </div>

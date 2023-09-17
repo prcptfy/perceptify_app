@@ -13,11 +13,11 @@ import { useSupabase } from '@/components/supabase-provider';
 
 const Analytics = () => {
     const socials = {
-        twitter: { enabled: false, colorIcon: TwitterIcon, toggled: true, chartData: [] },
-        facebook: { enabled: false, colorIcon: FacebookIcon, toggled: true, chartData: [] },
-        instagram: { enabled: false, colorIcon: InstagramIcon, toggled: true, chartData: [] },
-        linkedin: { enabled: false, colorIcon: LinkedInIcon, toggled: true, chartData: [] },
-        tiktok: { enabled: false, colorIcon: TikTokIcon, toggled: true, chartData: [] },
+        Twitter: { enabled: false, colorIcon: TwitterIcon, toggled: true, chartData: [] },
+        Facebook: { enabled: false, colorIcon: FacebookIcon, toggled: true, chartData: [] },
+        Instagram: { enabled: false, colorIcon: InstagramIcon, toggled: true, chartData: [] },
+        Linkedin: { enabled: false, colorIcon: LinkedInIcon, toggled: true, chartData: [] },
+        TikTok: { enabled: false, colorIcon: TikTokIcon, toggled: true, chartData: [] },
     };
     
     const [timeRange, setTimeRange] = useState('1D');
@@ -31,9 +31,14 @@ const Analytics = () => {
 
     const handleSocialChange = (key: string) => {
         const social = currentSocials[key];
-        setCurrentSocials({ ...currentSocials, [key]: { ...social, toggled: !social.toggled } });
-    }
-
+        setCurrentSocials({ 
+          ...currentSocials, 
+          [key]: { 
+            ...social, 
+            toggled: !social.toggled,
+          } 
+        });
+      }
     const chartOptions = {
         chart: { id: 'area' },
         xaxis: { categories: dataByTimeRange[timeRange]?.categories || [] },
@@ -140,7 +145,7 @@ const Analytics = () => {
 
                         const period = Math.floor((date - range.start) / ((Date.now() - range.start) / range.categories.length));
 
-                        const chart = range.chartData;
+                        const chart = range.socials[social].chartData;
                         const existingData = chart.filter((v: chartDataValue) => v.period === period);
 
                         range.socials[social].enabled = true;
@@ -152,7 +157,12 @@ const Analytics = () => {
 
                 const padArray = (arr: [], length: number, fill: string | number) => length > arr.length ? arr.concat(Array(length - arr.length).fill(fill)) : arr;
 
-                Object.keys(ranges).forEach(k => ranges[k].chartData = padArray(ranges[k].chartData.map((v: chartDataValue) => v.value), ranges[k].categories.length, 0));
+                Object.keys(ranges).forEach(r => {
+                    const range = ranges[r];
+                    const socials = range.socials;
+
+                    Object.keys(socials).filter(s => socials[s].enabled).forEach(s =>  socials[s] = { ...socials[s], chartData: padArray(socials[s].chartData.map((v: chartDataValue) => v.value || 0), range.categories.length, 0) } );
+                })
                 console.log(ranges);
 
                 setDataByTimeRange(ranges);
@@ -168,6 +178,11 @@ const Analytics = () => {
         fetchData();
     }, []);
 
+    const getSeries = (key: string) => {
+        
+        console.log({name: key, data: dataByTimeRange[timeRange]?.socials[key].chartData || []});
+        return {name: key, data: dataByTimeRange[timeRange]?.socials[key].chartData || []}
+    }
 
     return (
         <div className=" p-10">
@@ -177,7 +192,7 @@ const Analytics = () => {
                     <Suspense fallback={<Spinner />}>
                         <Chart
                             options={chartOptions}
-                            series={[{ name: 'Series 1', data: dataByTimeRange[timeRange]?.chartData || [] }]}
+                            series={Object.keys(currentSocials).filter(key => currentSocials[key].enabled && currentSocials[key].toggled).map((key) => getSeries(key))}
                             type="area"
                             height="100%"
                             width="100%"
@@ -192,6 +207,7 @@ const Analytics = () => {
                                 cursor: "cursor-auto",
                                 tab: "rounded-md text-black",
                             }}
+                            color="secondary"
                         >
                             {Object.keys(dataByTimeRange).map((key) => (
                                 <Tab key={key} title={key}></Tab>
@@ -213,10 +229,10 @@ const Analytics = () => {
                         <div onClick={() => handleSocialChange(key)} className="icon cursor-pointer flex-initial flex flex-col justify-center items-center shrink-0" key={key}>
                             {React.createElement(currentSocials[key].colorIcon, { sideLength: 50, grey: !currentSocials[key].toggled })}
                             <h6 className="text-center text-sm">{key}</h6>
-                            {/* <h6 className="text-center text-sm">{`+${currentSocials[key].value}%`}</h6> */}
                         </div>
                     ))}
                 </div>
+
             </div>
         </div>
     );
