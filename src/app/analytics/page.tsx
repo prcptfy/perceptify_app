@@ -3,29 +3,43 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Tabs, Tab, Progress, Spinner, toggle } from '@nextui-org/react';
 import Chart from 'react-apexcharts';
-
+import FacebookIcon from '@/components/icons/FacebookIcon';
+import InstagramIcon from '@/components/icons/InstagramIcon';
+import LinkedInIcon from '@/components/icons/LinkedInIcon';
+import TikTokIcon from '@/components/icons/TikTokIcon';
+import TwitterIcon from '@/components/icons/TwitterIcon';
 import { useSupabase } from '@/components/supabase-provider';
 
-const baseSocials = { twitter: { "enabled": false, value: 0, icon: "https://static-00.iconduck.com/assets.00/linkedin-icon-2048x2048-ya5g47j2.png" }, facebook: { "enabled": false, value: 0, icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" }, instagram: { "enabled": false, value: 0, icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1024px-Instagram_logo_2022.svg.png" }, tiktok: { "enabled": false, value: 0, icon: "https://cdn-icons-png.flaticon.com/512/124/124021.png" }, linkedin: { "enabled": false, value: 0, icon: "https://cdn-icons-png.flaticon.com/512/124/124021.png" } }
 
 const Analytics = () => {
+    const socials = {
+        twitter: { enabled: false, colorIcon: TwitterIcon, toggled: true, chartData: [] },
+        facebook: { enabled: false, colorIcon: FacebookIcon, toggled: true, chartData: [] },
+        instagram: { enabled: false, colorIcon: InstagramIcon, toggled: true, chartData: [] },
+        linkedin: { enabled: false, colorIcon: LinkedInIcon, toggled: true, chartData: [] },
+        tiktok: { enabled: false, colorIcon: TikTokIcon, toggled: true, chartData: [] },
+    };
+    
     const [timeRange, setTimeRange] = useState('1D');
-
     const [dataByTimeRange, setDataByTimeRange] = useState({});
+    const [currentSocials, setCurrentSocials] = useState({});
 
     const handleTimeRangeChange = (key: string) => {
         setTimeRange(key);
+        setCurrentSocials(dataByTimeRange[key]?.socials || {});
     };
+
+    const handleSocialChange = (key: string) => {
+        const social = currentSocials[key];
+        setCurrentSocials({ ...currentSocials, [key]: { ...social, toggled: !social.toggled } });
+    }
 
     const chartOptions = {
         chart: { id: 'area' },
         xaxis: { categories: dataByTimeRange[timeRange]?.categories || [] },
     };
 
-    const currentSocials = dataByTimeRange[timeRange]?.socials || {};
     const currentRelativeStrength = dataByTimeRange[timeRange]?.relativeStrength || {};
-
-
 
     const [firstLoad, setFirstLoad] = useState(true);
     const [error, setError] = useState<string>();
@@ -47,73 +61,64 @@ const Analytics = () => {
                         start: new Date().setHours(0, 0, 0, 0),
                         label: "Last 24 hours",
                         categories: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '1W': {
                         start: Date.now() - 6.048e8,
                         label: "Past week",
                         categories: ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '1M': {
                         start: Date.now() - 2.628e9,
                         label: "Past month",
                         categories: ['Week 1', 'Week 1.5', 'Week 2', 'Week 2.5', 'Week 3', 'Week 3.5', 'Week 4'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '3M': {
                         start: Date.now() - 7.884e9,
                         label: "Past 3 months",
                         categories: ['Week 1', 'Week 3', 'Week 5', 'Week 7', 'Week 9', 'Week 11', 'Week 13'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '6M': {
                         start: Date.now() - 1.577e10,
                         label: "Past 6 months",
                         categories: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '1Y': {
                         start: Date.now() - 3.154e10,
                         label: "Past year",
                         categories: ["Month 1", "Month 2", 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     '3Y': {
                         start: Date.now() - 9.461e+10,
                         label: "Past 3 years",
                         categories: ["Month 1", "Month 2", 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12', "Month 13", "Month 14", 'Month 15', 'Month 16', 'Month 17', 'Month 18', 'Month 19', 'Month 20', 'Month 21', 'Month 22', 'Month 23', 'Month 24', "Month 25", "Month 26", 'Month 27', 'Month 28', 'Month 29', 'Month 30', 'Month 31', 'Month 32', 'Month 33', 'Month 34', 'Month 35', 'Month 36'],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     'YTD': {
                         start: new Date(new Date().setMonth(0, 1)).setHours(0, 0, 0, 0),
                         label: "Year to date",
                         categories: [],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     },
                     'ALL': {
                         start: 0,
                         label: "All Time",
                         categories: [],
-                        chartData: [],
                         relativeStrengths: {},
-                        socials: { ...baseSocials }
+                        socials: { ...socials }
                     }
                 }
 
@@ -123,7 +128,7 @@ const Analytics = () => {
                 } 
 
                 data.data.forEach(d => {
-                    const social = Object.keys(baseSocials)[d["media_id"]];
+                    const social = Object.keys(socials)[d["media_id"]];
                     
                     const t = d.timestamp.split(" ");
                     const date = new Date(t[0]).setDate(t[1]);
@@ -204,14 +209,12 @@ const Analytics = () => {
                 </div>
 
                 <div className="col-span-12 flex flex-nowrap overflow-auto overflow-x-auto gap-6 p-1 mt-8">
-                    {Object.keys(currentSocials).map((key) => (
-                        currentSocials[key].enabled && (
-                            <div className="icon flex-initial flex flex-col justify-center items-center shrink-0" key={key}>
-                                <img src={currentSocials[key].icon} alt={`${key} icon`} className="w-12 h-12 mb-2" />
-                                <h6 className="text-center text-sm">{currentSocials[key].label}</h6>
-                                <h6 className="text-center text-sm">{`+${currentSocials[key].value}%`}</h6>
-                            </div>
-                        )
+                    {Object.keys(currentSocials).filter(key => currentSocials[key].enabled).map((key) => (
+                        <div onClick={() => handleSocialChange(key)} className="icon cursor-pointer flex-initial flex flex-col justify-center items-center shrink-0" key={key}>
+                            {React.createElement(currentSocials[key].colorIcon, { sideLength: 50, grey: !currentSocials[key].toggled })}
+                            <h6 className="text-center text-sm">{key}</h6>
+                            {/* <h6 className="text-center text-sm">{`+${currentSocials[key].value}%`}</h6> */}
+                        </div>
                     ))}
                 </div>
             </div>

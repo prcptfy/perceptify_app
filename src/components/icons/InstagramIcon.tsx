@@ -1,11 +1,25 @@
+import React from 'react';
 import Image from 'next/image';
-import Instagram from './instagram.svg';
+import InstagramColor from './instagram.svg';
+import InstagramGrey from './grey/instagram.svg'; 
 
 interface IProps {
+  grey?: boolean; 
   sideLength: number;
 }
 
-const InstagramIcon = (props: IProps) => (
-  <Image width={props.sideLength} src={Instagram} alt={'Instagram'} />
-);
+const InstagramIcon: React.FC<IProps> = (props: IProps) => {
+  const { grey, sideLength } = props; // Destructure props
+  const iconToUse = grey ? InstagramGrey : InstagramColor; // Choose SVG based on grey prop
+
+  return (
+    <Image
+      width={sideLength}
+      height={sideLength}
+      src={iconToUse}
+      alt={'Instagram'}
+    />
+  );
+};
+
 export default InstagramIcon;
