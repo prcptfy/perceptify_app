@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 // import Modal from '@/components/modal/modal';
-import { Modal } from '@nextui-org/react';
+import { Modal, Tabs, Tab } from '@nextui-org/react';
 
 
 const Home = ({
@@ -91,17 +91,11 @@ const Home = ({
                 </div>
             </div>
             <div className='lg:px-10 xl:px-10 px-5 xl:mt-0 lg:mt-0 mt-10 w-full h-full'>
-                <div className='grid grid-cols-3 gap-2 text-center'>
-                    <Link className={(pathname == "/home/overview" ? "active" : "")} href={{ pathname: "/home/overview"}}>
-                        <div className='p-2'>Overview</div>
-                    </Link>
-                    <Link className={pathname == "/home/relevance" ? "active" : ""} href={{ pathname: "/home/relevance" }}>
-                    <div className='p-2'>Relevance</div>
-                    </Link>
-                    <Link className={pathname == "/home/sentiment" ? "active" : ""} href={{ pathname: "/home/sentiment"}}>
-                    <div className='p-2'>Sentiment</div>
-                    </Link>
-                </div>
+                 <Tabs fullWidth variant="underlined" color="secondary"  aria-label="Tabs variants">
+          <Tab key="Relevance" title="Relevance"/>
+          <Tab key="Sentiment" title="Sentiment"/>
+          <Tab key="Other" title="Other"/>
+        </Tabs>
                 <div className='mt-3 lg:p-5 xl:p-5 p-3 bg-gray-200 min-h-max rounded'>
                     {children}
                 </div>
