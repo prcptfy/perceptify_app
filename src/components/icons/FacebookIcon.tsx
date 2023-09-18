@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Facebook from './facebook.svg';
-import GreyFacebook from './grey/Facebook.svg';
+import GreyFacebook from './grey/facebook.svg';
 
 interface IProps {
   sideLength: number;

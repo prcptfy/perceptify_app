@@ -9,8 +9,8 @@ interface IProps {
 }
 
 const InstagramIcon: React.FC<IProps> = (props: IProps) => {
-  const { grey, sideLength } = props; // Destructure props
-  const iconToUse = grey ? InstagramGrey : InstagramColor; // Choose SVG based on grey prop
+  const { grey, sideLength } = props; 
+  const iconToUse = grey ? InstagramGrey : InstagramColor; 
 
   return (
     <Image

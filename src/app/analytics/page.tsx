@@ -3,23 +3,30 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Tabs, Tab, Progress, Spinner, toggle } from '@nextui-org/react';
 import Chart from 'react-apexcharts';
-import FacebookIcon from '@/components/icons/FacebookIcon';
 import InstagramIcon from '@/components/icons/InstagramIcon';
-import LinkedInIcon from '@/components/icons/LinkedInIcon';
+import FacebookIcon from '@/components/icons/FacebookIcon';
 import TikTokIcon from '@/components/icons/TikTokIcon';
 import TwitterIcon from '@/components/icons/TwitterIcon';
+import GoogleIcon from '@/components/icons/GoogleIcon'
 import { useSupabase } from '@/components/supabase-provider';
 
+const icons = {
+    Instagram: InstagramIcon,
+    Facebook: FacebookIcon,
+    TikTok: TikTokIcon,
+    Twitter: TwitterIcon,
+    Google: GoogleIcon
+}
 
 const Analytics = () => {
     const socials = {
-        Twitter: { enabled: false, colorIcon: TwitterIcon, toggled: true, chartData: [] },
-        Facebook: { enabled: false, colorIcon: FacebookIcon, toggled: true, chartData: [] },
-        Instagram: { enabled: false, colorIcon: InstagramIcon, toggled: true, chartData: [] },
-        Linkedin: { enabled: false, colorIcon: LinkedInIcon, toggled: true, chartData: [] },
-        TikTok: { enabled: false, colorIcon: TikTokIcon, toggled: true, chartData: [] },
+        TikTok: { enabled: false, toggled: true, chartData: {} },
+        Twitter: { enabled: false, toggled: true, chartData: {} },
+        Instagram: { enabled: false, toggled: true, chartData: {} },
+        Facebook: { enabled: false, toggled: true, chartData: {} },
+        Google: { enabled: false, toggled: true, chartData: {} },
     };
-    
+   
     const [timeRange, setTimeRange] = useState('1D');
     const [dataByTimeRange, setDataByTimeRange] = useState({});
     const [currentSocials, setCurrentSocials] = useState({});
@@ -42,6 +49,7 @@ const Analytics = () => {
     const chartOptions = {
         chart: { id: 'area' },
         xaxis: { categories: dataByTimeRange[timeRange]?.categories || [] },
+       
     };
 
     const currentRelativeStrength = dataByTimeRange[timeRange]?.relativeStrength || {};
@@ -64,73 +72,77 @@ const Analytics = () => {
                 const ranges = {
                     '1D': {
                         start: new Date().setHours(0, 0, 0, 0),
+                        end: new Date().setHours(24, 0, 0, 0),
                         label: "Last 24 hours",
                         categories: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '1W': {
                         start: Date.now() - 6.048e8,
+                        end: Date.now(),
                         label: "Past week",
                         categories: ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '1M': {
                         start: Date.now() - 2.628e9,
+                        end: Date.now(),
                         label: "Past month",
                         categories: ['Week 1', 'Week 1.5', 'Week 2', 'Week 2.5', 'Week 3', 'Week 3.5', 'Week 4'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '3M': {
                         start: Date.now() - 7.884e9,
+                        end: Date.now(),
                         label: "Past 3 months",
                         categories: ['Week 1', 'Week 3', 'Week 5', 'Week 7', 'Week 9', 'Week 11', 'Week 13'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '6M': {
                         start: Date.now() - 1.577e10,
+                        end: Date.now(),
                         label: "Past 6 months",
                         categories: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '1Y': {
                         start: Date.now() - 3.154e10,
+                        end: Date.now(),
                         label: "Past year",
                         categories: ["Month 1", "Month 2", 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     '3Y': {
                         start: Date.now() - 9.461e+10,
+                        end: Date.now(),
                         label: "Past 3 years",
                         categories: ["Month 1", "Month 2", 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12', "Month 13", "Month 14", 'Month 15', 'Month 16', 'Month 17', 'Month 18', 'Month 19', 'Month 20', 'Month 21', 'Month 22', 'Month 23', 'Month 24', "Month 25", "Month 26", 'Month 27', 'Month 28', 'Month 29', 'Month 30', 'Month 31', 'Month 32', 'Month 33', 'Month 34', 'Month 35', 'Month 36'],
                         relativeStrengths: {},
-                        socials: { ...socials }
-                    },
+                        socials: structuredClone(socials)
+                    }/* ,
                     'YTD': {
                         start: new Date(new Date().setMonth(0, 1)).setHours(0, 0, 0, 0),
+                        end: Date.now(),
                         label: "Year to date",
                         categories: [],
                         relativeStrengths: {},
-                        socials: { ...socials }
+                        socials: structuredClone(socials)
                     },
                     'ALL': {
                         start: 0,
+                        end: Date.now(),
                         label: "All Time",
                         categories: [],
                         relativeStrengths: {},
-                        socials: { ...socials }
-                    }
+                        socials: structuredClone(socials)
+                    }*/
                 }
-
-                interface chartDataValue {
-                    value: number,
-                    period: number
-                } 
 
                 data.data.forEach(d => {
                     const social = Object.keys(socials)[d["media_id"]];
@@ -138,30 +150,41 @@ const Analytics = () => {
                     const t = d.timestamp.split(" ");
                     const date = new Date(t[0]).setDate(t[1]);
 
-                    const validRanges = Object.keys(ranges).filter(r => date > ranges[r].start && date < Date.now());
+                    const validRanges = Object.keys(ranges).filter(r => date > ranges[r].start && date <= Date.now());
 
                     validRanges.forEach(r => {
                         const range = ranges[r];
 
-                        const period = Math.floor((date - range.start) / ((Date.now() - range.start) / range.categories.length));
+                        const periodSize = (range.end - range.start) / (range.categories.length || 8.64e+7);
+                        const period = Math.floor((date - range.start) / periodSize);
 
                         const chart = range.socials[social].chartData;
-                        const existingData = chart.filter((v: chartDataValue) => v.period === period);
 
                         range.socials[social].enabled = true;
                         // TODO: Do relative strength calculations
-                        if (existingData.length > 0) existingData[0].value += parseInt(d["mention_count"]);
-                        else chart.push({ value: parseInt(d["mention_count"]), period: period });
+                        if (period in chart) chart[period].push(parseInt(d["mention_count"]));
+                        else chart[period] = [parseInt(d["mention_count"])];
                     })
                 })
 
-                const padArray = (arr: [], length: number, fill: string | number) => length > arr.length ? arr.concat(Array(length - arr.length).fill(fill)) : arr;
+                const padArray = (arr: any[], length: number, fill: string | number) => length > arr.length ? arr.concat(Array(length - arr.length).fill(fill)) : arr;
 
+                console.log(ranges);
                 Object.keys(ranges).forEach(r => {
                     const range = ranges[r];
                     const socials = range.socials;
 
-                    Object.keys(socials).filter(s => socials[s].enabled).forEach(s =>  socials[s] = { ...socials[s], chartData: padArray(socials[s].chartData.map((v: chartDataValue) => v.value || 0), range.categories.length, 0) } );
+                    Object.keys(socials).filter(s => socials[s].enabled)
+                        .forEach(s => socials[s] = { 
+                            ...socials[s], 
+                            chartData: 
+                                padArray(
+                                    Object.keys(socials[s].chartData).map(key => (socials[s].chartData[key].reduce((a, c) =>  a + c, 0) / socials[s].chartData[key].length).toFixed(0)), 
+                                    range.categories.length, 
+                                    0
+                                ) 
+                        } 
+                    );
                 })
                 console.log(ranges);
 
@@ -179,8 +202,6 @@ const Analytics = () => {
     }, []);
 
     const getSeries = (key: string) => {
-        
-        console.log({name: key, data: dataByTimeRange[timeRange]?.socials[key].chartData || []});
         return {name: key, data: dataByTimeRange[timeRange]?.socials[key].chartData || []}
     }
 
@@ -227,8 +248,9 @@ const Analytics = () => {
                 <div className="col-span-12 flex flex-nowrap overflow-auto overflow-x-auto gap-6 p-1 mt-8">
                     {Object.keys(currentSocials).filter(key => currentSocials[key].enabled).map((key) => (
                         <div onClick={() => handleSocialChange(key)} className="icon cursor-pointer flex-initial flex flex-col justify-center items-center shrink-0" key={key}>
-                            {React.createElement(currentSocials[key].colorIcon, { sideLength: 50, grey: !currentSocials[key].toggled })}
-                            <h6 className="text-center text-sm">{key}</h6>
+                            {React.createElement(icons[key], { sideLength: 75, grey: !currentSocials[key].toggled })}
+                            <h3 className="text-center text-md text-italic">{key}</h3>
+                            <h6> +x% </h6>
                         </div>
                     ))}
                 </div>
