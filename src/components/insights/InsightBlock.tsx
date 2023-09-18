@@ -1,5 +1,6 @@
 'use client';
 
+
 /*
 
 TODOS
@@ -15,7 +16,7 @@ import FacebookIcon from '../icons/FacebookIcon';
 import TwitterIcon from '../icons/TwitterIcon';
 import TikTokIcon from '../icons/TikTokIcon';
 import InstagramIcon from '../icons/InstagramIcon';
-import LinkedInIcon from '../icons/LinkedInIcon';
+// import LinkedInIcon from '../icons/LinkedInIcon';
 import InsightAlert from './InsightAlert';
 import InsightGraph from './InsightGraph';
 import CloseButtonIcon from '../icons/closeButtonIcon';
@@ -67,7 +68,7 @@ const InsightBlock = (props: IProps) => {
       logoComponent = <InstagramIcon sideLength={sideLength} />;
       break;
     case 'linkedin':
-      logoComponent = <LinkedInIcon sideLength={sideLength} />;
+      // logoComponent = <LinkedInIcon sideLength={sideLength} />;
       break;
     default:
       // Default case if props.logo doesn't match any of the options (somehow)
@@ -97,12 +98,12 @@ const InsightBlock = (props: IProps) => {
 
   return (
     <div
-      className={`relative flex h-80 w-full flex-row rounded-[1rem] border-[2px] duration-150 ease-in-out hover:cursor-pointer hover:border-[#8915E4]
+      className={`relative flex h-80 w-full flex-row rounded-[1rem] border-[2px] duration-150 ease-in-out hover:cursor-pointer hover:border-[#8915E4] max-w-full
           ${isClosed ? 'fade-out my-0' : 'fade-in my-[1em]'}`}
     >
       <div
         className={
-          'flex h-full min-w-[400px] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] p-[1.25em_1.25em_1.25em_1.5em]'
+          'flex h-full max-w-[30%] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] py-3 px-9'
         }
       >
         <div className={'flex flex-row p-3'}>{logoComponent}</div>
@@ -154,7 +155,7 @@ const InsightBlock = (props: IProps) => {
       </div>
 
       {/*start of graph */}
-      <div className={'flex w-full items-center justify-start pl-[6.25rem]'}>
+      <div className={'flex w-full items-center justify-start ml-16 mr-16 max-w-[50%]'}>
         <InsightGraph activityValues={props.graphValues} />
       </div>
 
