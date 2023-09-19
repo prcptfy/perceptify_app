@@ -8,6 +8,7 @@ import FacebookIcon from '@/components/icons/FacebookIcon';
 import TikTokIcon from '@/components/icons/TikTokIcon';
 import TwitterIcon from '@/components/icons/TwitterIcon';
 import GoogleIcon from '@/components/icons/GoogleIcon';
+import LinkedinIcon from '@/components/icons/LinkedInIcon';
 import { useSupabase } from '@/components/supabase-provider';
 
 const Analytics = () => {
@@ -17,6 +18,7 @@ const Analytics = () => {
     TikTok: TikTokIcon,
     Twitter: TwitterIcon,
     Google: GoogleIcon,
+    LinkedIn: LinkedinIcon,
   };
   const socialColors = {
     Instagram: '#E1306C',
@@ -24,6 +26,7 @@ const Analytics = () => {
     TikTok: '#000000',
     Twitter: '#1DA1F2',
     Google: '#FFE047',
+    LinkedIn: '#2867B2',
   };
   const socials = {
     TikTok: { enabled: false, toggled: true, chartData: {} },
@@ -31,6 +34,7 @@ const Analytics = () => {
     Instagram: { enabled: false, toggled: true, chartData: {} },
     Facebook: { enabled: false, toggled: true, chartData: {} },
     Google: { enabled: false, toggled: true, chartData: {} },
+    LinkedIn: { enabled: false, toggled: true, chartData: {} },
   };
 
   const [timeRange, setTimeRange] = useState('1D');
