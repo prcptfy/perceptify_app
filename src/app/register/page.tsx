@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use, MouseEventHandler } from 'react';
 import { useSupabase } from '@/components/supabase-provider';
 import { Session } from "@supabase/supabase-js";
 import Input from '@/components/Input';
@@ -13,6 +13,7 @@ import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+// import Logo from '@/components/Logo';
 
 const Register = () => {
     const { supabase } = useSupabase();
@@ -28,19 +29,24 @@ const Register = () => {
     const [companyName, setCompanyName] = useState('');
     const [role, setRole] = useState('');
     const [errors, setErrors] = useState('')
-    const [session, setSession] = useState<Session | null>(null);
-    const [members, setMembers] = useState([]);
+    // const [session, setSession] = useState<Session | null>(null);
+    const [members, setMembers] = useState([['', '', '']]);
 
     useEffect(() => {
         const fetchSession = async () => {
             const { data: { session }} = await supabase.auth.getSession();
+            if (session) router.push("/home")
             console.log('session', session);
-            setSession(session);
+            console.log(session?.user.user_metadata.first_name + ' ' + session?.user.user_metadata.last_name);
         }
         fetchSession().catch(console.error);
     }, []);
 
     useEffect(() => console.log(stage), [stage]);
+
+    useEffect(() => console.log(members), [members])
+
+    useEffect(() => setMembers(members), [members])
 
     useEffect(() => {
         console.log(
@@ -49,10 +55,11 @@ const Register = () => {
                 password: ${password}\n
                 firstName: ${firstName}\n
                 lastName: ${lastName}\n
+                members: ${members}
             `
 
         )
-    }, [credential, password, firstName, lastName]);
+    }, [credential, password, firstName, lastName, members]);
 
     const updateCredential = (e:any) => {
         e.preventDefault();
@@ -62,6 +69,34 @@ const Register = () => {
     const updatePassword = (e:any) => {
         e.preventDefault();
         setPassword(e.target.value);
+    }
+
+    // const sendInvites = async (addedMembers:string[]) => {
+    //     for (const member of addedMembers) {
+    //         const {data, error} = await supabase.auth.signInWithOtp({
+    //             email: member,
+    //             options: {
+    //                 emailRedirectTo: "http://localhost:3000/home"
+    //             }
+    //         });
+    //     }
+    // }
+
+    async function sendInvites(addedMembers:string[][]) {
+        for (let i = 0; i < addedMembers.length; i++) {
+            const member = addedMembers[i];
+            const [email, first_name, last_name] = member;
+            const { data, error } = await supabase.auth.signInWithOtp({
+                email,
+                options: {
+                    emailRedirectTo: "http://localhost:3000/home",
+                    data: {
+                        first_name,
+                        last_name,
+                    }
+                }
+            })
+        }
     }
 
     const keyIcon = <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="none"><path stroke="#8915E4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.226 16.237A7.892 7.892 0 0 0 23.69 3.311a7.89 7.89 0 0 0-12.926 8.463m4.434 4.493L5.463 26l-4.091-.372L1 21.537l9.733-9.734m8.492-3.993v-.036"/></svg>
@@ -95,7 +130,7 @@ const Register = () => {
             console.log("error", error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/dashboard")
+            router.push("/dashboard");
         }
         console.log(data)
     }
@@ -174,21 +209,21 @@ const Register = () => {
 
     stages.set(2, (
         <>
-            <div>
+            <div className='pt-4 pl-4'>
                 <Link href="/home">
                     <Image
                         alt="logo"
-                        className="h-24 w-max absolute"
+                        className="h-16 w-max absolute"
                         height="250"
                         width="250"
                         src="/images/logo.svg"
                     />
                 </Link>
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
-                    {/* <div className='w-full h-48 mb-12'>
+                    <div className='w-full h-48 mb-12'>
                         <CoverImageUpload handleUpload="" />
                         <ProfileImageUpload />
-                    </div> */}
+                    </div>
                     <div className='flex w-full justify-start'>
                         <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
                     </div>
@@ -209,7 +244,7 @@ const Register = () => {
                             required
                             onChange={(e:any) => setLastName(e.target.value)}
                         />
-                        {/* <Input
+                        <Input
                             id='companyName'
                             label='Company Name'
                             disabled={false}
@@ -224,15 +259,15 @@ const Register = () => {
                             errors={errors}
                             required
                             onChange={(e:any) => setRole(e.target.value)}
-                        /> */}
+                        />
                     </div>
                     <div className="flex w-full justify-end">
                         <div className='w-48 mt-5'>
                             <Button
-                                // label='Next →'
-                                // onClick={() => stage < 3 && setStage(stage + 1)}
-                                label="Register"
-                                onClick={handleRegister}
+                                label='Next →'
+                                onClick={() => stage < 3 && setStage(stage + 1)}
+                                // label="Register"
+                                // onClick={handleRegister}
                                 light={false}
                                 disabled={false}
                             />
@@ -244,31 +279,46 @@ const Register = () => {
     ));
     stages.set(3, (
         <>
-            <div>
+            <div className='pl-4 pt-4'>
                 <Link href="/home">
                     <Image
                         alt="logo"
-                        className="h-24 w-max absolute"
-                        height="250"
-                        width="250"
+                        className="h-12 w-max absolute"
+                        height="150"
+                        width="150"
                         src="/images/logo.svg"
                     />
                 </Link>
+                {/* <Logo /> */}
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='flex flex-col w-full p-4'>
                         <h3 className='text-purple-450 mb-8 hover:underline cursor-pointer' onClick={() => setStage(stage - 1)}>← Go back</h3>
                         <h1 className='font-bold text-2xl mb-2'>One more thing...</h1>
-                        <h3>Let's invite the rest of the team!</h3>
-                        <div className='flex justify-center items-center w-full gap-4 py-4'>
-                            <Input id='addMember' errors={errors} type="text" label='Team member email' icon={emailIcon} disabled={false} />
-                            {/* ADD DROPDOWN SELECTOR */}
-                            <Dropdown />
+                        <div className='flex justify-between'>
+                            <h3>Let's invite the rest of the team!</h3>
+                            {/* <h3>Administrator?</h3> */}
                         </div>
-                        <h3 className='text-purple-450 hover:underline cursor-pointer px-1'>+ Add a team member</h3>
+                        {members.map((field, i) => (
+                            <div className='flex justify-between items-center w-full gap-4 py-4'>
+                                <div
+                                    className='w-full'
+                                    onChange={(e:any) => {members[i][0] = e.target.value}}
+                                >
+                                    <Input id='addMember' errors={errors} type="text" label='Team member email' icon={emailIcon} disabled={false} />
+                                </div>
+                                <div className='w-full' onChange={(e:any) => {members[i][1] = e.target.value}}>
+                                    <Input id="inviteeFirstName" errors={errors} type="text" label='First Name' disabled={false} />
+                                </div>
+                                <div className='w-full' onChange={(e:any) => members[i][2] = e.target.value}>
+                                    <Input id="inviteeLastName" errors={errors} type="text" label='Last Name' disabled={false} />
+                                </div>
+                            </div>
+                        ))}
+                        <h3 className='text-purple-450 hover:underline cursor-pointer px-1' onClick={() => setMembers([...members, ['', '', '']])}>+ Add a team member</h3>
                     </div>
                     <div className='flex flex-col w-full justify-center items-end'>
                         <div className='w-48 p-4'>
-                            <Button label='Send Invites' onClick={() => setStage(stage + 1)} light={false} disabled={false} />
+                            <Button label='Send Invites' onClick={() => sendInvites(members)} light={false} disabled={false} />
                         </div>
                         <p className='text-purple-450 cursor-pointer hover:underline px-5' onClick={() => setStage(stage + 1)}>Skip for now</p>
                     </div>
@@ -279,7 +329,8 @@ const Register = () => {
 
     return (
         <ClientOnly>
-            {stages.get(stage)}
+            {/* {stages.get(stage)} */}
+        {stages.get(3)}
         </ClientOnly>
     );
 }

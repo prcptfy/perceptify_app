@@ -3,6 +3,7 @@
 export default function Dropdown() {
     const options = [
         "Member",
+        "Admin"
     ]
     return (
         <div className="w-48">

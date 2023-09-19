@@ -8,11 +8,17 @@ import { useEffect } from "react";
 const Home = () => {
     const router = useRouter();
     const pathname = usePathname();
-    const { session } = useSupabase();
+    const { supabase, session } = useSupabase();
+
+    useEffect(() => console.log(session), [session])
 
     useEffect(() => {
         router.push("/home")
     }, []);
+
+    if (!session?.user.user_metadata.first_name) {
+        // have user finish registration
+    }
 
     return (
         <div className="flex flex-row">

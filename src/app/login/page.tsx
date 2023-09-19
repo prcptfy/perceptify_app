@@ -31,14 +31,25 @@ const Login = () => {
         error ? console.log('error', error) : router.push('/dashboard');
     };
 
+    async function handleOTPLogin(e:any) {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                emailRedirectTo: "http://localhost:3000/home/"
+            }
+        });
+        error ? console.log("error", error) : router.push("/dashboard");
+    }
+
     async function handleGoogleLogin(e:any) {
         e.preventDefault();
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: "http://localhost:3000/home"
+                redirectTo: "http://localhost:3000/home",
             }
-        },
+        }
 );
 
         if (error) {
@@ -84,8 +95,14 @@ const Login = () => {
                         />
                         <Link href="/forgot-password" className="text-purple-450 hover:font-semibold">Forgot Password?</Link>
                         <Button
-                            label='Log In'
+                            label='Log In With Password'
                             onClick={handleEmailLogin}
+                            light={false}
+                            disabled={false}
+                        />
+                        <Button
+                            label='Log In With Magic Link'
+                            onClick={handleOTPLogin}
                             light={false}
                             disabled={false}
                         />
