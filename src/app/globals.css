@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+@import "@fontsource/dm-sans";
 
 * {
   box-sizing: border-box;
@@ -11,5 +12,56 @@
 }
 
 :root {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'DM Sans';
+  --web-theme: rgb(232, 85, 232);
+}
+
+@layer components {
+  main.main {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+  }
+  
+  .sidebar {
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .caption {
+    font-size: 12px;
+    font-weight: lighter !important;
+  }
+  
+  .hr-with-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-family: 'DM-Sans';
+  }
+  
+  .hr-with-text::before,
+  .hr-with-text::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid black;
+  }
+  
+  .hr-with-text::before {
+    margin-right: 0.5em;
+  }
+  
+  .hr-with-text::after {
+    margin-left: 0.5em;
+  }
+
+  div:has([role="tablist"]) {
+    width: 100%;
+  }
 }

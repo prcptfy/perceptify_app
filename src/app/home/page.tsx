@@ -1,29 +1,24 @@
 "use client"
 
-import Sidebar from "@/components/sidebar/Sidebar";
-import { useSupabase } from "@/components/supabase-provider";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
+import './home.css'
+import NavigationButton from '@/components/sidebar/NavigationButton';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 
-const Home = () => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const { supabase, session } = useSupabase();
+const Home = ({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) => {
+  const router = useRouter();
+  const pathname = usePathname();
 
-    useEffect(() => console.log(session), [session])
-
-    useEffect(() => {
-        router.push("/home")
-    }, []);
-
-    if (!session?.user.user_metadata.first_name) {
-        // have user finish registration
-    }
+  console.log()
 
     return (
-        <div className="flex flex-row">
-            <Sidebar />
-        </div>
+    <div>
+
+    </div>
     )
 }
 

@@ -1,0 +1,170 @@
+.analytics {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    gap: 40px;
+}
+
+.top {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+}
+
+/* .header {
+    font-weight: 900;
+    font-size: 20px;
+    padding: 5px 0px;
+} */
+
+select {
+    padding: 5px 20px !important;
+    background-color: rgb(128, 128, 128, .2);
+    border-radius: 5px;
+    text-align: center;
+    border-right: 16px solid transparent
+    /* border: 1px solid rgb(232, 85, 232); */
+}
+
+select:focus {
+    outline: none;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    /* padding: 10px !important; */
+    border-radius: 5px;
+    /* border: 1px solid #e855e8; */
+    /* background-color: rgb(232, 85, 232); */
+    background-color: rgb(128, 128, 128, .2);
+    cursor: pointer;
+    width: fit-content;
+}
+
+.rest {
+    margin: 10px;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.side-pannel {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(178, 178, 178, 0.1);
+}
+
+
+.icons {
+  column-gap: -30px;
+}
+
+/* .icon {
+  min-width: 200px;
+} */
+
+.icon img {
+    max-width: 75px;
+    width: 100%;
+    
+}
+
+progress {
+    /* style rules */
+    /* background-color: aqua; */
+    width: 100%;
+    height: 10px;
+  }
+  progress::-webkit-progress-bar {
+    /*  */
+    background-color: rgba(137, 21, 228, .3);
+    border-radius: 10px;
+    /* style rules */
+  }
+  progress::-webkit-progress-value {
+    background-color: rgba(137, 21, 228, .5);
+    border-radius: 10px;
+    /* style rules */
+  }
+  progress::-moz-progress-bar {
+    /* style rules */
+    background-color: rgba(128, 0, 128, .5);
+    border-radius: 10px;
+  }
+
+  /* twitter progress bar */
+
+  .twitter progress::-webkit-progress-bar  {
+    /* style rules */
+    background-color: rgba(29, 161, 242, 0.3);
+    border-radius: 10px;
+  }
+  .twitter progress::-webkit-progress-value {
+    /* style rules */
+    background-color: rgba(29, 161, 242, .5);
+    border-radius: 10px;
+  }
+
+  /* facebook progress bar */
+  .facebook progress::-webkit-progress-bar  {
+    /* style rules */
+
+    background-color: rgba(66, 103, 178, 0.3);
+    border-radius: 10px;
+  }
+  .facebook progress::-webkit-progress-value {
+    /* style rules */
+    background-color: rgba(66, 103, 178, .5);
+    border-radius: 10px;
+    color: #F56040;
+  }
+
+  /* instagram progress bar */
+  .instagram progress::-webkit-progress-bar  {
+    /* style rules */
+    background-color: rgba(245, 96, 64, 0.3);
+    border-radius: 10px;
+  }
+  .instagram progress::-webkit-progress-value {
+    /* style rules */
+    background-color: rgba(245, 96, 64, .5);
+    border-radius: 10px;
+  }
+
+
+  /* 0077B5 */
+
+  /* instagram progress bar */
+  .linkedin progress::-webkit-progress-bar  {
+    /* style rules */
+    background-color: rgba(0, 119, 181, 0.3);
+    border-radius: 10px;
+  }
+  .linkedin progress::-webkit-progress-value {
+    /* style rules */
+    background-color: rgba(0, 119, 181, .5);
+    border-radius: 10px;
+  }
+
+
+  .stats {
+    max-height: 150px;
+    overflow-y: scroll;
+  }
+
+
+  /* testing */
+
+  .svg-icon {
+    cursor: pointer;
+    fill: #000;
+    stroke: #fff;
+    stroke-width: 2px;
+  }
+  
+  .svg-icon:hover {
+    fill: #fff;
+    stroke: #000;
+  }
