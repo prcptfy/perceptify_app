@@ -25,17 +25,10 @@ type socialsMap = Record<social, Socials>;
 interface Socials {
   enabled: boolean;
   toggled: boolean;
+  percentChange: string;
   chartData: { [key: number]: number[] };
 }
 
-interface Range {
-  start: number;
-  end: number;
-  label: string;
-  categories: string[];
-  relativeStrengths: Partial<Record<social, number>>;
-  socials: Partial<Record<social, Socials>>;
-}
 type dataByTimeRange = Partial<Record<timeRange, any>>;
 
 const Analytics = () => {
@@ -56,12 +49,42 @@ const Analytics = () => {
     LinkedIn: '#2867B2',
   };
   const socials: socialsMap = {
-    TikTok: { enabled: false, toggled: true, chartData: {} },
-    Twitter: { enabled: false, toggled: true, chartData: {} },
-    Instagram: { enabled: false, toggled: true, chartData: {} },
-    Facebook: { enabled: false, toggled: true, chartData: {} },
-    Google: { enabled: false, toggled: true, chartData: {} },
-    LinkedIn: { enabled: false, toggled: true, chartData: {} },
+    TikTok: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
+    Twitter: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
+    Instagram: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
+    Facebook: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
+    Google: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
+    LinkedIn: {
+      enabled: false,
+      toggled: true,
+      chartData: {},
+      percentChange: '+0%',
+    },
   };
 
   const [timeRange, setTimeRange] = useState<timeRange>('1D');
@@ -96,14 +119,38 @@ const Analytics = () => {
     (key: social) => socialColors[key]
   );
 
-  const chartOptions = {
+  const chartOptions: ApexCharts.ApexOptions = {
+    tooltip: {
+      x: {
+        show: false,
+      },
+      shared: false,
+      custom: function ({ series, seriesIndex, dataPointIndex }) {
+        const point = series[seriesIndex];
+        const start = series[seriesIndex][0];
+
+        const percent = ((point - start) / start) * 100;
+
+        return `<div class="p-2 rounded-lg shadow-lg bg-white">
+          <h6 class="text-xs">${series[seriesIndex][dataPointIndex]}</h6>
+        </div>`;
+      },
+    },
+    dataLabels: { enabled: false },
     chart: { id: 'area' },
     xaxis: {
+      crosshairs: { show: false, fill: { type: 'none' } },
+      axisTicks: { show: false },
       categories:
         dataByTimeRange[timeRange as keyof typeof dataByTimeRange]
           ?.categories || [],
     },
-    colors: activeSocialColors, // colors of the lines
+    yaxis: {
+      min: 0,
+      max: 100,
+      tickAmount: 5,
+    },
+    colors: activeSocialColors, // colors of the lines in the chart
   };
 
   const currentRelativeStrength =
@@ -321,24 +368,34 @@ const Analytics = () => {
 
           Object.keys(socials)
             .filter((s) => socials[s].enabled)
-            .forEach(
-              (s) =>
-                (socials[s] = {
-                  ...socials[s],
-                  chartData: padArray(
-                    Object.keys(socials[s].chartData).map((key) =>
-                      (
-                        socials[s].chartData[key].reduce(
-                          (a: number, c: number) => a + c,
-                          0
-                        ) / socials[s].chartData[key].length
-                      ).toFixed(0)
-                    ),
-                    range.categories.length,
-                    0
-                  ),
-                })
-            );
+            .forEach((s) => {
+              const newChartData = padArray(
+                Object.keys(socials[s].chartData).map((key) =>
+                  (
+                    socials[s].chartData[key].reduce(
+                      (a: number, c: number) => a + c,
+                      0
+                    ) / socials[s].chartData[key].length
+                  ).toFixed(0)
+                ),
+                range.categories.length,
+                0
+              );
+
+              const first = newChartData[0];
+              const last = newChartData.at(-1);
+              const diff = last - first;
+
+              const percent = (diff / first) * 100;
+
+              socials[s] = {
+                ...socials[s],
+                chartData: newChartData,
+                percentChange: `${percent > 0 ? '+' : ''}${percent.toFixed(
+                  0
+                )}%`,
+              };
+            });
         });
         console.log(ranges);
 
@@ -427,7 +484,15 @@ const Analytics = () => {
                   grey: !currentSocials[key].toggled,
                 })}
                 <h3 className="text-md text-italic text-center">{key}</h3>
-                <h6> +x% </h6>
+                <h6
+                  className={
+                    parseInt(currentSocials[key].percentChange) > 0
+                      ? 'text-green-400'
+                      : 'text-red-400'
+                  }
+                >
+                  {currentSocials[key].percentChange}
+                </h6>
               </div>
             ))}
         </div>
