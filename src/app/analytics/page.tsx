@@ -103,7 +103,7 @@ const Analytics = () => {
         dataByTimeRange[timeRange as keyof typeof dataByTimeRange]
           ?.categories || [],
     },
-    colors: activeSocialColors, // colors
+    colors: activeSocialColors, // colors of the lines
   };
 
   const currentRelativeStrength =
