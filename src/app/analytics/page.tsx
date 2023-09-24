@@ -109,16 +109,12 @@ const Analytics = () => {
   const currentRelativeStrength =
     dataByTimeRange[timeRange]?.relativeStrength || {};
 
-  const [firstLoad, setFirstLoad] = useState(true);
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
 
   const { supabase } = useSupabase();
 
   useEffect(() => {
-    if (!firstLoad) return;
-    setFirstLoad(false);
-
     const fetchData = async () => {
       try {
         const data = await supabase
@@ -346,6 +342,7 @@ const Analytics = () => {
         });
         console.log(ranges);
 
+        setCurrentSocials(ranges['1D'].socials || {});
         setDataByTimeRange(ranges);
         setLoading(false);
       } catch (err) {
@@ -387,7 +384,7 @@ const Analytics = () => {
 
             <Tabs
               variant="bordered"
-              selectedKey={timeRange}
+              selectedKey={timeRange || '1D'}
               onSelectionChange={handleTimeRangeChange}
               classNames={{
                 tabList: 'w-full relative overflow-x-auto shadow-none',
