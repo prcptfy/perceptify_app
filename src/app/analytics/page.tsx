@@ -304,8 +304,8 @@ const Analytics = () => {
             range.socials[social].enabled = true;
             // TODO: Do relative strength calculations
             if (period in chart)
-              chart[period].push(parseInt(d['mention_count']));
-            else chart[period] = [parseInt(d['mention_count'])];
+              chart[period].push(parseInt(d['relevance_score']));
+            else chart[period] = [parseInt(d['relevance_score'])];
           });
         });
 
