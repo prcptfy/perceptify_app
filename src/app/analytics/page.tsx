@@ -13,7 +13,7 @@ import { useSupabase } from '@/components/supabase-provider';
 
 type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'ALL';
 
-// add futrue socials when we  add them
+// add future socials when we  add them
 type social =
   | 'TikTok'
   | 'Twitter'
@@ -22,6 +22,7 @@ type social =
   | 'Google'
   | 'LinkedIn';
 type socialsMap = Record<social, Socials>;
+
 interface Socials {
   enabled: boolean;
   toggled: boolean;
@@ -52,12 +53,12 @@ const Analytics = () => {
   };
 
   const progressSocialColors: Record<social, string> = {
-    Instagram: 'bg-[#E1306C]',
-    Facebook: 'bg-[#2986cc]',
-    TikTok: 'bg-black',
-    Twitter: 'bg-[#1DA1F2]',
-    Google: 'bg-[#FFE047]',
-    LinkedIn: 'bg-[#2867B2]',
+    Instagram: '!bg-[#E1306C]',
+    Facebook: '!bg-[#2986cc]',
+    TikTok: '!bg-black',
+    Twitter: '!bg-[#1DA1F2]',
+    Google: '!bg-[#FFE047]',
+    LinkedIn: '!bg-[#2867B2]',
   };
   
   const socials: socialsMap = {
