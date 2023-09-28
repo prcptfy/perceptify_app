@@ -120,6 +120,13 @@ const Analytics = () => {
   );
 
   const chartOptions: ApexCharts.ApexOptions = {
+    fill: {
+      type: "gradient",
+      gradient: {
+        opacityFrom: 0,
+        opacityTo: 0,
+      }
+    },
     tooltip: {
       x: {
         show: false,
