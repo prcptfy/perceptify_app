@@ -124,22 +124,14 @@ const Analytics = () => {
       x: {
         show: false,
       },
-      shared: false,
-      custom: function ({ series, seriesIndex, dataPointIndex }) {
-        const point = series[seriesIndex];
-        const start = series[seriesIndex][0];
-
-        const percent = ((point - start) / start) * 100;
-
-        return `<div class="p-2 rounded-lg shadow-lg bg-white">
-          <h6 class="text-xs">${series[seriesIndex][dataPointIndex]}</h6>
-        </div>`;
-      },
     },
     dataLabels: { enabled: false },
-    chart: { id: 'area' },
+    chart: {
+      id: 'area',
+    },
     xaxis: {
       crosshairs: { show: false, fill: { type: 'none' } },
+      tooltip: { enabled: false },
       axisTicks: { show: false },
       categories:
         dataByTimeRange[timeRange as keyof typeof dataByTimeRange]
@@ -149,6 +141,14 @@ const Analytics = () => {
       min: 0,
       max: 100,
       tickAmount: 5,
+    },
+    grid: {
+      yaxis: {
+        lines: { show: false },
+      },
+    },
+    noData: {
+      text: 'There is no data for this period.',
     },
     colors: activeSocialColors, // colors of the lines in the chart
   };
@@ -351,8 +351,8 @@ const Analytics = () => {
             range.socials[social].enabled = true;
             // TODO: Do relative strength calculations
             if (period in chart)
-              chart[period].push(parseInt(d['mention_count']));
-            else chart[period] = [parseInt(d['mention_count'])];
+              chart[period].push(parseInt(d['relevance_score']));
+            else chart[period] = [parseInt(d['relevance_score'])];
           });
         });
 
@@ -480,15 +480,15 @@ const Analytics = () => {
                 key={key}
               >
                 {React.createElement(icons[key], {
-                  sideLength: 75,
+                  sideLength: 100,
                   grey: !currentSocials[key].toggled,
                 })}
                 <h3 className="text-md text-italic text-center">{key}</h3>
                 <h6
                   className={
-                    parseInt(currentSocials[key].percentChange) > 0
-                      ? 'text-green-400'
-                      : 'text-red-400'
+                    parseInt(currentSocials[key].percentChange) >= 0
+                      ? 'text-green-500'
+                      : 'text-red-500'
                   }
                 >
                   {currentSocials[key].percentChange}
