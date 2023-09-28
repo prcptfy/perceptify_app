@@ -26,6 +26,7 @@ interface Socials {
   enabled: boolean;
   toggled: boolean;
   percentChange: string;
+  relativeStrength: number;
   chartData: { [key: number]: number[] };
 }
 
@@ -40,6 +41,7 @@ const Analytics = () => {
     Google: GoogleIcon,
     LinkedIn: LinkedinIcon,
   };
+  
   const socialColors: Record<social, string> = {
     Instagram: '#E1306C',
     Facebook: '#2986cc',
@@ -48,41 +50,57 @@ const Analytics = () => {
     Google: '#FFE047',
     LinkedIn: '#2867B2',
   };
+
+  const progressSocialColors: Record<social, string> = {
+    Instagram: 'bg-[#E1306C]',
+    Facebook: 'bg-[#2986cc]',
+    TikTok: 'bg-black',
+    Twitter: 'bg-[#1DA1F2]',
+    Google: 'bg-[#FFE047]',
+    LinkedIn: 'bg-[#2867B2]',
+  };
+  
   const socials: socialsMap = {
     TikTok: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
     Twitter: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
     Instagram: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
     Facebook: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
     Google: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
     LinkedIn: {
       enabled: false,
       toggled: true,
       chartData: {},
+      relativeStrength: 0,
       percentChange: '+0%',
     },
   };
@@ -160,14 +178,53 @@ const Analytics = () => {
     colors: activeSocialColors, // colors of the lines in the chart
   };
 
-  const currentRelativeStrength =
-    dataByTimeRange[timeRange]?.relativeStrength || {};
-
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
 
   const { supabase } = useSupabase();
 
+  const pairwise = (arr: any[], func: (current: any, next: any) => any) => {
+    for (let i = 0; i < arr.length - 1; i++) 
+      func(arr[i], arr[i + 1]);
+  }
+
+  const calculateRelativeStrength = (scores: number[]) => {
+    const ups: number[] = [], downs: number[] = [];
+
+    pairwise(scores, (current, next) => {
+      const diff = next - current;
+
+      if (diff >= 0) ups.push(diff);
+      else downs.push(Math.abs(diff));
+    });
+
+    const avgUp = ups.reduce((a, c) => a + c, 0) / ups.length;
+    const avgDown = downs.reduce((a, c) => a + c, 0) / downs.length;
+
+    return Math.floor(100 - 100 / (1 + avgUp / avgDown));
+  }
+
+  const getDayName = (date: Date) => {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return daysOfWeek[date.getDay()];
+  }
+
+  const generateDaysOfWeek = () => {
+    const today = new Date();
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const day = new Date(today.getTime() - (6 - i) * 24 * 60 * 60 * 1000); 
+      return getDayName(day);
+     });
+    days[6] = "Today";  
+    return days;
+  }
+  const generateWeeksOfMonth = () => {
+    return Array.from({ length: 7 }, (_, i) => {
+      if (i === 6) {
+          return "This Week";
+      }
+      return `Week ${i + 1}`;
+  });};
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -198,7 +255,7 @@ const Analytics = () => {
             start: Date.now() - 6.048e8,
             end: Date.now(),
             label: 'Past week',
-            categories: ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'],
+            categories: generateDaysOfWeek(),
             relativeStrengths: {},
             socials: structuredClone(socials),
           },
@@ -206,15 +263,7 @@ const Analytics = () => {
             start: Date.now() - 2.628e9,
             end: Date.now(),
             label: 'Past month',
-            categories: [
-              'Week 1',
-              'Week 1.5',
-              'Week 2',
-              'Week 2.5',
-              'Week 3',
-              'Week 3.5',
-              'Week 4',
-            ],
+            categories: generateWeeksOfMonth(),
             relativeStrengths: {},
             socials: structuredClone(socials),
           },
@@ -401,6 +450,7 @@ const Analytics = () => {
                 percentChange: `${percent > 0 ? '+' : ''}${percent.toFixed(
                   0
                 )}%`,
+                relativeStrength: calculateRelativeStrength(newChartData),
               };
             });
         });
@@ -466,12 +516,13 @@ const Analytics = () => {
         <div className="col-span-4 h-full rounded-lg p-6 shadow-lg">
           <h2 className="mb-4">Relative Strength</h2>
           {(timeRange !== 'ALL' &&
-            Object.keys(currentRelativeStrength).map((social) => (
+            (Object.keys(currentSocials) as social[]).filter((key: social) => currentSocials[key].enabled).map((social) => (
               <div className="my-4 text-sm" key={social}>
                 <Progress
-                  label={social.toUpperCase()}
-                  value={currentRelativeStrength[social]}
+                  label={social}
+                  value={currentSocials[social as social].relativeStrength}
                   showValueLabel={true}
+                  classNames={{ indicator: progressSocialColors[social] }}
                 />
               </div>
             ))) || <h4 className="text-sm">N/A</h4>}
