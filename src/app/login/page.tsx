@@ -118,7 +118,7 @@ const Login = () => {
                             disabled={false}
                         />
                         <Button
-                            label='Demo Log In'
+                            label='Demo Perceptify!'
                             onClick={demoLogin}
                             light={false}
                             disabled={false}

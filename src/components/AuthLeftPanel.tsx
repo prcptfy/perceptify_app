@@ -1,7 +1,7 @@
 "use client"
 
 import { FC, ReactNode, useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from "next/image";
 import Button from './Button';
 import Logo from './Logo';
@@ -15,8 +15,9 @@ export default function AuthLeftPanel({
     title,
     subtitle,
 }: AuthLeftPanelProps) {
+    const router = useRouter();
     const pathname = usePathname();
-    const onClick = () => console.log("clicked");
+    const onClick = () => pathname.startsWith("/login") ? router.push("/register") : router.push("/login");
     const label = pathname.startsWith("/login") ? "Create an Account" : "Log In";
     useEffect(() => console.log("mounted"), [])
     return (
