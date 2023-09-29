@@ -1,10 +1,26 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+'use client'
 
-const inter = Inter({ subsets: ['latin'] })
+import Image from 'next/image'
+import { DM_Sans } from 'next/font/google'
+import styles from './page.module.css'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useSupabase } from '@/components/supabase-provider';
+
+// font
+const dmSans = DM_Sans({ subsets: ["latin", "latin-ext"], weight: "500"})
 
 export default function Home() {
+  const router = useRouter();
+  const supabase = useSupabase();
+
+  // async function getProfile() {
+  //   const sessionUser = await supabase.auth.user()
+  // }
+
+  // useEffect(() => {
+  //   if (session)
+  // }, [])
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -52,10 +68,10 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={dmSans.className}>
             Docs <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>
+          <p className={dmSans.className}>
             Find in-depth information about Next.js features and API.
           </p>
         </a>
@@ -66,10 +82,10 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={dmSans.className}>
             Templates <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
+          <p className={dmSans.className}>Explore the Next.js 13 playground.</p>
         </a>
 
         <a
@@ -78,10 +94,10 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h2 className={inter.className}>
+          <h2 className={dmSans.className}>
             Deploy <span>-&gt;</span>
           </h2>
-          <p className={inter.className}>
+          <p className={dmSans.className}>
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
