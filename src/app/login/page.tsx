@@ -108,14 +108,14 @@ const Login = () => {
                         <Button
                             label='Log In With Password'
                             onClick={handleEmailLogin}
-                            light={true}
-                            disabled={false}
+                            light={false}
+                            disabled={!email || !password}
                         />
                         <Button
                             label='Log In With Magic Link'
                             onClick={handleOTPLogin}
-                            light={true}
-                            disabled={false}
+                            light={false}
+                            disabled={!email}
                         />
                         <Button
                             label='Demo Perceptify!'
@@ -131,7 +131,7 @@ const Login = () => {
                         </div>
                         <div className="w-full flex justify-center items-center">
                         <button className="flex items-center bg-white text-[#737373] text-[14px]
-                                            cursor-pointer pt-[10px] pr-[20px] pb-[10px] pl-[20px]
+                                            cursor-pointer w-full justify-center py-4 text-lg
                                             text-center rounded-md
                                             shadow"
                                 onClick={handleGoogleLogin}
