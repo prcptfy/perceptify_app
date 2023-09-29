@@ -77,17 +77,6 @@ const Register = () => {
         setPassword(e.target.value);
     }
 
-    // const sendInvites = async (addedMembers:string[]) => {
-    //     for (const member of addedMembers) {
-    //         const {data, error} = await supabase.auth.signInWithOtp({
-    //             email: member,
-    //             options: {
-    //                 emailRedirectTo: "http://localhost:3000/home"
-    //             }
-    //         });
-    //     }
-    // }
-
     async function sendInvites(addedMembers:string[][]) {
         for (let i = 0; i < addedMembers.length; i++) {
             const member = addedMembers[i];
@@ -118,6 +107,7 @@ const Register = () => {
                 data: {
                     first_name: firstName,
                     last_name: lastName,
+                    updated_at: new Date(Date.now()).toISOString(),
                 }
             }
         });
@@ -131,7 +121,12 @@ const Register = () => {
     }
 
     const signInOauth = async (e:any) => {
-        const { data, error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: "http://localhost:3000/home" } });
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: "http://localhost:3000/home",
+            }
+        });
         if (error) {
             console.log("error", error);
             setErrors(JSON.stringify(error));
