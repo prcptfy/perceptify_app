@@ -515,7 +515,7 @@ const Analytics = () => {
         return a + parseInt(social.chartData[i]);
       }, 0);
 
-      ret.data.push(sum / socials.length);
+      ret.data.push(Math.round(sum / socials.length));
     }
 
     return ret;
@@ -542,7 +542,7 @@ const Analytics = () => {
                     currentSocials[key].enabled && currentSocials[key].toggled
                 )
                 .map((key) => getSeries(key))
-                .concat(calculateAggregate())}
+                .concat(aggregateToggle ? calculateAggregate() : [])}
               type="area"
               height="100%"
               width="100%"
