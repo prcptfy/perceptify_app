@@ -48,15 +48,26 @@ const Login = () => {
             provider: "google",
             options: {
                 redirectTo: "http://localhost:3000/home",
+                }
             }
-        }
-);
+        );
 
         if (error) {
             console.log(error)
         } else {
             router.push("/home")
         }
+    }
+
+    async function demoLogin(e:any) {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithPassword({
+            email: "demo_user@email.com",
+            password: "demopassword"
+        });
+
+        if (error) console.log(error);
+        else router.push("/home");
     }
 
     useEffect(() => console.log(`session: ${session}`), [session]);
@@ -97,12 +108,18 @@ const Login = () => {
                         <Button
                             label='Log In With Password'
                             onClick={handleEmailLogin}
-                            light={false}
+                            light={true}
                             disabled={false}
                         />
                         <Button
                             label='Log In With Magic Link'
                             onClick={handleOTPLogin}
+                            light={true}
+                            disabled={false}
+                        />
+                        <Button
+                            label='Demo Log In'
+                            onClick={demoLogin}
                             light={false}
                             disabled={false}
                         />

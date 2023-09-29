@@ -21,12 +21,12 @@ export default function Button ({
                 px-6 py-4 items-center
                 overflow-hidden justify-center
                 rounded-lg font-normal
-                text-lg
-                cursor-pointer border-2
+                text-lg border-2
                 ${light ? "bg-white" : "bg-purple-450"}
                 ${light ? "text-purple-450" : "text-white"}
                 ${light ? "border-purple-450" : "border-white"}
                 ${light ? "hover:bg-gray-50" : "hover:bg-purple-600"}
+                ${disabled ? "cursor-default bg-gray-300 hover:bg-gray-300" : "cursor-pointer"}
             `}
             onClick={onClick}
 

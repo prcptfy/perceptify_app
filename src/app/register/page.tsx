@@ -61,6 +61,12 @@ const Register = () => {
         )
     }, [credential, password, firstName, lastName, members]);
 
+    const isDisabled = () => {
+        if (!password || !confirmPassword || !credential || !firstName || !lastName) return true;
+        else if (password !== confirmPassword) return true;
+        else return false;
+    }
+
     const updateCredential = (e:any) => {
         e.preventDefault();
         setCredential(e.target.value);
@@ -149,6 +155,24 @@ const Register = () => {
                         <p className='text-lg font-extralight'>Start managing your business insights better and faster.</p>
                     </div>
                     <Input
+                        id='firstName'
+                        label='First Name'
+                        disabled={false}
+                        errors={errors}
+                        required
+                        // icon={emailIcon}
+                        onChange={(e:any) => setFirstName(e.target.value)}
+                    />
+                    <Input
+                        id='lastName'
+                        label='Last Name'
+                        disabled={false}
+                        errors={errors}
+                        required
+                        // icon={emailIcon}
+                        onChange={(e:any) => setLastName(e.target.value)}
+                    />
+                    <Input
                         id='email'
                         label='Email'
                         disabled={false}
@@ -178,11 +202,10 @@ const Register = () => {
                         onChange={(e:any) => setConfirmPassword(e.target.value)}
                     />
                     <Button
-                        label='Next →'
-                        // onClick={() => setStage(stage + 1)}
-                        onClick={() => setStage(stage + 1)}
+                        label='Register'
+                        onClick={handleRegister}
                         light={false}
-                        disabled={confirmPassword === password}
+                        disabled={isDisabled()}
                     />
                     {/* divider */}
                     <div className="relative flex py-5 items-center">
@@ -192,10 +215,10 @@ const Register = () => {
                     </div>
                     {/* Sign up with Google */}
                     <div className="w-full flex justify-center items-center">
-                        <button className="flex items-center bg-white text-[#737373] text-[14px]
-                                            cursor-pointer pt-[10px] pr-[20px] pb-[10px] pl-[20px]
+                        <button className="flex items-center justify-center bg-white text-[#737373] text-[14px]
+                                            cursor-pointer py-4
                                             text-center rounded-md
-                                            shadow"
+                                            shadow w-full text-lg"
                                 onClick={signInOauth}
                         >
                             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" className="w-[18px] h-[18px] mr-[10px]"/>
@@ -330,7 +353,7 @@ const Register = () => {
     return (
         <ClientOnly>
             {/* {stages.get(stage)} */}
-        {stages.get(3)}
+        {stages.get(1)}
         </ClientOnly>
     );
 }
