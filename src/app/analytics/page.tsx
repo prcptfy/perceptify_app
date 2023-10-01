@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { Tabs, Tab, Progress, Spinner, toggle } from '@nextui-org/react';
+import { Tabs, Tab, Progress, Spinner, Switch } from '@nextui-org/react';
 import Chart from 'react-apexcharts';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
@@ -11,16 +11,11 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import LinkedinIcon from '@/components/icons/LinkedInIcon';
 import { useSupabase } from '@/components/supabase-provider';
 import Sentiment from './sentiment';
-type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'ALL';
+
+type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'YTD' | 'ALL';
 
 // add future socials when we  add them
-type social =
-  | 'TikTok'
-  | 'Twitter'
-  | 'Instagram'
-  | 'Facebook'
-  | 'Google'
-  | 'LinkedIn';
+type social = 'TikTok' | 'X' | 'Instagram' | 'Facebook' | 'Google' | 'LinkedIn';
 type socialsMap = Record<social, Socials>;
 
 interface Socials {
@@ -38,16 +33,16 @@ const Analytics = () => {
     Instagram: InstagramIcon,
     Facebook: FacebookIcon,
     TikTok: TikTokIcon,
-    Twitter: TwitterIcon,
+    X: TwitterIcon,
     Google: GoogleIcon,
     LinkedIn: LinkedinIcon,
   };
-  
+
   const socialColors: Record<social, string> = {
     Instagram: '#E1306C',
     Facebook: '#2986cc',
     TikTok: '#000000',
-    Twitter: '#1DA1F2',
+    X: '#000000',
     Google: '#FFE047',
     LinkedIn: '#2867B2',
   };
@@ -56,11 +51,11 @@ const Analytics = () => {
     Instagram: '!bg-[#E1306C]',
     Facebook: '!bg-[#2986cc]',
     TikTok: '!bg-black',
-    Twitter: '!bg-[#1DA1F2]',
+    X: '!bg-black',
     Google: '!bg-[#FFE047]',
     LinkedIn: '!bg-[#2867B2]',
   };
-  
+
   const socials: socialsMap = {
     TikTok: {
       enabled: false,
@@ -69,7 +64,7 @@ const Analytics = () => {
       relativeStrength: 0,
       percentChange: '+0%',
     },
-    Twitter: {
+    X: {
       enabled: false,
       toggled: true,
       chartData: {},
@@ -113,6 +108,7 @@ const Analytics = () => {
   const [currentSocials, setCurrentSocials] = useState<socialsMap>(
     {} as socialsMap
   );
+  const [aggregateToggle, setAggregateToggle] = useState<boolean>(true);
 
   const handleTimeRangeChange = (key: React.Key) => {
     const k = key as timeRange;
@@ -140,11 +136,11 @@ const Analytics = () => {
 
   const chartOptions: ApexCharts.ApexOptions = {
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
         opacityFrom: 0,
         opacityTo: 0,
-      }
+      },
     },
     tooltip: {
       x: {
@@ -176,7 +172,12 @@ const Analytics = () => {
     noData: {
       text: 'There is no data for this period.',
     },
-    colors: activeSocialColors, // colors of the lines in the chart
+    stroke: {
+      colors: [...activeSocialColors, '#8915E4'], // colors of the lines in the chart,
+      dashArray: activeSocialColors.map(() => 0).concat(10),
+      lineCap: 'round',
+      width: 4,
+    },
   };
 
   const [error, setError] = useState<string>();
@@ -185,12 +186,12 @@ const Analytics = () => {
   const { supabase } = useSupabase();
 
   const pairwise = (arr: any[], func: (current: any, next: any) => any) => {
-    for (let i = 0; i < arr.length - 1; i++) 
-      func(arr[i], arr[i + 1]);
-  }
+    for (let i = 0; i < arr.length - 1; i++) func(arr[i], arr[i + 1]);
+  };
 
   const calculateRelativeStrength = (scores: number[]) => {
-    const ups: number[] = [], downs: number[] = [];
+    const ups: number[] = [],
+      downs: number[] = [];
 
     pairwise(scores, (current, next) => {
       const diff = next - current;
@@ -203,29 +204,38 @@ const Analytics = () => {
     const avgDown = downs.reduce((a, c) => a + c, 0) / downs.length;
 
     return Math.floor(100 - 100 / (1 + avgUp / avgDown));
-  }
+  };
 
   const getDayName = (date: Date) => {
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const daysOfWeek = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
     return daysOfWeek[date.getDay()];
-  }
+  };
 
   const generateDaysOfWeek = () => {
     const today = new Date();
     const days = Array.from({ length: 7 }, (_, i) => {
-      const day = new Date(today.getTime() - (6 - i) * 24 * 60 * 60 * 1000); 
+      const day = new Date(today.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
       return getDayName(day);
-     });
-    days[6] = "Today";  
+    });
+    days[6] = 'Today';
     return days;
-  }
+  };
   const generateWeeksOfMonth = () => {
     return Array.from({ length: 7 }, (_, i) => {
       if (i === 6) {
-          return "This Week";
+        return 'This Week';
       }
       return `Week ${i + 1}`;
-  });};
+    });
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -365,23 +375,24 @@ const Analytics = () => {
             ],
             relativeStrengths: {},
             socials: structuredClone(socials),
-          } /* ,
-                    'YTD': {
-                        start: new Date(new Date().setMonth(0, 1)).setHours(0, 0, 0, 0),
-                        end: Date.now(),
-                        label: "Year to date",
-                        categories: [],
-                        relativeStrengths: {},
-                        socials: structuredClone(socials)
-                    },
-                    'ALL': {
-                        start: 0,
-                        end: Date.now(),
-                        label: "All Time",
-                        categories: [],
-                        relativeStrengths: {},
-                        socials: structuredClone(socials)
-                    }*/,
+          },
+          YTD: {
+            start: new Date(new Date().getFullYear(), 0, 1, 0, 0, 0, 0),
+            end: new Date(),
+            label: 'Year to date',
+            categories: [],
+            relativeStrengths: {},
+            socials: structuredClone(socials),
+        },
+        
+          ALL: {
+            start: 0,
+            end: Date.now(),
+            label: 'All Time',
+            categories: [],
+            relativeStrengths: {},
+            socials: structuredClone(socials),
+          },
         };
 
         data.data.forEach((d) => {
@@ -478,6 +489,40 @@ const Analytics = () => {
     };
   };
 
+  interface chartItem {
+    name: string;
+    data: number[];
+  }
+
+  const calculateAggregate = (): chartItem => {
+    const ret: chartItem = {
+      name: 'Aggregate',
+      data: [],
+    };
+
+    if (Object.keys(currentSocials).length === 0) return ret;
+
+    const socials = (Object.keys(currentSocials) as social[]).filter(
+      (key: social) => currentSocials[key].enabled
+    );
+
+    if (socials.length === 0) return ret;
+
+    // @ts-expect-error
+    for (let i = 0; i < currentSocials[socials[0]].chartData.length || 0; i++) {
+      const sum: number = socials.reduce((a: number, c: social) => {
+        const social = currentSocials[c];
+
+        // @ts-expect-error
+        return a + parseInt(social.chartData[i]);
+      }, 0);
+
+      ret.data.push(Math.round(sum / socials.length));
+    }
+
+    return ret;
+  };
+
   return (
     <>
     <div className=" p-10">
@@ -485,6 +530,13 @@ const Analytics = () => {
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-8 h-max min-h-[50vh]">
           <Suspense fallback={<Spinner />}>
+            <Switch
+              color="secondary"
+              isSelected={aggregateToggle}
+              onValueChange={setAggregateToggle}
+            >
+              Aggregate Line
+            </Switch>
             <Chart
               options={chartOptions}
               series={(Object.keys(currentSocials) as social[])
@@ -492,7 +544,8 @@ const Analytics = () => {
                   (key: social) =>
                     currentSocials[key].enabled && currentSocials[key].toggled
                 )
-                .map((key) => getSeries(key))}
+                .map((key) => getSeries(key))
+                .concat(aggregateToggle ? calculateAggregate() : [])}
               type="area"
               height="100%"
               width="100%"
@@ -502,12 +555,15 @@ const Analytics = () => {
               variant="bordered"
               selectedKey={timeRange || '1D'}
               onSelectionChange={handleTimeRangeChange}
+              style={{ marginTop: '24px' }}
               classNames={{
-                tabList: 'w-full relative overflow-x-auto shadow-none',
+                tabList:
+                  'w-full relative overflow-x-auto shadow-none !border-none !bg-gray-50',
                 cursor: 'cursor-auto',
                 tab: 'rounded-md text-black',
               }}
               color="secondary"
+              radius="full"
             >
               {Object.keys(dataByTimeRange).map((key) => (
                 <Tab key={key} title={key}></Tab>
@@ -515,19 +571,26 @@ const Analytics = () => {
             </Tabs>
           </Suspense>
         </div>
-        <div className="col-span-4 h-full rounded-lg p-6 shadow-lg">
-          <h2 className="mb-4">Relative Strength</h2>
+        <div className="col-span-4 h-full rounded-lg bg-gray-50 p-6 font-medium">
+          <h2 className="mb-2 text-lg">Relative Strength</h2>
+          <h3 className="mb-4 text-sm text-gray-500">
+            Platform strength compared to historical performance.
+          </h3>
           {(timeRange !== 'ALL' &&
-            (Object.keys(currentSocials) as social[]).filter((key: social) => currentSocials[key].enabled).map((social) => (
-              <div className="my-4 text-sm" key={social}>
-                <Progress
-                  label={social}
-                  value={currentSocials[social as social].relativeStrength}
-                  showValueLabel={true}
-                  classNames={{ indicator: progressSocialColors[social] }}
-                />
-              </div>
-            ))) || <h4 className="text-sm">N/A</h4>}
+            (Object.keys(currentSocials) as social[])
+              .filter((key: social) => currentSocials[key].enabled)
+              .map((social) => (
+                <div className="my-4" key={social}>
+                  <Progress
+                    label={social}
+                    value={currentSocials[social as social].relativeStrength}
+                    showValueLabel={true}
+                    classNames={{
+                      indicator: progressSocialColors[social],
+                    }}
+                  />
+                </div>
+              ))) || <h4>N/A</h4>}
         </div>
 
         <div className="col-span-12 mt-8 flex flex-nowrap gap-6 overflow-auto overflow-x-auto p-1">
@@ -556,6 +619,9 @@ const Analytics = () => {
               </div>
             ))}
         </div>
+      </div>
+      <div className="mt-10">
+        <Sentiment />
       </div>
     </div>
     <Sentiment/>
