@@ -11,6 +11,7 @@ import GoogleIcon from '@/components/icons/GoogleIcon';
 import LinkedinIcon from '@/components/icons/LinkedInIcon';
 import { useSupabase } from '@/components/supabase-provider';
 import Sentiment from './sentiment';
+
 type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'YTD' | 'ALL';
 
 // add future socials when we  add them
@@ -523,6 +524,7 @@ const Analytics = () => {
   };
 
   return (
+    <>
     <div className=" p-10">
       <h1 className="mb-8 text-4xl">Relevance</h1>
       <div className="grid grid-cols-12 gap-6">
@@ -622,6 +624,8 @@ const Analytics = () => {
         <Sentiment />
       </div>
     </div>
+    <Sentiment/>
+    </>
   );
 };
 

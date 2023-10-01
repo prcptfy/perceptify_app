@@ -1,13 +1,17 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Logo from '../Logo';
+import SmallLogo from '../SmallLogo';
 import NavigationButton from './NavigationButton';
 import BottomButton from './BottomButton';
+import { useSupabase } from '../supabase-provider';
 
 const Sidebar = () => {
-  const router = useRouter();
+  const { supabase, session } = useSupabase();
+  console.log("session", session)
   const pathname = usePathname();
+
   const homeIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -136,10 +140,17 @@ const Sidebar = () => {
     </svg>
   );
 
+  const logout = async () => await supabase.auth.signOut();
+
   return (
-    <div className="flex flex-col w-24 hover:w-96 md:w-96 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
+    <div className="fixed flex flex-col w-74 bg-white z-10 h-full max-h-screen border-[#F1F3F4] transition-all duration-500 ">
       <div className="p-4">
-        <Logo />
+        <div className='md:block hidden pl-4'>
+          <Logo />
+        </div>
+        <div className='md:hidden pl-4'>
+          <SmallLogo />
+        </div>
         <div className="mt-16">
           <NavigationButton
             label="Home"
@@ -170,7 +181,8 @@ const Sidebar = () => {
             icon={integrationsIcon}
           />
         </div>
-        <div className="divide-y mt-16">
+      </div>
+        <div className="divide-y mt-auto p-4">
           <BottomButton
             label="Manage Team"
             link="/manage"
@@ -186,15 +198,14 @@ const Sidebar = () => {
             link="/support"
             icon={supportIcon}
           />
-          <BottomButton
+          {session && (<BottomButton
             label="Log Out"
-            onClick={() => {}}
-            link="/logout"
+            onClick={logout}
+            link="/login"
             red
             icon={logoutIcon}
-          />
+          />)}
         </div>
-      </div>
     </div>
   );
 };

@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+
 import { Tabs, Tab, Progress, Spinner, Switch } from '@nextui-org/react';
+
 import Chart from 'react-apexcharts';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
@@ -15,6 +17,7 @@ type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'ALL';
 
 // add future socials when we  add them
 type social = 'TikTok' | 'X' | 'Instagram' | 'Facebook' | 'Google' | 'LinkedIn';
+
 type socialsMap = Record<social, Socials>;
 
 interface Socials {
@@ -107,6 +110,7 @@ const Sentiment = () => {
   const [currentSocials, setCurrentSocials] = useState<socialsMap>(
     {} as socialsMap
   );
+
   const [aggregateToggle, setAggregateToggle] = useState<boolean>(true);
 
   const handleTimeRangeChange = (key: React.Key) => {
@@ -235,6 +239,7 @@ const Sentiment = () => {
       return `Week ${i + 1}`;
     });
   };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -415,6 +420,7 @@ const Sentiment = () => {
             const chart = range.socials[social].chartData;
 
             range.socials[social].enabled = true;
+
             if (period in chart)
               chart[period].push(parseInt(d['sentiment_score']));
             else chart[period] = [parseInt(d['sentiment_score'])];
