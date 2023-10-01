@@ -620,9 +620,7 @@ const Analytics = () => {
             ))}
         </div>
       </div>
-      <div className="mt-10">
-        <Sentiment />
-      </div>
+     
     </div>
     <Sentiment/>
     </>
