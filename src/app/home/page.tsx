@@ -1,25 +1,19 @@
-"use client"
+'use client';
 
-import './home.css'
+import './home.css';
 import NavigationButton from '@/components/sidebar/NavigationButton';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-
-const Home = ({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) => {
+interface HomeProps {
+  children: React.ReactNode;
+}
+const Home = ({ children }: HomeProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log()
+  console.log();
 
-    return (
-    <div>
-
-    </div>
-    )
-}
+  return <div> {children}</div>;
+};
 
 export default Home;

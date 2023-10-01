@@ -3,9 +3,8 @@
 import { FC, ReactNode, useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from "next/image";
-import Button from './Button';
 import Logo from './Logo';
-
+import {Button} from "@nextui-org/react"
 interface AuthLeftPanelProps {
     title?: string;
     subtitle?: string;
@@ -29,7 +28,7 @@ export default function AuthLeftPanel({
             <Image className='mt-12 mb-10' src="/images/AuthLeftPanelFormIcons.png" width={500} height={500} alt="form-graphic" />
             <div className='mb-5 text-xl font-semibold'>{title}</div>
             <div className='mb-10'>{subtitle}</div>
-            <Button label={label} onClick={onClick} light disabled={false} />
+            <Button size="lg" onClick={onClick}  disabled={false} color="secondary" >{label}</Button>
         </div>
     )
 }

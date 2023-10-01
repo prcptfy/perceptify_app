@@ -10,7 +10,7 @@ import TwitterIcon from '@/components/icons/TwitterIcon';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import LinkedinIcon from '@/components/icons/LinkedInIcon';
 import { useSupabase } from '@/components/supabase-provider';
-import Sentiment from './sentiment';
+
 type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'ALL';
 
 // add future socials when we  add them
@@ -33,7 +33,7 @@ interface Socials {
 
 type dataByTimeRange = Partial<Record<timeRange, any>>;
 
-const Analytics = () => {
+const Sentiment = () => {
   const icons = {
     Instagram: InstagramIcon,
     Facebook: FacebookIcon,
@@ -408,8 +408,8 @@ const Analytics = () => {
             range.socials[social].enabled = true;
             // TODO: Do relative strength calculations
             if (period in chart)
-              chart[period].push(parseInt(d['relevance_score']));
-            else chart[period] = [parseInt(d['relevance_score'])];
+              chart[period].push(parseInt(d['sentiment_score']));
+            else chart[period] = [parseInt(d['sentiment_score'])];
           });
         });
 
@@ -479,9 +479,8 @@ const Analytics = () => {
   };
 
   return (
-    <>
     <div className=" p-10">
-      <h1 className="mb-8 text-4xl">Relevance</h1>
+      <h1 className="mb-8 text-4xl">Sentimental Score</h1>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-8 h-max min-h-[50vh]">
           <Suspense fallback={<Spinner />}>
@@ -558,9 +557,7 @@ const Analytics = () => {
         </div>
       </div>
     </div>
-    <Sentiment/>
-    </>
   );
 };
 
-export default Analytics;
+export default Sentiment;

@@ -140,8 +140,8 @@ const Register = () => {
     stages.set(1, (
         <div className='flex'>
             <AuthLeftPanel
-                title="Lorem Ipsum"
-                subtitle='Lörem ipsum perform öreck regt: infrater. Tidådor infrast, sobende om än eurad i telefåvis. Psykocism krobor girade neoplastisk i Tintingate. Märk-dna höska i tregon hödade, i dan. Vav depolig om än kabelt även om jyspemöligt, än relig. '
+                 title="Learn What the people think."
+                 subtitle='Powerful relevance and sentiment analytics for brand performance. Data-driven, actionable insights and recommendations for marketing strategies. Streamlined integrations and customization. A beautifully refreshing and seamless take on marketing infrastructure, built for you. '
             />
             <div className='flex items-center justify-center mt-6 w-full'>
                 <div className="flex flex-col gap-5 w-1/3">

@@ -143,7 +143,7 @@ const Sidebar = () => {
   const logout = async () => await supabase.auth.signOut();
 
   return (
-    <div className="fixed flex flex-col w-24 hover:w-96 md:w-80 z-10 h-full border-r-[1px] border-[#F1F3F4] transition-all duration-500">
+    <div className="fixed flex flex-col w-74  bg-white z-10 h-full border-[#F1F3F4] transition-all duration-500 ">
       <div className="p-4">
         <div className='md:block hidden pl-4'>
           <Logo />
