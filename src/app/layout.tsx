@@ -36,10 +36,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             />
           )}
           <main className="flex ">
-            <div className="w-74 mr-4 border-r border-gray-200 bg-white ">
+            <div
+              className={`${
+                session ? 'mr-72' : ''
+              } w-74 border-r border-gray-200 bg-white`}
+            >
               {session && <Sidebar />}
             </div>
-            <div className="ml-64 w-auto flex-grow overflow-auto bg-white p-4">
+            <div className="w-auto flex-grow overflow-auto bg-white">
               {children}
             </div>
           </main>
