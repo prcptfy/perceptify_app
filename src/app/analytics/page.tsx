@@ -10,7 +10,6 @@ import TwitterIcon from '@/components/icons/TwitterIcon';
 import GoogleIcon from '@/components/icons/GoogleIcon';
 import LinkedinIcon from '@/components/icons/LinkedInIcon';
 import { useSupabase } from '@/components/supabase-provider';
-import Sentiment from './sentiment';
 
 type timeRange = '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | '3Y' | 'YTD' | 'ALL';
 
@@ -28,160 +27,85 @@ interface Socials {
 
 type dataByTimeRange = Partial<Record<timeRange, any>>;
 
+const icons = {
+  Instagram: InstagramIcon,
+  Facebook: FacebookIcon,
+  TikTok: TikTokIcon,
+  X: TwitterIcon,
+  Google: GoogleIcon,
+  LinkedIn: LinkedinIcon,
+};
+
+const socialColors: Record<social, string> = {
+  Instagram: '#E1306C',
+  Facebook: '#2986cc',
+  TikTok: '#000000',
+  X: '#000000',
+  Google: '#FFE047',
+  LinkedIn: '#2867B2',
+};
+
+const progressSocialColors: Record<social, string> = {
+  Instagram: '!bg-[#E1306C]',
+  Facebook: '!bg-[#2986cc]',
+  TikTok: '!bg-black',
+  X: '!bg-black',
+  Google: '!bg-[#FFE047]',
+  LinkedIn: '!bg-[#2867B2]',
+};
+
+const socials: socialsMap = {
+  TikTok: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+  X: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+  Instagram: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+  Facebook: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+  Google: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+  LinkedIn: {
+    enabled: false,
+    toggled: true,
+    chartData: {},
+    relativeStrength: 0,
+    percentChange: '+0%',
+  },
+};
+
+const charts = ['relevance_score', 'sentiment_score'];
+
 const Analytics = () => {
-  const icons = {
-    Instagram: InstagramIcon,
-    Facebook: FacebookIcon,
-    TikTok: TikTokIcon,
-    X: TwitterIcon,
-    Google: GoogleIcon,
-    LinkedIn: LinkedinIcon,
-  };
-
-  const socialColors: Record<social, string> = {
-    Instagram: '#E1306C',
-    Facebook: '#2986cc',
-    TikTok: '#000000',
-    X: '#000000',
-    Google: '#FFE047',
-    LinkedIn: '#2867B2',
-  };
-
-  const progressSocialColors: Record<social, string> = {
-    Instagram: '!bg-[#E1306C]',
-    Facebook: '!bg-[#2986cc]',
-    TikTok: '!bg-black',
-    X: '!bg-black',
-    Google: '!bg-[#FFE047]',
-    LinkedIn: '!bg-[#2867B2]',
-  };
-
-  const socials: socialsMap = {
-    TikTok: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-    X: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-    Instagram: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-    Facebook: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-    Google: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-    LinkedIn: {
-      enabled: false,
-      toggled: true,
-      chartData: {},
-      relativeStrength: 0,
-      percentChange: '+0%',
-    },
-  };
-
-  const [timeRange, setTimeRange] = useState<timeRange>('1D');
-  const [dataByTimeRange, setDataByTimeRange] = useState<dataByTimeRange>(
-    {} as dataByTimeRange
-  );
-  const [currentSocials, setCurrentSocials] = useState<socialsMap>(
-    {} as socialsMap
-  );
-  const [aggregateToggle, setAggregateToggle] = useState<boolean>(true);
-
-  const handleTimeRangeChange = (key: React.Key) => {
-    const k = key as timeRange;
-
-    setTimeRange(k);
-    setCurrentSocials(dataByTimeRange[k]?.socials || {});
-  };
-
-  const handleSocialChange = (key: social) => {
-    const social = currentSocials[key];
-    setCurrentSocials({
-      ...currentSocials,
-      [key]: {
-        ...social,
-        toggled: !social.toggled,
-      },
-    });
-  };
-  const activeSocialKeys = (Object.keys(currentSocials) as social[]).filter(
-    (key: social) => currentSocials[key].enabled && currentSocials[key].toggled
-  );
-  const activeSocialColors = activeSocialKeys.map(
-    (key: social) => socialColors[key]
-  );
-
-  const chartOptions: ApexCharts.ApexOptions = {
-    fill: {
-      type: 'gradient',
-      gradient: {
-        opacityFrom: 0,
-        opacityTo: 0,
-      },
-    },
-    tooltip: {
-      x: {
-        show: false,
-      },
-    },
-    dataLabels: { enabled: false },
-    chart: {
-      id: 'area',
-    },
-    xaxis: {
-      crosshairs: { show: false, fill: { type: 'none' } },
-      tooltip: { enabled: false },
-      axisTicks: { show: false },
-      categories:
-        dataByTimeRange[timeRange as keyof typeof dataByTimeRange]
-          ?.categories || [],
-    },
-    yaxis: {
-      min: 0,
-      max: 100,
-      tickAmount: 5,
-    },
-    grid: {
-      yaxis: {
-        lines: { show: false },
-      },
-    },
-    noData: {
-      text: 'There is no data for this period.',
-    },
-    stroke: {
-      colors: [...activeSocialColors, '#8915E4'], // colors of the lines in the chart,
-      dashArray: activeSocialColors.map(() => 0).concat(10),
-      lineCap: 'round',
-      width: 4,
-    },
-  };
-
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
+  const [firstRender, setFirstRender] = useState(true);
+  const [chartData, setChartData] = useState<dataByTimeRange[]>([]);
 
   const { supabase } = useSupabase();
 
@@ -228,6 +152,7 @@ const Analytics = () => {
     days[6] = 'Today';
     return days;
   };
+
   const generateWeeksOfMonth = () => {
     return Array.from({ length: 7 }, (_, i) => {
       if (i === 6) {
@@ -236,7 +161,11 @@ const Analytics = () => {
       return `Week ${i + 1}`;
     });
   };
+
   useEffect(() => {
+    if (!firstRender) return;
+    setFirstRender(true);
+
     const fetchData = async () => {
       try {
         const data = await supabase
@@ -383,8 +312,7 @@ const Analytics = () => {
             categories: [],
             relativeStrengths: {},
             socials: structuredClone(socials),
-        },
-        
+          },
           ALL: {
             start: 0,
             end: Date.now(),
@@ -417,10 +345,13 @@ const Analytics = () => {
             const chart = range.socials[social].chartData;
 
             range.socials[social].enabled = true;
-            // TODO: Do relative strength calculations
-            if (period in chart)
-              chart[period].push(parseInt(d['relevance_score']));
-            else chart[period] = [parseInt(d['relevance_score'])];
+            const da = charts.reduce(
+              (a, c) => ({ ...a, [c]: parseInt(d[c]) }),
+              {}
+            );
+
+            if (period in chart) chart[period].push(da);
+            else chart[period] = [da];
           });
         });
 
@@ -429,47 +360,53 @@ const Analytics = () => {
             ? arr.concat(Array(length - arr.length).fill(fill))
             : arr;
 
-        console.log(ranges);
-        Object.keys(ranges).forEach((r) => {
-          const range = ranges[r as keyof typeof ranges];
-          const socials = range.socials;
+        charts.forEach((chart) => {
+          const cd: dataByTimeRange = structuredClone(ranges);
 
-          Object.keys(socials)
-            .filter((s) => socials[s].enabled)
-            .forEach((s) => {
-              const newChartData = padArray(
-                Object.keys(socials[s].chartData).map((key) =>
-                  (
-                    socials[s].chartData[key].reduce(
-                      (a: number, c: number) => a + c,
-                      0
-                    ) / socials[s].chartData[key].length
-                  ).toFixed(0)
-                ),
-                range.categories.length,
-                0
-              );
+          Object.keys(cd).forEach((r) => {
+            const range = cd[r as timeRange];
+            const socials = range.socials;
 
-              const first = newChartData[0];
-              const last = newChartData.at(-1);
-              const diff = last - first;
-
-              const percent = (diff / first) * 100;
-
-              socials[s] = {
-                ...socials[s],
-                chartData: newChartData,
-                percentChange: `${percent > 0 ? '+' : ''}${percent.toFixed(
+            Object.keys(socials)
+              .filter((s) => socials[s].enabled)
+              .forEach((s) => {
+                const newChartData = padArray(
+                  Object.keys(socials[s].chartData).map((key) =>
+                    (
+                      socials[s].chartData[key].reduce(
+                        (a: number, c: Record<string, number>) => a + c[chart],
+                        0
+                      ) / socials[s].chartData[key].length
+                    ).toFixed(0)
+                  ),
+                  range.categories.length,
                   0
-                )}%`,
-                relativeStrength: calculateRelativeStrength(newChartData),
-              };
-            });
-        });
-        console.log(ranges);
+                );
 
-        setCurrentSocials(ranges['1D'].socials || {});
-        setDataByTimeRange(ranges);
+                const first = newChartData[0];
+                const last = newChartData.at(-1);
+                const diff = last - first;
+
+                const percent = (diff / first) * 100;
+
+                const newSocials = {
+                  ...socials[s],
+                  chartData: newChartData,
+                  percentChange: `${percent > 0 ? '+' : ''}${percent.toFixed(
+                    0
+                  )}%`,
+                  relativeStrength: calculateRelativeStrength(newChartData),
+                };
+
+                cd[r as timeRange].socials[s] = newSocials;
+              });
+          });
+
+          setChartData((p) => [...p, cd]);
+        });
+
+        // setCurrentSocials(ranges['1D'].socials || {});
+        // setDataByTimeRange(ranges);
         setLoading(false);
       } catch (err) {
         console.error('Could not fetch data: ' + err);
@@ -482,10 +419,56 @@ const Analytics = () => {
     fetchData();
   }, []);
 
+  return (
+    <>
+      <AnalyticsChartSection data={chartData[0]} title="Relative Strength" />
+      <AnalyticsChartSection data={chartData[1]} title="Sentimental Score" />
+    </>
+  );
+};
+
+interface AnalyticsChartSectionProps {
+  data: dataByTimeRange;
+  title: string;
+}
+
+const AnalyticsChartSection = ({ data, title }: AnalyticsChartSectionProps) => {
+  const [timeRange, setTimeRange] = useState<timeRange>('1D');
+  const [currentSocials, setCurrentSocials] = useState<socialsMap>(
+    {} as socialsMap
+  );
+  const [aggregateToggle, setAggregateToggle] = useState<boolean>(true);
+
+  const handleTimeRangeChange = (key: React.Key) => {
+    const k = key as timeRange;
+
+    setTimeRange(k);
+    setCurrentSocials(data[k]?.socials || {});
+  };
+
+  const handleSocialChange = (key: social) => {
+    const social = currentSocials[key];
+    setCurrentSocials({
+      ...currentSocials,
+      [key]: {
+        ...social,
+        toggled: !social.toggled,
+      },
+    });
+  };
+
+  const activeSocialKeys = (Object.keys(currentSocials) as social[]).filter(
+    (key: social) => currentSocials[key].enabled && currentSocials[key].toggled
+  );
+
+  const activeSocialColors = activeSocialKeys.map(
+    (key: social) => socialColors[key]
+  );
+
   const getSeries = (key: string) => {
     return {
       name: key,
-      data: dataByTimeRange[timeRange]?.socials[key].chartData || [],
+      data: data[timeRange]?.socials[key].chartData || [],
     };
   };
 
@@ -523,58 +506,108 @@ const Analytics = () => {
     return ret;
   };
 
+  const chartOptions: ApexCharts.ApexOptions = {
+    fill: {
+      type: 'gradient',
+      gradient: {
+        opacityFrom: 0,
+        opacityTo: 0,
+      },
+    },
+    tooltip: {
+      x: {
+        show: false,
+      },
+    },
+    dataLabels: { enabled: false },
+    chart: {
+      id: 'area',
+    },
+    xaxis: {
+      crosshairs: { show: false, fill: { type: 'none' } },
+      tooltip: { enabled: false },
+      axisTicks: { show: false },
+      categories:
+        (data &&
+          Object.keys(data).length > 0 &&
+          data[timeRange as timeRange]?.categories) ||
+        [],
+    },
+    yaxis: {
+      min: 0,
+      max: 100,
+      tickAmount: 5,
+    },
+    grid: {
+      yaxis: {
+        lines: { show: false },
+      },
+    },
+    noData: {
+      text: 'There is no data for this period.',
+    },
+    colors: [...activeSocialColors, '#8915E4'],
+    stroke: {
+      colors: [...activeSocialColors, '#8915E4'], // colors of the lines in the chart,
+      dashArray: activeSocialColors.map(() => 0).concat(10),
+      lineCap: 'round',
+      width: 4,
+    },
+  };
+
   return (
-    <>
-    <div className=" p-10">
-      <h1 className="mb-8 text-4xl">Relevance</h1>
+    <div className="p-10">
+      <h1 className="mb-8 text-4xl">{title}</h1>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-8 h-max min-h-[50vh]">
-          <Suspense fallback={<Spinner />}>
-            <Switch
-              color="secondary"
-              isSelected={aggregateToggle}
-              onValueChange={setAggregateToggle}
-            >
-              Aggregate Line
-            </Switch>
-            <Chart
-              options={chartOptions}
-              series={(Object.keys(currentSocials) as social[])
-                .filter(
-                  (key: social) =>
-                    currentSocials[key].enabled && currentSocials[key].toggled
-                )
-                .map((key) => getSeries(key))
-                .concat(aggregateToggle ? calculateAggregate() : [])}
-              type="area"
-              height="100%"
-              width="100%"
-            />
+          {(data && (
+            <Suspense fallback={<Spinner />}>
+              <Switch
+                color="secondary"
+                isSelected={aggregateToggle}
+                onValueChange={setAggregateToggle}
+              >
+                Aggregate Line
+              </Switch>
+              <Chart
+                options={chartOptions}
+                series={(Object.keys(currentSocials) as social[])
+                  .filter(
+                    (key: social) =>
+                      currentSocials[key].enabled && currentSocials[key].toggled
+                  )
+                  .map((key) => getSeries(key))
+                  .concat(aggregateToggle ? calculateAggregate() : [])}
+                type="area"
+                height="100%"
+                width="100%"
+              />
 
-            <Tabs
-              variant="bordered"
-              selectedKey={timeRange || '1D'}
-              onSelectionChange={handleTimeRangeChange}
-              style={{ marginTop: '24px' }}
-              classNames={{
-                tabList:
-                  'w-full relative overflow-x-auto shadow-none !border-none !bg-gray-50',
-                cursor: 'cursor-auto',
-                tab: 'rounded-md text-black',
-              }}
-              color="secondary"
-              radius="full"
-            >
-              {Object.keys(dataByTimeRange).map((key) => (
-                <Tab key={key} title={key}></Tab>
-              ))}
-            </Tabs>
-          </Suspense>
+              <Tabs
+                variant="bordered"
+                selectedKey={timeRange || '1D'}
+                onSelectionChange={handleTimeRangeChange}
+                style={{ marginTop: '24px' }}
+                classNames={{
+                  tabList:
+                    'w-full relative overflow-x-auto shadow-none !border-none !bg-gray-50',
+                  cursor: 'cursor-auto',
+                  tab: 'rounded-md text-black',
+                }}
+                color="secondary"
+                radius="full"
+              >
+                {Object.keys(data).map((key) => (
+                  <Tab key={key} title={key}></Tab>
+                ))}
+              </Tabs>
+            </Suspense>
+          )) || <Spinner className="left-1/2" />}
         </div>
         <div className="col-span-4 h-full rounded-lg bg-gray-50 p-6 font-medium">
           <h2 className="mb-2 text-lg">Relative Strength</h2>
           <h3 className="mb-4 text-sm text-gray-500">
-            Platform strength compared to historical performance.
+            Platform relevance compared to historical performance.
           </h3>
           {(timeRange !== 'ALL' &&
             (Object.keys(currentSocials) as social[])
@@ -620,10 +653,7 @@ const Analytics = () => {
             ))}
         </div>
       </div>
-     
     </div>
-    <Sentiment/>
-    </>
   );
 };
 
