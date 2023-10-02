@@ -161,7 +161,7 @@ const InsightBlock = (props: IProps) => {
 
       {/*close button*/}
       <button
-        className={'absolute right-[1.75rem] top-[1.75rem]'}
+        className={'bg-transparent absolute right-[1.75rem] top-[1.75rem]'}
         onClick={() => {
           console.log('x button clicked.');
           setIsClosed(true);

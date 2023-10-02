@@ -82,7 +82,7 @@ const Insights = () => {
           </button>
           <button
             className={
-              'text-black flex items-center justify-center gap-1  duration-150 rounded-md w-24 h-12 text-md '
+              'text-black flex items-center justify-center gap-1 bg-transparent duration-150 rounded-md w-24 h-12 text-md '
             }
           >
             <p className="font-semibold">Filter</p>
