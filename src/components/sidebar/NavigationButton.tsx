@@ -24,18 +24,18 @@ export default function NavigationButton({
     <Link href={link}>
       <div
         className={`
-            flex transition hover:bg-[#F5F5F5] w-full
+            flex w-full rounded-lg transition hover:bg-[#F5F5F5]
             ${selected ? 'bg-[#F5F5F5]' : 'bg-white'}
             ${small ? 'font-light' : 'font-semibold'}
             ${small ? 'text-sm' : 'text-md'}
-            py-4 px-[19px] items-center gap-6
-            overflow-hidden justify-start
+            items-center justify-start gap-6 overflow-hidden
+            py-4 px-[19px]
           `}
       >
-        <div className="flex align-center">{icon}</div>
+        <div className="align-center flex">{icon}</div>
         <div className="whitespace-nowrap">
           <div className="font-semibold">{label}</div>
-          <div className="font-light text-sm text-[#5E6366]">{subtext}</div>
+          <div className="text-sm font-light text-[#5E6366]">{subtext}</div>
         </div>
       </div>
     </Link>
