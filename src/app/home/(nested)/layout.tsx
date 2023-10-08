@@ -155,8 +155,8 @@ const Home = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="w-full">
         <img
-          className="banner aspect-[5/1] h-full w-full rounded-lg bg-auto"
-          src="https://picsum.photos/500/100"
+          className="banner aspect-[5/1] h-full w-full rounded-lg bg-auto object-cover"
+          src="https://picsum.photos/1200/800"
           id="header-background-id"
           alt="background-img"
         />
@@ -166,8 +166,8 @@ const Home = ({ children }: { children: React.ReactNode }) => {
           <div className="flex-rows flex">
             <div className="profile-img z-2">
               <img
-                className="profile-picture"
-                src="https://unsplash.it/100/100/?random&pic=1(14 kB)"
+                className="profile-picture object-cover"
+                src="https://unsplash.it/200/200/"
                 alt="profile-picture"
               />
             </div>
