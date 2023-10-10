@@ -19,6 +19,11 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+export const metadata = {
+  title: 'Perceptify',
+  description: 'Simplify your data, amplify your insights.',
+};
+
 export default async function RootLayout({ children }: RootLayoutProps) {
   const supabase = createServerClient();
 
