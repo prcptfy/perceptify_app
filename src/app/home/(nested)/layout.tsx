@@ -21,6 +21,8 @@ import { useEffect, useState } from 'react';
 // import { FaPlus } from "react-icons/ai";
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import { useSupabase } from '@/components/supabase-provider';
+import { createClient } from '@supabase/supabase-js';
 
 interface InputInterface {
   username?: string;
@@ -37,7 +39,12 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [username, setUsername] = useState('');
   const [platform, setPlatform] = useState('');
-
+  const [sessionData, setSessionData] = useState(null);
+  const { supabase, session } = useSupabase();
+  useEffect(() => {
+    // @ts-ignore
+    setSessionData(session);
+  }, [session]);
   const [addedSocials, setAddedSocials] = useState<InputInterface[]>([]);
 
   const [popOverOpen, setPopOverOpen] = useState(false);
@@ -134,7 +141,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
     );
     setFilteredSocial(filtered);
   };
-
+  console.log(sessionData);
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="ml-auto flex flex-row gap-1">
@@ -173,7 +180,9 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             </div>
             <div className="profile-info z-2">
               <div className="flex flex-col gap-2">
-                <h1 className="text-2xl">👋 Hey John!</h1>
+                <h1 className="text-2xl">
+                  👋 Hey {session?.user.email || 'Loading Email'}!
+                </h1>
                 <p className="text-gray-500">
                   Get back to managing your insights.
                 </p>

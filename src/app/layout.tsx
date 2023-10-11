@@ -9,6 +9,9 @@ import './globals.css';
 import ClientOnly from '@/components/ClientOnly';
 import Sidebar from '@/components/sidebar/Sidebar';
 // import { NextUIProvider } from '@nextui-org/react';
+import { GetServerSideProps } from 'next';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 
 export const revalidate = 0;
 type SessionType = {
@@ -30,6 +33,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  const pathname = headers().get('x-invoke-path') || '';
+  const blacklist = ['/login', '/register'];
+
+  if (!session && !blacklist.includes(pathname)) redirect('/login');
+  console.log();
 
   return (
     <html lang="en">
