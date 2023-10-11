@@ -13,6 +13,9 @@ import { GetServerSideProps } from 'next';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 
+import { DM_Sans } from 'next/font/google';
+const DMSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'] });
+
 export const revalidate = 0;
 type SessionType = {
   access_token: string;
@@ -42,7 +45,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en">
-      <body>
+      <body className={DMSans.className}>
         <SupabaseProvider session={session}>
           {session && (
             <SupabaseListener

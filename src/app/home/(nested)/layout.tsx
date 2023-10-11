@@ -24,10 +24,99 @@ import { IoMdClose } from 'react-icons/io';
 import { useSupabase } from '@/components/supabase-provider';
 import { createClient } from '@supabase/supabase-js';
 
+const avatarsData = [
+  'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+  'https://i.pravatar.cc/150?u=a04258a2462d826712d',
+  'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+  'https://i.pravatar.cc/150?u=a04258114e29026302d',
+  'https://i.pravatar.cc/150?u=a04258114e29026702d',
+  'https://i.pravatar.cc/150?u=a04258114e29026708c',
+];
+
+const userData = [
+  {
+    name: 'Bob Marley',
+    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+  },
+  {
+    name: 'Bob Ross',
+    avatar: 'https://i.pravatar.cc/150?u=a04258a2462d826712d',
+  },
+  {
+    name: 'Suyogya Poudel',
+    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+  },
+  {
+    name: 'John Doe',
+    avatar: 'https://i.pravatar.cc/150?u=a04258114e29026302d',
+  },
+  {
+    name: 'Jane Doe',
+    // avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+    avatar: '',
+  },
+];
+
+const socials = [
+  {
+    name: 'Twitter',
+    icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968958.png',
+    color: 'rgba(29,161,242, .2)',
+    connected: true,
+  },
+  {
+    name: 'Instagram',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1409/1409946.png',
+    color: 'rgba(225,48,108, .2)',
+    connected: true,
+  },
+  {
+    name: 'Facebook',
+    icon: 'https://cdn-icons-png.flaticon.com/512/3128/3128304.png',
+    color: 'rgba(24,119,242, .2)',
+    connected: true,
+  },
+  {
+    name: 'Reddit',
+    icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111589.png',
+    color: 'rgba(255,69,0, .2)',
+    connected: false,
+  },
+  {
+    name: 'Pinterest',
+    icon: 'https://cdn-icons-png.flaticon.com/512/145/145808.png',
+    color: 'rgba(189,8,28, .2)',
+    connected: false,
+  },
+];
+
 interface InputInterface {
   username?: string;
   platform?: string;
 }
+
+interface QuickviewItemProps {
+  title: string;
+  subtitle: string;
+  image: string;
+  change: string;
+}
+
+const QuickviewItem = ({
+  title,
+  subtitle,
+  image,
+  change,
+}: QuickviewItemProps) => {
+  return (
+    <div className="flex min-w-[300px] gap-12 rounded-xl border-[1px] border-neutral-400 py-4 px-6">
+      <div className="flex flex-col gap-1 font-medium">
+        <h5 className="text-2xl">{title}</h5>
+        <h6 className="text-xs uppercase tracking-widest">{subtitle}</h6>
+      </div>
+    </div>
+  );
+};
 
 const Home = ({ children }: { children: React.ReactNode }) => {
   const [addInput, setAddInput] = useState<InputInterface[]>([
@@ -36,88 +125,18 @@ const Home = ({ children }: { children: React.ReactNode }) => {
       platform: '',
     },
   ]);
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { supabase, session } = useSupabase();
+
   const [username, setUsername] = useState('');
   const [platform, setPlatform] = useState('');
   const [sessionData, setSessionData] = useState(null);
-  const { supabase, session } = useSupabase();
-  useEffect(() => {
-    // @ts-ignore
-    setSessionData(session);
-  }, [session]);
   const [addedSocials, setAddedSocials] = useState<InputInterface[]>([]);
-
   const [popOverOpen, setPopOverOpen] = useState(false);
-
-  useEffect(() => {}, [username, platform]);
-
-  const socials = [
-    {
-      name: 'Twitter',
-      icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968958.png',
-      color: 'rgba(29,161,242, .2)',
-      connected: true,
-    },
-    {
-      name: 'Instagram',
-      icon: 'https://cdn-icons-png.flaticon.com/512/1409/1409946.png',
-      color: 'rgba(225,48,108, .2)',
-      connected: true,
-    },
-    {
-      name: 'Facebook',
-      icon: 'https://cdn-icons-png.flaticon.com/512/3128/3128304.png',
-      color: 'rgba(24,119,242, .2)',
-      connected: true,
-    },
-    {
-      name: 'Reddit',
-      icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111589.png',
-      color: 'rgba(255,69,0, .2)',
-      connected: false,
-    },
-    {
-      name: 'Pinterest',
-      icon: 'https://cdn-icons-png.flaticon.com/512/145/145808.png',
-      color: 'rgba(189,8,28, .2)',
-      connected: false,
-    },
-  ];
-
   const [filteredSocial, setFilteredSocial] = useState(socials);
-
-  const avatarsData = [
-    'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-    'https://i.pravatar.cc/150?u=a04258a2462d826712d',
-    'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-    'https://i.pravatar.cc/150?u=a04258114e29026302d',
-    'https://i.pravatar.cc/150?u=a04258114e29026702d',
-    'https://i.pravatar.cc/150?u=a04258114e29026708c',
-  ];
-
-  const userData = [
-    {
-      name: 'Bob Marley',
-      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-    },
-    {
-      name: 'Bob Ross',
-      avatar: 'https://i.pravatar.cc/150?u=a04258a2462d826712d',
-    },
-    {
-      name: 'Suyogya Poudel',
-      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-    },
-    {
-      name: 'John Doe',
-      avatar: 'https://i.pravatar.cc/150?u=a04258114e29026302d',
-    },
-    {
-      name: 'Jane Doe',
-      // avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
-      avatar: '',
-    },
-  ];
+  const [error, setError] = useState<string | null>(null);
+  const [loadingQuickview, setLoadingQuickview] = useState(true);
 
   const addSocial = () => {
     if (username && platform) {
@@ -141,7 +160,42 @@ const Home = ({ children }: { children: React.ReactNode }) => {
     );
     setFilteredSocial(filtered);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await supabase
+          .from('data')
+          .select()
+          .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`);
+        if (!data['data']) throw new Error('No company data');
+
+        const weeklyData = data.data.filter((d) => {
+          const t = d.timestamp.split(' ');
+          const date = new Date(t[0]).setDate(t[1]);
+
+          return date > Date.now() - 6.048e8;
+        });
+
+        console.log(weeklyData);
+      } catch (err) {
+        console.error('Could not fetch data: ' + err);
+        setError(err as string);
+      }
+
+      setLoadingQuickview(false);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // @ts-ignore
+    setSessionData(session);
+  }, [session]);
+
   console.log(sessionData);
+
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="ml-auto flex flex-row gap-1">
@@ -424,18 +478,12 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             <span className="w-full">Quickview</span>
             <span className="float-right">Edit</span>
           </div>
-          <div
-            className="aspect-[3/1] rounded-xl bg-red-50"
-            style={{ minWidth: '300px' }}
-          ></div>
-          <div
-            className="aspect-[3/1] rounded-xl bg-red-50"
-            style={{ minWidth: '300px' }}
-          ></div>
-          <div
-            className="aspect-[3/1] rounded-xl bg-red-50"
-            style={{ minWidth: '300px' }}
-          ></div>
+          <QuickviewItem
+            title="Relevance"
+            subtitle="Weekly Change"
+            image="/"
+            change="+18%"
+          />
         </div>
       </div>
     </div>

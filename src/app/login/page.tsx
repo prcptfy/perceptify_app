@@ -4,19 +4,21 @@ import { useSupabase } from '@/components/supabase-provider';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+// import Input from '@/components/Input';
 import Link from 'next/link';
-import { Spinner } from '@nextui-org/react';
+import { Spinner, Button, Input } from '@nextui-org/react';
+import { EyeFilledIcon } from '../../components/icons/EyeFilledIcon';
+import { EyeSlashFilledIcon } from '../../components/icons/EyeSlashFilledIcon';
+
 const Login = () => {
   const router = useRouter();
   const { supabase, session } = useSupabase();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const [loading, setLoading] = useState(false);
-
   const keyIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="none">
       <path
@@ -36,7 +38,6 @@ const Login = () => {
       />
     </svg>
   );
-
   async function handleEmailLogin(e: any) {
     e.preventDefault();
     const { error } = await supabase.auth.signInWithPassword({
@@ -66,7 +67,6 @@ const Login = () => {
         redirectTo: 'http://localhost:3000/home',
       },
     });
-
     if (error) {
       console.log(error);
     } else {
@@ -88,9 +88,11 @@ const Login = () => {
     }
   }
 
-  useEffect(() => console.log(`session: ${session}`), [session]);
-
-  if (!session)
+  // useEffect(() => console.log(`session: ${session}`), [session]);
+  if (session) {
+    router.push('/home/overview');
+    return <div></div>;
+  } else if (!session)
     return (
       <div className="flex">
         <AuthLeftPanel
@@ -108,7 +110,7 @@ const Login = () => {
                 Get back to managing your business insights.
               </p>
             </div>
-            <Input
+            {/* <Input
               id="email"
               label="Email"
               disabled={false}
@@ -126,6 +128,29 @@ const Login = () => {
               required
               icon={keyIcon}
               onChange={(e: any) => setPassword(e.target.value)}
+    /> */}
+            <Input
+              type="email"
+              label="Email"
+              onChange={(e: any) => setEmail(e.target.value)}
+              required
+              startContent={emailIcon}
+            />
+            <Input
+              onChange={(e: any) => setPassword(e.target.value)}
+              label="Password"
+              startContent={keyIcon}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
+                </button>
+              }
+              // type={isVisible ? 'text' : 'password'}
+              className="max-w-xs"
             />
             <Link
               href="/forgot-password"
@@ -134,23 +159,22 @@ const Login = () => {
               Forgot Password?
             </Link>
             <Button
-              label="Log In With Password"
+              color="secondary"
               onClick={handleEmailLogin}
-              light={false}
               disabled={!email || !password}
-            />
+            >
+              Log In With Password
+            </Button>
             <Button
-              label="Log In With Magic Link"
+              color="secondary"
               onClick={handleOTPLogin}
-              light={false}
               disabled={!email}
-            />
-            <Button
-              label="Demo Perceptify!"
-              onClick={demoLogin}
-              light={false}
-              disabled={false}
-            />
+            >
+              Log In With Magic Link
+            </Button>
+            <Button color="secondary" onClick={demoLogin} disabled={false}>
+              Demo Perceptify
+            </Button>
             {/* divider */}
             <div className="relative flex items-center py-5">
               <div className="flex-grow border-t border-gray-400"></div>
