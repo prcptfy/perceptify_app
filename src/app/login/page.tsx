@@ -20,7 +20,12 @@ const Login = () => {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const [loading, setLoading] = useState(false);
   const keyIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      viewBox="0 0 27 27"
+      fill="none"
+    >
       <path
         stroke="#8915E4"
         strokeLinecap="round"
@@ -30,14 +35,21 @@ const Login = () => {
       />
     </svg>
   );
+
   const emailIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="25" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      viewBox="0 0 27 27"
+      fill="none"
+    >
       <path
         fill="#8915E4"
         d="M24.777 4.688H3.348a1.786 1.786 0 0 0-1.785 1.785V20.76a1.786 1.786 0 0 0 1.785 1.786h21.429a1.786 1.786 0 0 0 1.785-1.786V6.473a1.786 1.786 0 0 0-1.785-1.785Zm-1.965 1.785-8.75 6.054-8.75-6.054h17.5ZM3.349 20.76V7.286l10.206 7.062a.893.893 0 0 0 1.017 0l10.206-7.062v13.473H3.348Z"
       />
     </svg>
   );
+
   async function handleEmailLogin(e: any) {
     e.preventDefault();
     const { error } = await supabase.auth.signInWithPassword({
@@ -101,7 +113,7 @@ const Login = () => {
         />
         <div className="mt-6 flex w-full items-center justify-center">
           <form
-            className="flex w-1/3 flex-col gap-5"
+            className="flex max-w-md flex-col gap-5"
             onSubmit={handleEmailLogin}
           >
             <div>
@@ -131,14 +143,15 @@ const Login = () => {
     /> */}
             <Input
               type="email"
-              label="Email"
               onChange={(e: any) => setEmail(e.target.value)}
+              placeholder="Email"
               required
               startContent={emailIcon}
             />
             <Input
               onChange={(e: any) => setPassword(e.target.value)}
-              label="Password"
+              placeholder="Password"
+              required
               startContent={keyIcon}
               endContent={
                 <button
@@ -150,7 +163,6 @@ const Login = () => {
                 </button>
               }
               // type={isVisible ? 'text' : 'password'}
-              className="max-w-xs"
             />
             <Link
               href="/forgot-password"
