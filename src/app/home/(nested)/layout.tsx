@@ -108,11 +108,44 @@ const QuickviewItem = ({
   image,
   change,
 }: QuickviewItemProps) => {
+  const positive = parseInt(change) > 0;
+
   return (
-    <div className="flex min-w-[300px] gap-12 rounded-xl border-[1px] border-neutral-400 py-4 px-6">
-      <div className="flex flex-col gap-1 font-medium">
+    <div className="flex min-w-[300px] rounded-xl border-[1px] py-4 px-6">
+      <span
+        className={`${
+          positive
+            ? '-translate-y-1/4 border-b-green-600'
+            : 'translate-y-1/4 border-t-red-600'
+        } my-auto mr-5 h-0 w-0 border-8 border-transparent`}
+      ></span>
+      <div className="my-auto h-max font-medium">
         <h5 className="text-2xl">{title}</h5>
         <h6 className="text-xs uppercase tracking-widest">{subtitle}</h6>
+      </div>
+      <div className="ml-auto flex flex-col items-center justify-center gap-2">
+        <svg
+          height="30"
+          viewBox="0 0 96 33"
+          className="mr-2"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2 23.7222C5.92493 23.7505 5.94452 16.1876 8.79778 17.0423C11.651 17.897 12.8458 31.2751 16.1007 30.9087C19.3556 30.5422 20.1031 24.4777 23 23.7222C25.8969 22.9667 26.5194 16.935 30.3394 15.8695C34.1594 14.8039 33.8192 6.66207 37.2595 6.96326C40.6997 7.26444 40.6641 11.8697 44.2158 11.8697C47.7674 11.8697 48.1069 2.28126 51.8605 2.00351C55.614 1.72577 55.6926 18.0027 59.7226 18.0027C63.7525 18.0027 65.0198 29.2955 68.5629 30.0554C72.106 30.8153 71.2252 12.102 74.867 9.41646C78.5088 6.73088 78.0163 25.8293 81.4248 25.3623C84.8334 24.8953 85.0623 20.1142 88 21.2222C90.9377 22.3302 91.6091 25.3623 94.5 25.3623"
+            className={positive ? 'stroke-green-600' : 'stroke-red-600'}
+            stroke-width="2.62873"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <span
+          className={`${
+            positive ? 'text-green-600' : 'text-red-600'
+          } text-3xl font-bold`}
+        >
+          {change}
+        </span>
       </div>
     </div>
   );
@@ -223,7 +256,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
         />
       </div>
       <div className="grid grid-cols-[minmax(auto,_1fr)_minmax(auto,_400px)] gap-5">
-        <div className="flex flex-col gap-10 border-r">
+        <div className="flex flex-col gap-10">
           <div className="flex-rows flex">
             <div className="profile-img z-2">
               <img
@@ -473,16 +506,22 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="w-full px-4">
-            <span className="w-full">Quickview</span>
-            <span className="float-right">Edit</span>
+        <div className="flex flex-col gap-2 border-l pl-8">
+          <div className="mb-2 flex w-full items-center justify-between">
+            <span className="text-2xl font-medium">Quickview</span>
+            <span className="cursor-pointer text-purple-450">Edit</span>
           </div>
           <QuickviewItem
             title="Relevance"
             subtitle="Weekly Change"
             image="/"
             change="+18%"
+          />
+          <QuickviewItem
+            title="Sentiment"
+            subtitle="Weekly Change"
+            image="/"
+            change="-12%"
           />
         </div>
       </div>

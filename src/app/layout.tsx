@@ -45,21 +45,17 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en">
-      <body className={DMSans.className}>
+      <body className={`${DMSans.className} flex h-screen overflow-hidden`}>
         <SupabaseProvider session={session}>
           {session && (
             <SupabaseListener
               serverAccessToken={(session as SessionType)?.access_token}
             />
           )}
-          <main className="flex ">
-            <div
-              className={`${
-                session ? 'mr-72' : ''
-              } w-74 border-r border-gray-200 bg-white`}
-            >
-              {session && <Sidebar />}
-            </div>
+          <div className="w-74 border-r border-gray-200 bg-white">
+            {session && <Sidebar />}
+          </div>
+          <main className="flex overflow-y-auto">
             <div className="w-auto flex-grow overflow-auto bg-white">
               {children}
             </div>
