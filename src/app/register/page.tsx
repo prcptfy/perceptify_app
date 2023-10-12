@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use, MouseEventHandler } from 'react';
+import React, { useState, useEffect, useRef, MouseEventHandler } from 'react';
 import { useSupabase } from '@/components/supabase-provider';
 import { Session } from "@supabase/supabase-js";
 import Input from '@/components/Input';
@@ -31,6 +31,7 @@ const Register = () => {
     const [errors, setErrors] = useState('')
     // const [session, setSession] = useState<Session | null>(null);
     const [members, setMembers] = useState([['', '', '']]);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -84,13 +85,13 @@ const Register = () => {
             const { data, error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
-                    emailRedirectTo: "http://localhost:3000/home",
+                    emailRedirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
                     data: {
                         first_name,
                         last_name,
                     }
                 }
-            })
+            });
         }
     }
 
@@ -124,7 +125,7 @@ const Register = () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: "http://localhost:3000/home",
+                redirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
             }
         });
         if (error) {
@@ -135,6 +136,14 @@ const Register = () => {
         }
         console.log(data)
     }
+
+    // async function uploadImage(e:any) {
+    //     const file = e.target.files[0];
+    //     const { data, error } = await supabase
+    //         .storage
+    //         .from('avatars')
+    //         .upload(user.id + "/") // uuid
+    // }
 
     const stages = new Map();
     stages.set(1, (
@@ -240,7 +249,23 @@ const Register = () => {
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='w-full h-48 mb-12'>
                         <CoverImageUpload handleUpload="" />
-                        <ProfileImageUpload />
+                        <div
+                            className={`
+                                flex items-center justify-center w-24 h-24 ml-16 -mt-12
+                                rounded-full bg-[#F5F5F5] border-slate-300 border-dashed border-2
+                                cursor-pointer hover:border-slate-500 z-50
+                            `}
+                            id="dropzone"
+                            onClick={() => inputRef.current?.click()}
+                            >
+                            <input
+                                type="file"
+                                accept='image/jpeg,image/png'
+                                onChange={(e:any) => null}
+                                hidden
+                                ref={inputRef}
+                            />
+                        </div>
                     </div>
                     <div className='flex w-full justify-start'>
                         <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
@@ -252,7 +277,7 @@ const Register = () => {
                             disabled={false}
                             errors={errors}
                             required
-                            onChange={(e:any) => setFirstName(e.target.value)}
+                            onChange={(e: any) => setFirstName(e.target.value)}
                         />
                         <Input
                             id='lastName'
@@ -260,7 +285,7 @@ const Register = () => {
                             disabled={false}
                             errors={errors}
                             required
-                            onChange={(e:any) => setLastName(e.target.value)}
+                            onChange={(e: any) => setLastName(e.target.value)}
                         />
                         <Input
                             id='companyName'
@@ -268,7 +293,7 @@ const Register = () => {
                             disabled={false}
                             errors={errors}
                             required
-                            onChange={(e:any) => setCompanyName(e.target.value)}
+                            onChange={(e: any) => setCompanyName(e.target.value)}
                         />
                         <Input
                             id='role'
@@ -276,7 +301,7 @@ const Register = () => {
                             disabled={false}
                             errors={errors}
                             required
-                            onChange={(e:any) => setRole(e.target.value)}
+                            onChange={(e: any) => setRole(e.target.value)}
                         />
                     </div>
                     <div className="flex w-full justify-end">
@@ -348,7 +373,7 @@ const Register = () => {
     return (
         <ClientOnly>
             {/* {stages.get(stage)} */}
-        {stages.get(1)}
+        {stages.get(2)}
         </ClientOnly>
     );
 }
