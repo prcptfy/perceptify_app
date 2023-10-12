@@ -13,6 +13,7 @@ import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getImageSize } from 'next/dist/server/image-optimizer';
 // import Logo from '@/components/Logo';
 
 const Register = () => {
@@ -116,7 +117,7 @@ const Register = () => {
             console.log('error', error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/home");
+            location.href = '/home'
         }
         console.log(data)
     }
@@ -132,17 +133,40 @@ const Register = () => {
             console.log("error", error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/dashboard");
+            location.href = '/home'
         }
         console.log(data)
     }
 
     // async function uploadImage(e:any) {
     //     const file = e.target.files[0];
+    //     const uuid =  crypto.randomUUID();
+
+    //     setProfilePicture(uuid);
+
     //     const { data, error } = await supabase
     //         .storage
     //         .from('avatars')
-    //         .upload(user.id + "/") // uuid
+    //         .upload(uuid, file)
+
+    //     if (data)
+    //         getImage('avatars', uuid);
+    //     else
+    //         console.log("error getting image")
+    // }
+
+    // async function getImage(bucket: string, imageName: string) {
+    //     const { data, error } = await supabase
+    //         .storage
+    //         .from(bucket)
+    //         .list('', {
+    //             limit: 1,
+    //             offset: 0,
+    //             sortBy: {
+    //                 column: 'name',
+    //                 order: 'asc'
+    //             }
+    //         })
     // }
 
     const stages = new Map();
