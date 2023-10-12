@@ -4,21 +4,28 @@ import { useSupabase } from '@/components/supabase-provider';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthLeftPanel from '@/components/AuthLeftPanel';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+// import Input from '@/components/Input';
 import Link from 'next/link';
-import { Spinner } from '@nextui-org/react';
+import { Spinner, Button, Input } from '@nextui-org/react';
+import { EyeFilledIcon } from '../../components/icons/EyeFilledIcon';
+import { EyeSlashFilledIcon } from '../../components/icons/EyeSlashFilledIcon';
+
 const Login = () => {
   const router = useRouter();
   const { supabase, session } = useSupabase();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const [loading, setLoading] = useState(false);
-
   const keyIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      viewBox="0 0 27 27"
+      fill="none"
+    >
       <path
         stroke="#8915E4"
         strokeLinecap="round"
@@ -28,8 +35,14 @@ const Login = () => {
       />
     </svg>
   );
+
   const emailIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="25" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="27"
+      viewBox="0 0 27 27"
+      fill="none"
+    >
       <path
         fill="#8915E4"
         d="M24.777 4.688H3.348a1.786 1.786 0 0 0-1.785 1.785V20.76a1.786 1.786 0 0 0 1.785 1.786h21.429a1.786 1.786 0 0 0 1.785-1.786V6.473a1.786 1.786 0 0 0-1.785-1.785Zm-1.965 1.785-8.75 6.054-8.75-6.054h17.5ZM3.349 20.76V7.286l10.206 7.062a.893.893 0 0 0 1.017 0l10.206-7.062v13.473H3.348Z"
@@ -66,7 +79,6 @@ const Login = () => {
         redirectTo: 'http://localhost:3000/home',
       },
     });
-
     if (error) {
       console.log(error);
     } else {
@@ -88,9 +100,11 @@ const Login = () => {
     }
   }
 
-  useEffect(() => console.log(`session: ${session}`), [session]);
-
-  if (!session)
+  // useEffect(() => console.log(`session: ${session}`), [session]);
+  if (session) {
+    router.push('/home/overview');
+    return <div></div>;
+  } else if (!session)
     return (
       <div className="flex">
         <AuthLeftPanel
@@ -99,7 +113,7 @@ const Login = () => {
         />
         <div className="mt-6 flex w-full items-center justify-center">
           <form
-            className="flex w-1/3 flex-col gap-5"
+            className="flex max-w-md flex-col gap-5"
             onSubmit={handleEmailLogin}
           >
             <div>
@@ -108,7 +122,7 @@ const Login = () => {
                 Get back to managing your business insights.
               </p>
             </div>
-            <Input
+            {/* <Input
               id="email"
               label="Email"
               disabled={false}
@@ -126,31 +140,53 @@ const Login = () => {
               required
               icon={keyIcon}
               onChange={(e: any) => setPassword(e.target.value)}
+    /> */}
+            <Input
+              type="email"
+              onChange={(e: any) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              startContent={emailIcon}
+            />
+            <Input
+              onChange={(e: any) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              startContent={keyIcon}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
+                </button>
+              }
+              type={isVisible ? 'text' : 'password'}
             />
             <Link
               href="/forgot-password"
-              className="text-purple-450 hover:font-semibold"
+              className="text-purple-450 hover:text-purple-500"
             >
               Forgot Password?
             </Link>
             <Button
-              label="Log In With Password"
+              color="secondary"
               onClick={handleEmailLogin}
-              light={false}
               disabled={!email || !password}
-            />
+            >
+              Log In With Password
+            </Button>
             <Button
-              label="Log In With Magic Link"
+              color="secondary"
               onClick={handleOTPLogin}
-              light={false}
               disabled={!email}
-            />
-            <Button
-              label="Demo Perceptify!"
-              onClick={demoLogin}
-              light={false}
-              disabled={false}
-            />
+            >
+              Log In With Magic Link
+            </Button>
+            <Button color="secondary" onClick={demoLogin} disabled={false}>
+              Demo Perceptify
+            </Button>
             {/* divider */}
             <div className="relative flex items-center py-5">
               <div className="flex-grow border-t border-gray-400"></div>
