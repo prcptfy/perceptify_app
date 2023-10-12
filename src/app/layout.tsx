@@ -55,7 +55,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <div className="w-74 border-r border-gray-200 bg-white">
             {session && <Sidebar />}
           </div>
-          <main className="flex overflow-y-auto">
+          <main className="flex flex-grow overflow-y-auto">
             <div className="w-auto flex-grow overflow-auto bg-white">
               {children}
             </div>

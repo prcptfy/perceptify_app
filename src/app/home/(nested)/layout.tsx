@@ -20,6 +20,7 @@ import {
 import { useEffect, useState } from 'react';
 // import { FaPlus } from "react-icons/ai";
 import { FaPlus, FaSearch } from 'react-icons/fa';
+import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdClose } from 'react-icons/io';
 import { useSupabase } from '@/components/supabase-provider';
 import { createClient } from '@supabase/supabase-js';
@@ -98,16 +99,10 @@ interface InputInterface {
 interface QuickviewItemProps {
   title: string;
   subtitle: string;
-  image: string;
   change: string;
 }
 
-const QuickviewItem = ({
-  title,
-  subtitle,
-  image,
-  change,
-}: QuickviewItemProps) => {
+const QuickviewItem = ({ title, subtitle, change }: QuickviewItemProps) => {
   const positive = parseInt(change) > 0;
 
   return (
@@ -268,7 +263,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             <div className="profile-info z-2">
               <div className="flex flex-col gap-2">
                 <h1 className="text-2xl">
-                  👋 Hey {session?.user.email || 'Loading Email'}!
+                  👋 Hey{' '}
+                  {session?.user.user_metadata.first_name ||
+                    session?.user.email}
+                  !
                 </h1>
                 <p className="text-gray-500">
                   Get back to managing your insights.
@@ -514,15 +512,30 @@ const Home = ({ children }: { children: React.ReactNode }) => {
           <QuickviewItem
             title="Relevance"
             subtitle="Weekly Change"
-            image="/"
             change="+18%"
           />
           <QuickviewItem
             title="Sentiment"
             subtitle="Weekly Change"
-            image="/"
             change="-12%"
           />
+          <div className="relative flex w-full gap-6 rounded-xl border-[1px] bg-white py-4 px-6">
+            <AiOutlineClose className="absolute right-2 top-2 cursor-pointer" />
+            <img alt="" src="/images/HomeTutorialLove.png" className="h-full" />
+            <div className="flex flex-col gap-1">
+              <h5 className="font-semibold">Welcome!</h5>
+              <h6 className="text-xs">
+                Want to learn how to get the best out of Perceptify? Take a
+                short tutorial.
+              </h6>
+              <div className="mt-2 flex items-center justify-between">
+                <button className="w-max bg-transparent text-purple-450">
+                  Start tutorial
+                </button>
+                <span className="text-xs text-neutral-400">1/2</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

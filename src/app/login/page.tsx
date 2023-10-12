@@ -162,11 +162,11 @@ const Login = () => {
                   {isVisible ? <EyeSlashFilledIcon /> : <EyeFilledIcon />}
                 </button>
               }
-              // type={isVisible ? 'text' : 'password'}
+              type={isVisible ? 'text' : 'password'}
             />
             <Link
               href="/forgot-password"
-              className="text-purple-450 hover:font-semibold"
+              className="text-purple-450 hover:text-purple-500"
             >
               Forgot Password?
             </Link>
