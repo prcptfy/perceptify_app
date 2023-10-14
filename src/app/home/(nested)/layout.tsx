@@ -206,7 +206,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
 
         const weeklyData = data.data.filter((d) => {
           const t = d.timestamp.split(' ');
-          const date = new Date(t[0]).setDate(t[1]);
+          const date = new Date(t[0]).setHours(t[1]);
 
           return date > Date.now() - 6.048e8;
         });
