@@ -268,7 +268,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="ml-auto flex flex-row gap-1">
-        <AvatarGroup className="avatar_group" max={5} total={5}>
+       {/* <AvatarGroup className="avatar_group" max={5} total={5}>
           {userData.map((user) => (
             <Avatar
               key={user.name}
@@ -278,10 +278,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               src={user.avatar}
             />
           ))}
-        </AvatarGroup>
+          </AvatarGroup> 
         <button className="rounded-full bg-purple-450 px-3 py-3">
-          <FaPlus color="white" size={15} />
-        </button>
+          <FaPlus color="white"  />
+        </button>*/}
       </div>
       <div className="w-full">
         <img

@@ -12,7 +12,7 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import { GetServerSideProps } from 'next';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-
+import Header from '@/components/header';
 import { DM_Sans } from 'next/font/google';
 const DMSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
@@ -24,7 +24,29 @@ type SessionType = {
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-
+const userData = [
+  {
+    name: 'Bob Marley',
+    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+  },
+  {
+    name: 'Bob Ross',
+    avatar: 'https://i.pravatar.cc/150?u=a04258a2462d826712d',
+  },
+  {
+    name: 'Suyogya Poudel',
+    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+  },
+  {
+    name: 'John Doe',
+    avatar: 'https://i.pravatar.cc/150?u=a04258114e29026302d',
+  },
+  {
+    name: 'Jane Doe',
+    // avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+    avatar: '',
+  },
+];
 export const metadata = {
   title: 'Perceptify',
   description: 'Simplify your data, amplify your insights.',
@@ -56,7 +78,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             {session && <Sidebar />}
           </div>
           <main className="flex flex-grow overflow-y-auto">
-            <div className="w-auto flex-grow overflow-auto bg-white">
+            <div className="relative w-auto flex-grow bg-white">
+              <div className='mb-12'>
+              <Header userData={userData} /></div>
               {children}
             </div>
           </main>
