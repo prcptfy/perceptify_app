@@ -325,9 +325,10 @@ const Analytics = () => {
 
         data.data.forEach((d) => {
           const social = Object.keys(socials)[d['media_id']];
+          if (!social) return;
 
           const t = d.timestamp.split(' ');
-          const date = new Date(t[0]).setDate(t[1]);
+          const date = new Date(t[0]).setHours(t[1], 0, 0, 0);
 
           const validRanges = Object.keys(ranges).filter(
             (r) =>

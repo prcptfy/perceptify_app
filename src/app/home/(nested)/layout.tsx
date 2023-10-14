@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Chip,
+  Spinner,
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 // import { FaPlus } from "react-icons/ai";
@@ -102,6 +103,8 @@ interface QuickviewItemProps {
   change: string;
 }
 
+const quickviewItems = ['relevance_score', 'sentiment_score'];
+
 const QuickviewItem = ({ title, subtitle, change }: QuickviewItemProps) => {
   const positive = parseInt(change) > 0;
 
@@ -164,7 +167,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   const [popOverOpen, setPopOverOpen] = useState(false);
   const [filteredSocial, setFilteredSocial] = useState(socials);
   const [error, setError] = useState<string | null>(null);
-  const [loadingQuickview, setLoadingQuickview] = useState(true);
+  const [quickviewData, setQuickviewData] = useState<Record<
+    string,
+    QuickviewItemProps
+  > | null>(null);
 
   const addSocial = () => {
     if (username && platform) {
@@ -200,18 +206,53 @@ const Home = ({ children }: { children: React.ReactNode }) => {
 
         const weeklyData = data.data.filter((d) => {
           const t = d.timestamp.split(' ');
-          const date = new Date(t[0]).setDate(t[1]);
+          const date = new Date(t[0]).setHours(t[1]);
 
           return date > Date.now() - 6.048e8;
         });
 
-        console.log(weeklyData);
+        // We only care about the earliest date and the latest date, regardless of the time
+        let earliestDate = weeklyData[0].timestamp.split(' ')[0],
+          earliestData: Record<string, any>[] = [];
+        let latestDate =
+            weeklyData[weeklyData.length - 1].timestamp.split(' ')[0],
+          latestData: Record<string, any>[] = [];
+
+        for (let i = 0; i < weeklyData.length; i++) {
+          if (weeklyData[i].timestamp.split(' ')[0] !== earliestDate) break;
+          earliestData.push(weeklyData[i]);
+        }
+
+        for (let i = weeklyData.length - 1; i >= 0; i--) {
+          if (weeklyData[i].timestamp.split(' ')[0] !== latestDate) break;
+          latestData.push(weeklyData[i]);
+        }
+
+        quickviewItems.forEach((item) => {
+          const earliestValue =
+            earliestData.reduce((a, c) => a + c[item], 0) / earliestData.length;
+          const latestValue =
+            latestData.reduce((a, c) => a + c[item], 0) / latestData.length;
+
+          const change = Math.floor(
+            latestValue - (earliestValue / earliestValue) * 100
+          );
+
+          setQuickviewData((p) => ({
+            ...p,
+            [item]: {
+              title:
+                item.split('_')[0].substring(0, 1).toUpperCase() +
+                item.split('_')[0].substring(1),
+              subtitle: 'Weekly Change',
+              change: `${change > 0 ? '+' : ''}${change}%`,
+            },
+          }));
+        });
       } catch (err) {
         console.error('Could not fetch data: ' + err);
         setError(err as string);
       }
-
-      setLoadingQuickview(false);
     };
 
     fetchData();
@@ -227,7 +268,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="ml-auto flex flex-row gap-1">
-        <AvatarGroup className="avatar_group" max={5} total={5}>
+       {/* <AvatarGroup className="avatar_group" max={5} total={5}>
           {userData.map((user) => (
             <Avatar
               key={user.name}
@@ -237,10 +278,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               src={user.avatar}
             />
           ))}
-        </AvatarGroup>
+          </AvatarGroup> 
         <button className="rounded-full bg-purple-450 px-3 py-3">
-          <FaPlus color="white" size={15} />
-        </button>
+          <FaPlus color="white"  />
+        </button>*/}
       </div>
       <div className="w-full">
         <img
@@ -509,33 +550,34 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             <span className="text-2xl font-medium">Quickview</span>
             <span className="cursor-pointer text-purple-450">Edit</span>
           </div>
-          <QuickviewItem
-            title="Relevance"
-            subtitle="Weekly Change"
-            change="+18%"
-          />
-          <QuickviewItem
-            title="Sentiment"
-            subtitle="Weekly Change"
-            change="-12%"
-          />
-          <div className="relative flex w-full gap-6 rounded-xl border-[1px] bg-white py-4 px-6">
-            <AiOutlineClose className="absolute right-2 top-2 cursor-pointer" />
-            <img alt="" src="/images/HomeTutorialLove.png" className="h-full" />
-            <div className="flex flex-col gap-1">
-              <h5 className="font-semibold">Welcome!</h5>
-              <h6 className="text-xs">
-                Want to learn how to get the best out of Perceptify? Take a
-                short tutorial.
-              </h6>
-              <div className="mt-2 flex items-center justify-between">
-                <button className="w-max bg-transparent text-purple-450">
-                  Start tutorial
-                </button>
-                <span className="text-xs text-neutral-400">1/2</span>
+          {(quickviewData && (
+            <>
+              {quickviewItems.map((item) => {
+                return <QuickviewItem {...quickviewData[item]} />;
+              })}
+              <div className="relative flex w-full gap-6 rounded-xl border-[1px] bg-white py-4 px-6">
+                <AiOutlineClose className="absolute right-2 top-2 cursor-pointer" />
+                <img
+                  alt=""
+                  src="/images/HomeTutorialLove.png"
+                  className="h-full"
+                />
+                <div className="flex flex-col gap-1">
+                  <h5 className="font-semibold">Welcome!</h5>
+                  <h6 className="text-xs">
+                    Want to learn how to get the best out of Perceptify? Take a
+                    short tutorial.
+                  </h6>
+                  <div className="mt-2 flex items-center justify-between">
+                    <button className="w-max bg-transparent text-purple-450">
+                      Start tutorial
+                    </button>
+                    <span className="text-xs text-neutral-400">1/2</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )) || <Spinner />}
         </div>
       </div>
     </div>
