@@ -105,19 +105,12 @@ const Register = () => {
         const { data, error } = await supabase.auth.signUp({
             email: credential,
             password,
-            options: {
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    updated_at: new Date(Date.now()).toISOString(),
-                }
-            }
         });
         if (error) {
             console.log('error', error);
             setErrors(JSON.stringify(error));
         } else {
-            location.href = '/home'
+            location.href = '/register/create-profile'
         }
         console.log(data)
     }
@@ -140,14 +133,14 @@ const Register = () => {
 
     // async function uploadImage(e:any) {
     //     const file = e.target.files[0];
-    //     const uuid =  crypto.randomUUID();
+    //     const uuid = supabase.auth.getUser()?.id;
 
-    //     setProfilePicture(uuid);
+    //     setProfilePicture(file);
 
     //     const { data, error } = await supabase
     //         .storage
     //         .from('avatars')
-    //         .upload(uuid, file)
+    //         .upload(file)
 
     //     if (data)
     //         getImage('avatars', uuid);
@@ -182,7 +175,7 @@ const Register = () => {
                         <h1 className='font-bold text-3xl mb-2'>Create an account</h1>
                         <p className='text-lg font-extralight'>Start managing your business insights better and faster.</p>
                     </div>
-                    <Input
+                    {/* <Input
                         id='firstName'
                         label='First Name'
                         disabled={false}
@@ -199,7 +192,7 @@ const Register = () => {
                         required
                         // icon={emailIcon}
                         onChange={(e:any) => setLastName(e.target.value)}
-                    />
+                    /> */}
                     <Input
                         id='email'
                         label='Email'
@@ -230,7 +223,7 @@ const Register = () => {
                         onChange={(e:any) => setConfirmPassword(e.target.value)}
                     />
                     <Button
-                        label='Register'
+                        label='Sign Up'
                         onClick={handleRegister}
                         light={false}
                         disabled={isDisabled()}
@@ -258,92 +251,6 @@ const Register = () => {
         </div>
     ));
 
-    stages.set(2, (
-        <>
-            <div className='pt-4 pl-4'>
-                <Link href="/home">
-                    <Image
-                        alt="logo"
-                        className="h-16 w-max absolute"
-                        height="250"
-                        width="250"
-                        src="/images/logo.svg"
-                    />
-                </Link>
-                <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
-                    <div className='w-full h-48 mb-12'>
-                        <CoverImageUpload handleUpload="" />
-                        <div
-                            className={`
-                                flex items-center justify-center w-24 h-24 ml-16 -mt-12
-                                rounded-full bg-[#F5F5F5] border-slate-300 border-dashed border-2
-                                cursor-pointer hover:border-slate-500 z-50
-                            `}
-                            id="dropzone"
-                            onClick={() => inputRef.current?.click()}
-                            >
-                            <input
-                                type="file"
-                                accept='image/jpeg,image/png'
-                                onChange={(e:any) => null}
-                                hidden
-                                ref={inputRef}
-                            />
-                        </div>
-                    </div>
-                    <div className='flex w-full justify-start'>
-                        <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
-                    </div>
-                    <div className='grid grid-rows-2 grid-flow-col gap-4 w-full'>
-                        <Input
-                            id='firstName'
-                            label='First Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e: any) => setFirstName(e.target.value)}
-                        />
-                        <Input
-                            id='lastName'
-                            label='Last Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e: any) => setLastName(e.target.value)}
-                        />
-                        <Input
-                            id='companyName'
-                            label='Company Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e: any) => setCompanyName(e.target.value)}
-                        />
-                        <Input
-                            id='role'
-                            label='Your Position'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e: any) => setRole(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex w-full justify-end">
-                        <div className='w-48 mt-5'>
-                            <Button
-                                label='Next →'
-                                onClick={() => stage < 3 && setStage(stage + 1)}
-                                // label="Register"
-                                // onClick={handleRegister}
-                                light={false}
-                                disabled={false}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    ));
     stages.set(3, (
         <>
             <div className='pl-4 pt-4'>
@@ -397,7 +304,7 @@ const Register = () => {
     return (
         <ClientOnly>
             {/* {stages.get(stage)} */}
-        {stages.get(2)}
+            {stages.get(1)}
         </ClientOnly>
     );
 }
