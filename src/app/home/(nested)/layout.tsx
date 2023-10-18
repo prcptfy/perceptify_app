@@ -199,34 +199,21 @@ const Home = ({ children }: { children: React.ReactNode }) => {
     const fetchData = async () => {
       try {
         const data = await supabase
-          .from('data')
+          .from('data_duplicate')
           .select()
-          .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`);
+          .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`)
+          .filter('timestamp', 'lte', Date.now() / 1000)
+          .filter('timestamp', 'gte', (Date.now() - 8.64e7) / 1000);
         if (!data['data']) throw new Error('No company data');
 
-        const weeklyData = data.data.filter((d) => {
-          const t = d.timestamp.split(' ');
-          const date = new Date(t[0]).setHours(t[1]);
+        const dailyData = data.data.sort((a, b) => a.timestamp - b.timestamp);
+        const earliestDate = dailyData[0].timestamp,
+          latestDate = dailyData[dailyData.length - 1].timestamp;
 
-          return date > Date.now() - 6.048e8;
-        });
-
-        // We only care about the earliest date and the latest date, regardless of the time
-        let earliestDate = weeklyData[0].timestamp.split(' ')[0],
-          earliestData: Record<string, any>[] = [];
-        let latestDate =
-            weeklyData[weeklyData.length - 1].timestamp.split(' ')[0],
-          latestData: Record<string, any>[] = [];
-
-        for (let i = 0; i < weeklyData.length; i++) {
-          if (weeklyData[i].timestamp.split(' ')[0] !== earliestDate) break;
-          earliestData.push(weeklyData[i]);
-        }
-
-        for (let i = weeklyData.length - 1; i >= 0; i--) {
-          if (weeklyData[i].timestamp.split(' ')[0] !== latestDate) break;
-          latestData.push(weeklyData[i]);
-        }
+        const earliestData = dailyData.filter(
+          (d) => d.timestamp === earliestDate
+        );
+        const latestData = dailyData.filter((d) => d.timestamp === latestDate);
 
         quickviewItems.forEach((item) => {
           const earliestValue =
@@ -234,8 +221,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
           const latestValue =
             latestData.reduce((a, c) => a + c[item], 0) / latestData.length;
 
+          console.log(earliestValue, latestValue);
+
           const change = Math.floor(
-            latestValue - (earliestValue / earliestValue) * 100
+            ((latestValue - earliestValue) / earliestValue) * 100
           );
 
           setQuickviewData((p) => ({
@@ -244,7 +233,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               title:
                 item.split('_')[0].substring(0, 1).toUpperCase() +
                 item.split('_')[0].substring(1),
-              subtitle: 'Weekly Change',
+              subtitle: 'Daily Change',
               change: `${change > 0 ? '+' : ''}${change}%`,
             },
           }));
@@ -268,7 +257,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="ml-auto flex flex-row gap-1">
-       {/* <AvatarGroup className="avatar_group" max={5} total={5}>
+        {/* <AvatarGroup className="avatar_group" max={5} total={5}>
           {userData.map((user) => (
             <Avatar
               key={user.name}

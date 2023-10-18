@@ -328,7 +328,7 @@ const Analytics = () => {
           const social = Object.keys(socials)[d['media_id']];
           if (!social) return;
 
-          const date = new Date(d.timestamp * 1000).setHours(0, 0, 0, 0);
+          const date = new Date(d.timestamp * 1000).valueOf();
 
           const validRanges = Object.keys(ranges).filter(
             (r) =>
