@@ -76,7 +76,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <main className="flex flex-grow overflow-y-auto">
               <div className="relative w-auto flex-grow bg-white">
                 <div className="mb-12">
-                  <Header userData={userData} />
+                {session &&<Header userData={userData} />}
                 </div>
                 {children}
               </div>
