@@ -3,6 +3,7 @@ import 'server-only';
 import SupabaseProvider from '@/components/supabase-provider';
 import SupabaseListener from '@/components/supabase-listener';
 import { createServerClient } from '@/utils/supabase-server';
+import { Session } from '@supabase/supabase-js';
 // import Topbar from './Topbar';
 // import styles from './rootLayout.module.css';
 import './globals.css';
@@ -15,7 +16,7 @@ import { headers } from 'next/headers';
 import Header from '@/components/header';
 import { DM_Sans } from 'next/font/google';
 const DMSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'] });
-
+import AuthWrapper from '@/components/AuthWrap';
 export const revalidate = 0;
 type SessionType = {
   access_token: string;
@@ -59,12 +60,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const pathname = headers().get('x-invoke-path') || '';
-  const blacklist = ['/login', '/register'];
-
-  if (!session && !blacklist.includes(pathname)) redirect('/login');
-  console.log();
-
   return (
     <html lang="en">
       <body className={`${DMSans.className} flex h-screen overflow-hidden`}>
@@ -77,13 +72,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <div className="w-74 border-r border-gray-200 bg-white">
             {session && <Sidebar />}
           </div>
-          <main className="flex flex-grow overflow-y-auto">
-            <div className="relative w-auto flex-grow bg-white">
-              <div className='mb-12'>
-              <Header userData={userData} /></div>
-              {children}
-            </div>
-          </main>
+          <AuthWrapper session={session as Session}>
+            <main className="flex flex-grow overflow-y-auto">
+              <div className="relative w-auto flex-grow bg-white">
+                <div className="mb-12">
+                  <Header userData={userData} />
+                </div>
+                {children}
+              </div>
+            </main>
+          </AuthWrapper>
         </SupabaseProvider>
       </body>
     </html>
