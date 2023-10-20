@@ -172,7 +172,7 @@ const Analytics = () => {
           .from('data_duplicate')
           .select()
           .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`)
-          .filter('timestamp', 'lte', Date.now() / 1000);
+          .filter('timestamp', 'lte', Date.now());
         if (!data['data']) throw new Error('No company data');
 
         const ranges: dataByTimeRange = {
@@ -328,7 +328,7 @@ const Analytics = () => {
           const social = Object.keys(socials)[d['media_id']];
           if (!social) return;
 
-          const date = new Date(d.timestamp * 1000).valueOf();
+          const date = new Date(d.timestamp).valueOf();
 
           const validRanges = Object.keys(ranges).filter(
             (r) =>

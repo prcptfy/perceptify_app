@@ -202,8 +202,8 @@ const Home = ({ children }: { children: React.ReactNode }) => {
           .from('data_duplicate')
           .select()
           .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`)
-          .filter('timestamp', 'lte', Date.now() / 1000)
-          .filter('timestamp', 'gte', (Date.now() - 8.64e7) / 1000);
+          .filter('timestamp', 'lte', Date.now())
+          .filter('timestamp', 'gte', Date.now() - 8.64e7);
         if (!data['data']) throw new Error('No company data');
 
         const dailyData = data.data.sort((a, b) => a.timestamp - b.timestamp);
