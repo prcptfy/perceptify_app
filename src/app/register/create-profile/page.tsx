@@ -16,21 +16,23 @@ export default function createProfilePage() {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [companyName, setCompanyName] = useState<string>('');
-    const [avatar, setAvatar] = useState<string>('');
+    const [avatar_url, setAvatarURL] = useState<string>('');
+    const [company_banner, setCompanyBanner] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
     const { session } = useSupabase();
     console.log(session?.user);
 
     useEffect(() => {
-        console.log({firstName}, {lastName}, {companyName}, {avatar})
-    }, [firstName, lastName, companyName, avatar])
+        console.log({firstName}, {lastName}, {companyName}, {avatar_url})
+        console.log(session?.user.id)
+    }, [firstName, lastName, companyName, avatar_url])
 
     async function uploadAvatar(e: any) {
         const avatarFile = e.target.files[0];
         const { data, error } = await supabase.storage.from('avatars').upload(`${session?.user?.id}` + '/' + avatarFile.name, avatarFile);
 
-        const avatarUrl = await getAvatar(avatarFile);
-        setAvatar(avatarUrl.publicUrl);
+        const avatarUrl = await getAvatarAfterUpload(avatarFile);
+        setAvatarURL(avatarUrl.publicUrl);
 
         if (error) {
             console.log({error});
@@ -40,7 +42,7 @@ export default function createProfilePage() {
         }
     }
 
-    async function getAvatar(file: any) {
+    async function getAvatarAfterUpload(file: any) {
         const { data } = supabase.storage.from('avatars').getPublicUrl(`${session?.user?.id}/${file.name}`);
 
         console.log(data)
@@ -49,11 +51,15 @@ export default function createProfilePage() {
     }
 
     async function updateProfile() {
+        await createCompany();
+        const company_obj = await supabase.from('companies').select('id').eq('company_name', companyName);
+        const company_id = company_obj.data[0].id;
         const { data, error } = await supabase.from('profiles').update({
-            firstName,
-            lastName,
-            companyName,
-            avatar,
+            first_name: firstName,
+            last_name: lastName,
+            company_id,
+            avatar_url,
+            is_admin: true,
         }).eq('id', session?.user?.id);
 
         if (error) {
@@ -62,6 +68,14 @@ export default function createProfilePage() {
         } else {
             console.log(data);
         }
+    }
+
+    async function createCompany() {
+        const { data, error } = await supabase.from('companies').insert({
+            company_name: companyName,
+            company_logo: "",
+            company_banner: "",
+        });
     }
 
     return (
@@ -78,9 +92,9 @@ export default function createProfilePage() {
                 </Link> */}
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='w-full h-48 mb-12'>
-                        <CoverImageUpload handleUpload="" />
+                        {/* <CoverImageUpload handleUpload="" /> */}
                         {/* Profile Picture Upload */}
-
+{/*
                         {avatar.length < 1 && <div
                             className={`
                                 flex items-center justify-center w-24 h-24 ml-16 -mt-12
@@ -107,7 +121,17 @@ export default function createProfilePage() {
                             >
                                 <Image src={avatar} alt='profile-picture' width={24} height={24} />
                             </div>
-                        }
+                        } */}
+
+                        {/* Avatar Upload Input */}
+                        <div>
+                            <input
+                                type={'file'}
+                                accept='image/jpeg,image/png'
+                                onChange={(e:any) => uploadAvatar(e)}
+                                ref={inputRef}
+                            />
+                        </div>
                     </div>
                     <div className='flex w-full justify-start'>
                         <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
@@ -143,7 +167,7 @@ export default function createProfilePage() {
                         <div className='w-48 mt-5'>
                             <Button
                                 label='Next →'
-                                onClick={uploadAvatar}
+                                onClick={updateProfile}
                                 // label="Register"
                                 // onClick={handleRegister}
                                 light={false}
