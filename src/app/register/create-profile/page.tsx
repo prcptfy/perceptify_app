@@ -53,7 +53,7 @@ export default function createProfilePage() {
     async function updateProfile() {
         await createCompany();
         const company_obj = await supabase.from('companies').select('id').eq('company_name', companyName);
-        const company_id = company_obj.data[0].id;
+        const company_id = company_obj.data ? company_obj.data[0].id : 0;
         const { data, error } = await supabase.from('profiles').update({
             first_name: firstName,
             last_name: lastName,
@@ -66,7 +66,7 @@ export default function createProfilePage() {
             console.log(error);
             setErrors(prev => [...prev, error.message]);
         } else {
-            console.log(data);
+            location.href = "/invite"
         }
     }
 
