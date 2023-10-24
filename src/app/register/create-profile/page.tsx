@@ -50,11 +50,26 @@ export default function createProfilePage() {
         return data;
     }
 
+
     async function updateProfile() {
         await createCompany();
         const company_obj = await supabase.from('companies').select('id').eq('company_name', companyName);
         const company_id = company_obj.data ? company_obj.data[0].id : 0;
-        const { data, error } = await supabase.from('profiles').update({
+        // update the user metadata in the supabase auth.users table
+        await supabase.auth.updateUser(
+            {
+                data: {
+                    first_name: firstName,
+                    last_name: lastName,
+                    company_id,
+                    avatar_url,
+                    is_admin: true,
+                }
+            }
+        )
+
+        // update the user data in the supabase public.profiles table
+        const { error } = await supabase.from('profiles').update({
             first_name: firstName,
             last_name: lastName,
             company_id,
