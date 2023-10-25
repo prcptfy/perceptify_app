@@ -56,7 +56,7 @@ export default function createProfilePage() {
         const company_obj = await supabase.from('companies').select('id').eq('company_name', companyName);
         const company_id = company_obj.data ? company_obj.data[0].id : 0;
         // update the user metadata in the supabase auth.users table
-        await supabase.auth.updateUser(
+        const { data } = await supabase.auth.updateUser(
             {
                 data: {
                     first_name: firstName,
@@ -67,6 +67,9 @@ export default function createProfilePage() {
                 }
             }
         )
+
+        console.log(data);
+
 
         // update the user data in the supabase public.profiles table
         const { error } = await supabase.from('profiles').update({
@@ -81,7 +84,7 @@ export default function createProfilePage() {
             console.log(error);
             setErrors(prev => [...prev, error.message]);
         } else {
-            location.href = "/invite"
+            // location.href = "/invite"
         }
     }
 
