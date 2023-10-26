@@ -53,7 +53,7 @@ export default function Input({
                         ${errors[id] ? 'focus:border-rose-500' : 'focus:border-[#1d1d1f]'}
                     `}
                     onChange={onChange}
-                    value={initialValue ? initialValue : ''}
+                    value={initialValue && initialValue}
                 />
                 <label
                     className={`
