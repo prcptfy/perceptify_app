@@ -29,8 +29,8 @@ export default function createProfilePage() {
     useEffect(() => {
         const fetchCompanyName = async () => {
             const { data, error } = await supabase.from('companies').select('company_name').eq('id', session?.user.user_metadata.company_id)
-            console.log(data[0].company_name)
-            setCompanyName(data[0].company_name)
+            console.log(data![0].company_name)
+            setCompanyName(data![0].company_name)
         }
         fetchCompanyName();
     }, []);
