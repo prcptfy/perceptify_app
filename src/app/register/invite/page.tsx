@@ -54,7 +54,7 @@ export default function InviteNewUsers() {
     return (
         <ClientOnly>
             <div className='pl-4 pt-4'>
-                <Link href="/home">
+                {/* <Link href="/home">
                     <Image
                         alt="logo"
                         className="h-12 w-max absolute"
@@ -62,7 +62,7 @@ export default function InviteNewUsers() {
                         width="150"
                         src="/images/logo.svg"
                     />
-                </Link>
+                </Link> */}
                 {/* <Logo /> */}
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='flex flex-col w-full p-4'>

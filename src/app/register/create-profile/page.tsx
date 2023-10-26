@@ -63,6 +63,7 @@ export default function createProfilePage() {
         await createCompany();
         const company_obj = await supabase.from('companies').select('id').eq('company_name', companyName);
         const company_id = company_obj.data ? company_obj.data[0].id : 0;
+        console.log(company_id);
         // update the user metadata in the supabase auth.users table
         const { data } = await supabase.auth.updateUser(
             {
