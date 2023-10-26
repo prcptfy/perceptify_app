@@ -9,6 +9,7 @@ interface InputProps {
     errors?: any;
     icon?: any;
     onChange?: any;
+    initialValue?: string;
 }
 
 export default function Input({
@@ -19,7 +20,8 @@ export default function Input({
     required,
     errors,
     icon,
-    onChange
+    onChange,
+    initialValue,
 }: InputProps) {
                         //     peer-focus:-translate-y-4
                         // peer-focus:translate-x-1
@@ -32,7 +34,7 @@ export default function Input({
                 <input
                     id={id}
                     disabled={disabled}
-                    placeholder=" "
+                    placeholder=' '
                     type={type}
                     className={`
                         peer
@@ -51,6 +53,7 @@ export default function Input({
                         ${errors[id] ? 'focus:border-rose-500' : 'focus:border-[#1d1d1f]'}
                     `}
                     onChange={onChange}
+                    value={initialValue ? initialValue : ''}
                 />
                 <label
                     className={`

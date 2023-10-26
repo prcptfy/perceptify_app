@@ -12,39 +12,43 @@ export default function InviteNewUsers() {
     const { supabase } = useSupabase();
     const [members, setMembers] = useState<string[][]>([['']]);
     const [errors, setErrors] = useState('');
-    const [session, setSession] = useState({ user: { id: '' }});
+    const [session, setSession] = useState({ user: { id: '', user_metadata: { company_id: 0 } }});
+    const [company_id, setCompanyId] = useState(0)
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const { data: { session }} = await supabase.auth.getSession();
+            console.log('session', session);
+            setCompanyId(session?.user.user_metadata.company_id)
+        }
+        fetchSession().catch(console.error);
+    }, []);
+
 
     const emailIcon = <svg xmlns="http://www.w3.org/2000/svg" width="27" height="25" fill="none">
         <path fill="#8915E4" d="M24.777 4.688H3.348a1.786 1.786 0 0 0-1.785 1.785V20.76a1.786 1.786 0 0 0 1.785 1.786h21.429a1.786 1.786 0 0 0 1.785-1.786V6.473a1.786 1.786 0 0 0-1.785-1.785Zm-1.965 1.785-8.75 6.054-8.75-6.054h17.5ZM3.349 20.76V7.286l10.206 7.062a.893.893 0 0 0 1.017 0l10.206-7.062v13.473H3.348Z"/>
     </svg>
 
     async function sendInvites(addedMembers:string[][]) {
-        const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id)
-        console.log(data);
         for (let i = 0; i < addedMembers.length; i++) {
             const member = addedMembers[i];
             const [email] = member;
-            const { data, error } = await supabase.auth.signInWithOtp({
+            await supabase.auth.signInWithOtp({
                 email,
                 options: {
-                    emailRedirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
+                    emailRedirectTo:
+                        process.env.NODE_ENV === "development" ?
+                            'http://localhost:3000/register/create-profile' :
+                            'https://perceptify-app.vercel.app/register/create-profile',
                     data: {
-                        is_admin: true,
+                        is_admin: false,
+                        company_id,
                     }
                 }
             });
         }
     }
 
-    useEffect(() => {
-        const fetchSession = async () => {
-            const { data: { session }} = await supabase.auth.getSession();
-            // if (session) location.href = "/home";
-            console.log('session', session);
-            console.log(session?.user.user_metadata.first_name + ' ' + session?.user.user_metadata.last_name);
-        }
-        fetchSession().catch(console.error);
-    }, []);
 
 
     return (

@@ -11,7 +11,7 @@ import CoverImageUpload from '@/components/CoverImageUpload';
 import { randomUUID } from 'crypto';
 
 export default function createProfilePage() {
-    const { supabase } = useSupabase();
+    const { supabase, session } = useSupabase();
     const [errors, setErrors] = useState<string[]>([]);
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -19,13 +19,21 @@ export default function createProfilePage() {
     const [avatar_url, setAvatarURL] = useState<string>('');
     const [company_banner, setCompanyBanner] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
-    const { session } = useSupabase();
     console.log(session?.user);
 
     useEffect(() => {
         console.log({firstName}, {lastName}, {companyName}, {avatar_url})
         console.log(session?.user.id)
     }, [firstName, lastName, companyName, avatar_url])
+
+    useEffect(() => {
+        const fetchCompanyName = async () => {
+            const { data, error } = await supabase.from('companies').select('company_name').eq('id', session?.user.user_metadata.company_id)
+            console.log(data[0].company_name)
+            setCompanyName(data[0].company_name)
+        }
+        fetchCompanyName();
+    }, []);
 
     async function uploadAvatar(e: any) {
         const avatarFile = e.target.files[0];
@@ -68,7 +76,7 @@ export default function createProfilePage() {
             }
         )
 
-        console.log(data);
+        console.log("user\n", data);
 
 
         // update the user data in the supabase public.profiles table
@@ -84,7 +92,7 @@ export default function createProfilePage() {
             console.log(error);
             setErrors(prev => [...prev, error.message]);
         } else {
-            // location.href = "/invite"
+            location.href = "/register/invite"
         }
     }
 
@@ -174,11 +182,12 @@ export default function createProfilePage() {
                         />
                         <Input
                             id='companyName'
-                            label='Company Name'
+                            label={"Company Name"}
                             disabled={false}
                             errors={errors}
                             required
                             onChange={(e:FormEvent<HTMLInputElement>) => setCompanyName(e.currentTarget.value)}
+                            initialValue={companyName}
                         />
                     </div>
                     <div className="flex w-full justify-end">
