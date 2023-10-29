@@ -169,9 +169,10 @@ const Analytics = () => {
     const fetchData = async () => {
       try {
         const data = await supabase
-          .from('data')
+          .from('data_duplicate')
           .select()
-          .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`);
+          .filter('company_id', 'in', `(${1 /* GET COMPANY ID */})`)
+          .filter('timestamp', 'lte', Date.now());
         if (!data['data']) throw new Error('No company data');
 
         const ranges: dataByTimeRange = {
@@ -325,9 +326,9 @@ const Analytics = () => {
 
         data.data.forEach((d) => {
           const social = Object.keys(socials)[d['media_id']];
+          if (!social) return;
 
-          const t = d.timestamp.split(' ');
-          const date = new Date(t[0]).setDate(t[1]);
+          const date = new Date(d.timestamp).valueOf();
 
           const validRanges = Object.keys(ranges).filter(
             (r) =>

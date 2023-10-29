@@ -9,7 +9,7 @@ import { useSupabase } from '../supabase-provider';
 
 const Sidebar = () => {
   const { supabase, session } = useSupabase();
-  console.log("session", session)
+  console.log('session', session);
   const pathname = usePathname();
 
   const homeIcon = (
@@ -70,7 +70,9 @@ const Sidebar = () => {
       width="25"
       height="22"
       className={`${
-        pathname.startsWith('/integrations') ? 'stroke-[#8915E4]' : 'stroke-[#D5D5D5]'
+        pathname.startsWith('/integrations')
+          ? 'stroke-[#8915E4]'
+          : 'stroke-[#D5D5D5]'
       } fill-none`}
     >
       <path
@@ -143,15 +145,15 @@ const Sidebar = () => {
   const logout = async () => await supabase.auth.signOut();
 
   return (
-    <div className="fixed flex flex-col w-74 bg-white z-10 h-full max-h-screen border-[#F1F3F4] transition-all duration-500 ">
+    <aside className="w-74 z-10 flex h-full max-h-screen flex-col border-r border-[#F1F3F4] bg-white duration-500 transition-all">
       <div className="p-4">
-        <div className='md:block hidden pl-4'>
+        <div className="hidden pl-4 md:block">
           <Logo />
         </div>
-        <div className='md:hidden pl-4'>
+        <div className="pl-4 md:hidden">
           <SmallLogo />
         </div>
-        <div className="mt-16">
+        <nav className="mt-16">
           <NavigationButton
             label="Home"
             subtext="Your data at a glance"
@@ -180,33 +182,27 @@ const Sidebar = () => {
             selected={pathname.startsWith('/integrations')}
             icon={integrationsIcon}
           />
-        </div>
+        </nav>
       </div>
-        <div className="divide-y mt-auto p-4">
+      <div className="mt-auto divide-y p-4">
+        <BottomButton label="Manage Team" link="/manage" icon={teamIcon} />
+        <BottomButton label="Settings" link="/settings" icon={settingsIcon} />
+        <BottomButton
+          label="Customer Support"
+          link="/support"
+          icon={supportIcon}
+        />
+        {session && (
           <BottomButton
-            label="Manage Team"
-            link="/manage"
-            icon={teamIcon}
-          />
-          <BottomButton
-            label="Settings"
-            link="/settings"
-            icon={settingsIcon}
-          />
-          <BottomButton
-            label="Customer Support"
-            link="/support"
-            icon={supportIcon}
-          />
-          {session && (<BottomButton
             label="Log Out"
             onClick={logout}
             link="/login"
             red
             icon={logoutIcon}
-          />)}
-        </div>
-    </div>
+          />
+        )}
+      </div>
+    </aside>
   );
 };
 
