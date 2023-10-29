@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Input from '@/components/Input';
 import CoverImageUpload from '@/components/CoverImageUpload';
-import { randomUUID } from 'crypto';
+import ClientOnly from '@/components/ClientOnly';
 
 export default function createProfilePage() {
     const { supabase, session } = useSupabase();
@@ -19,7 +19,7 @@ export default function createProfilePage() {
     const [avatar_url, setAvatarURL] = useState<string>('');
     const [company_banner, setCompanyBanner] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
-    console.log(session?.user);
+    console.log("session", session?.user);
 
     useEffect(() => {
         console.log({firstName}, {lastName}, {companyName}, {avatar_url})
@@ -29,10 +29,20 @@ export default function createProfilePage() {
     useEffect(() => {
         const fetchCompanyName = async () => {
             const { data, error } = await supabase.from('companies').select('company_name').eq('id', session?.user.user_metadata.company_id)
-            console.log(data![0].company_name)
-            setCompanyName(data![0].company_name)
+            if (data && data.hasOwnProperty(0))
+                console.log(data[0].company_name);
+            if (!error)
+                setCompanyName(data![0].company_name);
+        }
+        const fetchUserName = async () => {
+            const { data, error } = await supabase.from('profiles').select('first_name, last_name').eq('id', session?.user.id);
+            if (!error) {
+                setFirstName(data![0].first_name);
+                setLastName(data[0].last_name);
+            }
         }
         fetchCompanyName();
+        fetchUserName();
     }, []);
 
     async function uploadAvatar(e: any) {
@@ -65,7 +75,7 @@ export default function createProfilePage() {
         const company_id = company_obj.data ? company_obj.data[0].id : 0;
         console.log(company_id);
         // update the user metadata in the supabase auth.users table
-        const { data } = await supabase.auth.updateUser(
+        await supabase.auth.updateUser(
             {
                 data: {
                     first_name: firstName,
@@ -76,9 +86,6 @@ export default function createProfilePage() {
                 }
             }
         )
-
-        console.log("user\n", data);
-
 
         // update the user data in the supabase public.profiles table
         const { error } = await supabase.from('profiles').update({
@@ -106,7 +113,7 @@ export default function createProfilePage() {
     }
 
     return (
-        <>
+        <ClientOnly>
             <div className='pt-4 pl-4'>
                 {/* <Link href="/home">
                     <Image
@@ -172,6 +179,7 @@ export default function createProfilePage() {
                             errors={errors}
                             required
                             onChange={(e:FormEvent<HTMLInputElement>) => setFirstName(e.currentTarget.value)}
+                            initialValue={firstName}
                         />
                         <Input
                             id='lastName'
@@ -180,6 +188,7 @@ export default function createProfilePage() {
                             errors={errors}
                             required
                             onChange={(e:FormEvent<HTMLInputElement>) => setLastName(e.currentTarget.value)}
+                            initialValue={lastName}
                         />
                         <Input
                             id='companyName'
@@ -205,6 +214,6 @@ export default function createProfilePage() {
                     </div>
                 </div>
             </div>
-        </>
+        </ClientOnly>
     )
 }

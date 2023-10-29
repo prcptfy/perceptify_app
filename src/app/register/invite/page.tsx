@@ -13,7 +13,7 @@ export default function InviteNewUsers() {
     const [members, setMembers] = useState<string[][]>([['']]);
     const [errors, setErrors] = useState('');
     const [session, setSession] = useState({ user: { id: '', user_metadata: { company_id: 0 } }});
-    const [company_id, setCompanyId] = useState(0)
+    const [company_id, setCompanyId] = useState(0);
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -38,8 +38,8 @@ export default function InviteNewUsers() {
                 options: {
                     emailRedirectTo:
                         process.env.NODE_ENV === "development" ?
-                            'http://localhost:3000/register/create-profile' :
-                            'https://perceptify-app.vercel.app/register/create-profile',
+                            'http://localhost:3000/register/magic-link-redirect' :
+                            'https://perceptify-app.vercel.app/register/magic-link-redirect',
                     data: {
                         is_admin: false,
                         company_id,
