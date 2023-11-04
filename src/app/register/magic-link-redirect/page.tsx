@@ -3,7 +3,7 @@
 import { useSupabase } from "@/components/supabase-provider";
 import { useEffect } from "react";
 
-const magicLinkRedirect = async () => {
+export default async function magicLinkRedirect() {
     const { session, supabase } = useSupabase();
     useEffect(() => {
         supabase.auth.getSession()
@@ -24,4 +24,3 @@ const magicLinkRedirect = async () => {
     };
 }
 
-export default magicLinkRedirect;
