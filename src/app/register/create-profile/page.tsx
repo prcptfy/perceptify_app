@@ -2,13 +2,10 @@
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useSupabase } from '@/components/supabase-provider';
-import { Session } from '@supabase/supabase-js';
 import Button from '@/components/Button';
-import Link from 'next/link';
-import Image from 'next/image';
 import Input from '@/components/Input';
-import CoverImageUpload from '@/components/CoverImageUpload';
 import ClientOnly from '@/components/ClientOnly';
+
 
 export default function createProfilePage() {
     const { supabase, session } = useSupabase();
@@ -47,6 +44,7 @@ export default function createProfilePage() {
 
     async function uploadAvatar(e: any) {
         const avatarFile = e.target.files[0];
+        console.log(avatarFile)
         const { data, error } = await supabase.storage.from('avatars').upload(`${session?.user?.id}` + '/' + avatarFile.name, avatarFile);
 
         const avatarUrl = await getAvatarAfterUpload(avatarFile);
