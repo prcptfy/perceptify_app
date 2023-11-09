@@ -5,6 +5,7 @@ import { useSupabase } from '@/components/supabase-provider';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import ClientOnly from '@/components/ClientOnly';
+import AvatarUpload from './avatarUpload';
 
 
 export default function createProfilePage() {
@@ -113,21 +114,12 @@ export default function createProfilePage() {
     return (
         <ClientOnly>
             <div className='pt-4 pl-4'>
-                {/* <Link href="/home">
-                    <Image
-                        alt="logo"
-                        className="h-16 w-max absolute"
-                        height="250"
-                        width="250"
-                        src="/images/logo.svg"
-                    />
-                </Link> */}
                 <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
                     <div className='w-full h-48 mb-12'>
                         {/* <CoverImageUpload handleUpload="" /> */}
                         {/* Profile Picture Upload */}
-{/*
-                        {avatar.length < 1 && <div
+
+                        {/* {avatar_url.length < 1 && <div
                             className={`
                                 flex items-center justify-center w-24 h-24 ml-16 -mt-12
                                 rounded-full bg-[#F5F5F5] border-slate-300 border-dashed border-2
@@ -144,25 +136,37 @@ export default function createProfilePage() {
                                 ref={inputRef}
                             />
                         </div>}
-                        {avatar.length > 0 &&
+                        {avatar_url.length > 0 &&
                             <div
                                 className='
                                     flex items-center justify-center w-24 h-24 ml-16 -mt-12
                                     rounded-full
                                 '
                             >
-                                <Image src={avatar} alt='profile-picture' width={24} height={24} />
+                                <Image src={avatar_url} alt='profile-picture' width={24} height={24} />
                             </div>
                         } */}
 
                         {/* Avatar Upload Input */}
                         <div>
+                            <label>Upload your profile picture here</label>
                             <input
                                 type={'file'}
                                 accept='image/jpeg,image/png'
                                 onChange={(e:any) => uploadAvatar(e)}
                                 ref={inputRef}
+                                className='hidden'
                             />
+                            <div
+                                className={`
+                                    flex items-center justify-center w-40 h-40 ml-16 -mt-12
+                                    rounded-full bg-[#F5F5F5] border-slate-300 border-dashed border-2
+                                    cursor-pointer hover:border-slate-500 z-50
+                                `}
+                                id="dropzone"
+                                onClick={() => inputRef.current?.click()}
+                                >
+                            </div>
                         </div>
                     </div>
                     <div className='flex w-full justify-start'>
