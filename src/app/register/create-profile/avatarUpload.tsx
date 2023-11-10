@@ -9,6 +9,8 @@ export default function AvatarUpload({ handleFiles }: { handleFiles: Function })
   // ref
   const inputRef = useRef<HTMLInputElement>(null);
 
+  
+
   // handle drag events
   const handleDrag = function(e:any) {
     e.preventDefault();
