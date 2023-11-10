@@ -19,13 +19,19 @@ import {
   Spinner,
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
-// import { FaPlus } from "react-icons/ai";
-import { FaPlus, FaSearch } from 'react-icons/fa';
+import Image from 'next/image';
+import { FaPlus } from 'react-icons/fa';
+
 import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdClose } from 'react-icons/io';
 import { useSupabase } from '@/components/supabase-provider';
 import { createClient } from '@supabase/supabase-js';
-
+import TwitterIcon from '@/components/icons/TwitterIcon';
+import InstagramIcon from '@/components/icons/InstagramIcon';
+import FacebookIcon from '@/components/icons/FacebookIcon';
+import MagnifyingGlass from '@/components/icons/MagnifyingGlass';
+// import RedditIcon from '@/components/icons/RedditIcon';
+// import PinterestIcon from '@/components/icons/PinterestIcon';
 const avatarsData = [
   'https://i.pravatar.cc/150?u=a042581f4e29026024d',
   'https://i.pravatar.cc/150?u=a04258a2462d826712d',
@@ -62,39 +68,28 @@ const userData = [
 const socials = [
   {
     name: 'Twitter',
-    icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968958.png',
+    icon: TwitterIcon,
     color: 'rgba(29,161,242, .2)',
     connected: true,
   },
   {
     name: 'Instagram',
-    icon: 'https://cdn-icons-png.flaticon.com/512/1409/1409946.png',
+    icon: InstagramIcon,
     color: 'rgba(225,48,108, .2)',
     connected: true,
   },
   {
     name: 'Facebook',
-    icon: 'https://cdn-icons-png.flaticon.com/512/3128/3128304.png',
+    icon: FacebookIcon,
     color: 'rgba(24,119,242, .2)',
-    connected: true,
-  },
-  {
-    name: 'Reddit',
-    icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111589.png',
-    color: 'rgba(255,69,0, .2)',
-    connected: false,
-  },
-  {
-    name: 'Pinterest',
-    icon: 'https://cdn-icons-png.flaticon.com/512/145/145808.png',
-    color: 'rgba(189,8,28, .2)',
     connected: false,
   },
 ];
 
 interface InputInterface {
   username?: string;
-  platform?: string;
+  platform: string;
+  icon?: string;
 }
 
 interface QuickviewItemProps {
@@ -273,11 +268,13 @@ const Home = ({ children }: { children: React.ReactNode }) => {
         </button>*/}
       </div>
       <div className="w-full">
-        <img
-          className="banner aspect-[5/1] h-full w-full rounded-lg bg-auto object-cover"
-          src="https://picsum.photos/1200/800"
+        <Image
+          className="banner aspect-[5/1] h-full rounded-lg bg-auto object-cover"
+          src="/images/banner.jpg"
           id="header-background-id"
           alt="background-img"
+          width={1200}
+          height={800}
         />
       </div>
       <div className="grid grid-cols-[minmax(auto,_1fr)_minmax(auto,_400px)] gap-5">
@@ -286,7 +283,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
             <div className="profile-img z-2">
               <img
                 className="profile-picture object-cover"
-                src="https://unsplash.it/200/200/"
+                src="/images/avatar3.png"
                 alt="profile-picture"
               />
             </div>
@@ -317,17 +314,13 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                     </div>
                   ))} */}
                 {socials.map((social) => {
+                  const IconComponent = social.icon;
                   return social.connected ? (
                     <div className="rounded-lg" key={social.name}>
-                      <img
-                        src={social.icon}
-                        className="aspect-[1/1] rounded-lg p-5"
-                        style={{ width: '90px', backgroundColor: social.color }}
-                      />
+                      <IconComponent sideLength={100} />
+                      <h3 className="mx-auto">{social.name}</h3>
                     </div>
-                  ) : (
-                    ''
-                  );
+                  ) : null;
                 })}
               </div>
             </div>
@@ -337,31 +330,26 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               <div className="flex flex-nowrap items-center gap-3 overflow-x-auto px-2 py-4">
                 <div className="flex flex-row gap-3">
                   {socials.map((social) => {
+                    const IconComponent = social.icon;
+
                     return !social.connected ? (
-                      <div
-                        className={'gray-scale-1 rounded-lg'}
-                        key={social.name}
-                      >
-                        <img
-                          src={social.icon}
-                          className="aspect-[1/1] rounded-lg p-5"
-                          style={{
-                            width: '90px',
-                            backgroundColor: social.color,
-                          }}
-                        />
+                      <div className="rounded-lg" key={social.name}>
+                        <IconComponent grey={true} sideLength={100} />
                       </div>
                     ) : (
                       ''
                     );
                   })}
                 </div>
-                <button
-                  className="button rounded-full bg-purple-450 p-5"
+                <Button
+                  isIconOnly
+                  color="secondary"
+                  radius="full"
                   onClick={onOpen}
                 >
-                  <FaPlus size={20} color="white" />
-                </button>
+                  <FaPlus />
+                </Button>
+
                 <Modal
                   isOpen={isOpen}
                   onOpenChange={onOpenChange}
@@ -376,8 +364,8 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                         {/* <ModalHeader className='text-2xl sticky top-0'>Add your social media!</ModalHeader> */}
                         <ModalBody className="flex flex-col gap-4">
                           <div>
-                            Let us know your social media handles, and we’ll do
-                            the rest.
+                            Let us know your social media handles, and
+                            we&apos;ll do the rest.
                           </div>
                           <div className="flex flex-col gap-2">
                             <div className="flex flex-row gap-2">
@@ -400,7 +388,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                               >
                                 <PopoverTrigger className="bg-gray-200">
                                   <button className="rounded-lg p-4 text-4xl">
-                                    <FaSearch size={20} />
+                                    <MagnifyingGlass />
                                   </button>
                                 </PopoverTrigger>
                                 <PopoverContent>
@@ -414,7 +402,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                                         variant="faded"
                                         height={10}
                                         onChange={(e) => search(e)}
-                                        endContent={<FaSearch size={20} />}
+                                        endContent={<MagnifyingGlass />}
                                       />
                                     </div>
                                     <div className="text-xl">
@@ -425,35 +413,39 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                                       className="flex flex-col overflow-auto"
                                       style={{ height: '200px' }}
                                     >
-                                      {filteredSocial.map((social) => (
-                                        <div
-                                          className="flex cursor-pointer flex-row gap-2 rounded-lg p-2 hover:bg-gray-100"
-                                          key={social.name}
-                                          onClick={() => {
-                                            setPlatform(social.name);
-                                            setPopOverOpen(false);
-                                          }}
-                                        >
-                                          <img
+                                      {filteredSocial.map((social) => {
+                                        const IconComponent = social.icon;
+                                        return (
+                                          <div
+                                            className="flex cursor-pointer flex-row gap-2 rounded-lg p-2 hover:bg-gray-100"
+                                            key={social.name}
+                                            onClick={() => {
+                                              setPlatform(social.name);
+                                              setPopOverOpen(false);
+                                            }}
+                                          >
+                                            {/* <img
                                             src={social.icon}
                                             className="aspect-[1/1] rounded-lg p-2"
                                             style={{
                                               width: '50px',
                                               backgroundColor: social.color,
                                             }}
-                                          />
-                                          <div className="flex flex-col">
-                                            <div className="text-lg">
-                                              {social.name}
-                                            </div>
-                                            <div className="text-sm">
-                                              {social.connected
-                                                ? 'Connected'
-                                                : 'Not connected'}
+                                          /> */}
+                                            <IconComponent sideLength={50} />
+                                            <div className="flex flex-col">
+                                              <div className="text-lg">
+                                                {social.name}
+                                              </div>
+                                              <div className="text-sm">
+                                                {social.connected
+                                                  ? 'Connected'
+                                                  : 'Not connected'}
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        );
+                                      })}
                                     </div>
                                   </div>
                                 </PopoverContent>
@@ -474,7 +466,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                             className="text-theme w-fit rounded-full border bg-white text-xs"
                             endContent={<FaPlus size={15} />}
                           >
-                            Add social media
+                            Add
                           </Button>
                           <div className="flex flex-row flex-wrap gap-2 py-3">
                             {/* {socials.map((social, index) => (
@@ -495,32 +487,29 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                                   Username
                                 </Chip>
                               ))} */}
-                            {addedSocials.map((social, index) => (
-                              <Chip
-                                key={index}
-                                avatar={
-                                  <Avatar
-                                    // name={social.name}
-                                    src={
-                                      socials.find(
-                                        (i) => social.platform == i.name
-                                      )?.icon
-                                    }
-                                    style={{ backgroundColor: 'transparent' }}
-                                  />
-                                }
-                                variant="light"
-                                className="flex flex-row gap-3 px-5 py-2"
-                                onClose={() => {}}
-                                style={{
-                                  backgroundColor: socials.find(
-                                    (i) => social.platform == i.name
-                                  )?.color,
-                                }}
-                              >
-                                {social.username}
-                              </Chip>
-                            ))}
+                            {addedSocials.map((social, index) => {
+                              const SocialIcon = socials.find(
+                                (e) => e.name === social.platform
+                              );
+                              const iconSrc = SocialIcon ? (
+                                <SocialIcon.icon sideLength={24} />
+                              ) : null;
+                              return (
+                                <Chip
+                                  key={index}
+                                  avatar={<Avatar src={iconSrc} />}
+                                  variant="light"
+                                  className="flex flex-row gap-3 px-4 py-2"
+                                  onClose={() => {}}
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    border: '1px solid #E5E5E5',
+                                  }}
+                                >
+                                  {social.username}
+                                </Chip>
+                              );
+                            })}
                           </div>
                           <Button className="button w-full text-white">
                             Submit

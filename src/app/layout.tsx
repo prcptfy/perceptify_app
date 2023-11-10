@@ -75,9 +75,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <AuthWrapper session={session as Session}>
             <main className="flex flex-grow overflow-y-auto">
               <div className="relative w-auto flex-grow bg-white">
-                <div className="mb-12">
-                {session &&<Header userData={userData} />}
-                </div>
+                {session &&
+                  <div className="mb-12">
+                    <Header userData={userData} />
+                  </div>
+                 }
                 {children}
               </div>
             </main>
