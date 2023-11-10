@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, FormEvent } from 'react';
+import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { useSupabase } from '@/components/supabase-provider';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
@@ -61,6 +61,24 @@ export default function createProfilePage() {
       setErrors((prev) => [...prev, error.message]);
     } else {
       console.log(data);
+    }
+  }
+
+  async function uploadFile(e: React.DragEvent<HTMLInputElement>) {
+    const avatarFile = e.dataTransfer.files[0];
+    console.log(avatarFile);
+    const { data, error } = await supabase.storage
+      .from('avatars')
+      .upload(`${session?.user?.id}/${avatarFile.name}`, avatarFile);
+
+    const avatarUrl = await getAvatarAfterUpload(avatarFile);
+    setAvatarURL(avatarUrl.publicUrl);
+
+    if (error) {
+      console.log({ error });
+      setErrors(prev => [...prev, error.message]);
+    } else {
+      console.log(data)
     }
   }
 
@@ -163,7 +181,7 @@ export default function createProfilePage() {
               <input
                 type={'file'}
                 accept="image/jpeg,image/png"
-                onChange={(e: any) => uploadAvatar(e)}
+                onChange={(e: any) => uploadFile(e)}
                 ref={inputRef}
                 className="hidden"
               />
@@ -177,7 +195,7 @@ export default function createProfilePage() {
                 onClick={() => inputRef.current?.click()}
               ></div>
             </div>
-            <AvatarUpload handleFiles={uploadAvatar} />
+            <AvatarUpload handleFileDrop={uploadFile} handleFileClick={uploadAvatar} />
           </div>
           <div className="flex w-full justify-start">
             <h1 className="p-4 text-3xl font-bold">Tell us about yourself!</h1>

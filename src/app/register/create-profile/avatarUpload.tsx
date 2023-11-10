@@ -1,15 +1,32 @@
 'use client'
 
 import React, { useState, useRef } from 'react';
+import { useSupabase } from '@/components/supabase-provider';
 
 // drag drop file component
-export default function AvatarUpload({ handleFiles }: { handleFiles: Function }) {
+export default function AvatarUpload({
+  handleFileDrop,
+  handleFileClick
+}: {
+  handleFileDrop: Function,
+  handleFileClick: Function,
+}) {
   // drag state
   const [dragActive, setDragActive] = useState<boolean>(false);
   // ref
   const inputRef = useRef<HTMLInputElement>(null);
+  const { supabase, session } = useSupabase();
 
-  
+  async function uploadFile(e: React.DragEvent<HTMLInputElement>) {
+    const avatarFile = e.dataTransfer.files[0];
+    console.log(avatarFile)
+    const { data, error } = await supabase.storage
+      .from('avatars')
+      .upload(`${session?.user.id}/${avatarFile.name}`, avatarFile);
+
+    if (error) console.log("ERROR!", error);
+    else console.log(data)
+  }
 
   // handle drag events
   const handleDrag = function(e:any) {
@@ -29,6 +46,7 @@ export default function AvatarUpload({ handleFiles }: { handleFiles: Function })
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       // handleFiles(e.dataTransfer.files);
+      handleFileDrop(e);
     }
   };
 
@@ -37,6 +55,7 @@ export default function AvatarUpload({ handleFiles }: { handleFiles: Function })
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       // handleFiles(e.target.files);
+      handleFileClick(e);
     }
   };
 
