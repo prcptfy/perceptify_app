@@ -487,6 +487,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                                   Username
                                 </Chip>
                               ))} */}
+                              
                             {addedSocials.map((social, index) => {
                               const SocialIcon = socials.find(
                                 (e) => e.name === social.platform
