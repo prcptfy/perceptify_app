@@ -8,6 +8,7 @@ import ClientOnly from '@/components/ClientOnly';
 import AvatarUpload from './avatarUpload';
 import { avatar } from '@nextui-org/react';
 import Image from 'next/image';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 export default function createProfilePage() {
   const { supabase, session } = useSupabase();
@@ -16,6 +17,7 @@ export default function createProfilePage() {
   const [lastName, setLastName] = useState<string>('');
   const [companyName, setCompanyName] = useState<string>('');
   const [avatar_url, setAvatarURL] = useState<string | undefined>('');
+  const [avatarImage, setAvatarImg] = useState<File>();
   const [company_banner, setCompanyBanner] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   console.log('session', session?.user);
@@ -51,6 +53,8 @@ export default function createProfilePage() {
   async function uploadAvatar(e: any) {
     const avatarFile = e.target.files[0];
     console.log(avatarFile);
+    setAvatarImg(avatarFile);
+    console.log(avatarImage)
     const { data, error } = await supabase.storage
       .from('avatars')
       .upload(`${session?.user?.id}` + '/' + avatarFile.name, avatarFile);
@@ -69,6 +73,8 @@ export default function createProfilePage() {
   async function uploadFile(e: React.DragEvent<HTMLInputElement>) {
     const avatarFile = e.dataTransfer.files[0];
     console.log(avatarFile);
+    setAvatarImg(avatarFile);
+    console.log(avatarImage);
     const { data, error } = await supabase.storage
       .from('avatars')
       .upload(`${session?.user?.id}/${avatarFile.name}`, avatarFile);
@@ -200,7 +206,7 @@ export default function createProfilePage() {
               ></div>
             </div> */}
             <div className='flex items-center justify-between'>
-              {!avatar_url
+              {!avatarImage
                 ?
               <AvatarUpload handleFileDrop={uploadFile} handleFileClick={uploadAvatar} />
                 :
@@ -209,7 +215,11 @@ export default function createProfilePage() {
                 h-48 w-48
                 border-2 overflow-hidden
               '>
-                <Image src={avatar_url} height={48} width={48} alt="Profile Picture" />
+                {/* <Image src={avatar_url} height={48} width={48} alt="Profile Picture" /> */}
+                <img
+                  src={avatar_url}
+                  className='h-full w-full object-cover'
+                />
               </div>
               }
             </div>
