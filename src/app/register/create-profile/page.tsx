@@ -6,6 +6,8 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import ClientOnly from '@/components/ClientOnly';
 import AvatarUpload from './avatarUpload';
+import { avatar } from '@nextui-org/react';
+import Image from 'next/image';
 
 export default function createProfilePage() {
   const { supabase, session } = useSupabase();
@@ -13,7 +15,7 @@ export default function createProfilePage() {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [companyName, setCompanyName] = useState<string>('');
-  const [avatar_url, setAvatarURL] = useState<string>('');
+  const [avatar_url, setAvatarURL] = useState<string | undefined>('');
   const [company_banner, setCompanyBanner] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   console.log('session', session?.user);
@@ -54,7 +56,7 @@ export default function createProfilePage() {
       .upload(`${session?.user?.id}` + '/' + avatarFile.name, avatarFile);
 
     const avatarUrl = await getAvatarAfterUpload(avatarFile);
-    setAvatarURL(avatarUrl.publicUrl);
+    setAvatarURL(avatarUrl?.signedUrl);
 
     if (error) {
       console.log({ error });
@@ -72,7 +74,7 @@ export default function createProfilePage() {
       .upload(`${session?.user?.id}/${avatarFile.name}`, avatarFile);
 
     const avatarUrl = await getAvatarAfterUpload(avatarFile);
-    setAvatarURL(avatarUrl.publicUrl);
+    setAvatarURL(avatarUrl?.signedUrl);
 
     if (error) {
       console.log({ error });
@@ -83,11 +85,13 @@ export default function createProfilePage() {
   }
 
   async function getAvatarAfterUpload(file: any) {
-    const { data } = supabase.storage
+    const { data, error } = await supabase.storage
       .from('avatars')
-      .getPublicUrl(`${session?.user?.id}/${file.name}`);
+      .createSignedUrl(`${session?.user.id}/${file.name}`, 3600);
 
-    console.log(data);
+
+    data && console.log(data.signedUrl);
+    error && console.log(error);
 
     return data;
   }
@@ -176,7 +180,7 @@ export default function createProfilePage() {
                         } */}
 
             {/* Avatar Upload Input */}
-            <div>
+            {/* <div>
               <label>Upload your profile picture here</label>
               <input
                 type={'file'}
@@ -194,8 +198,21 @@ export default function createProfilePage() {
                 id="dropzone"
                 onClick={() => inputRef.current?.click()}
               ></div>
+            </div> */}
+            <div className='flex items-center justify-between'>
+              {!avatar_url
+                ?
+              <AvatarUpload handleFileDrop={uploadFile} handleFileClick={uploadAvatar} />
+                :
+              <div className='
+                rounded-full
+                h-48 w-48
+                border-2 overflow-hidden
+              '>
+                <Image src={avatar_url} height={48} width={48} alt="Profile Picture" />
+              </div>
+              }
             </div>
-            <AvatarUpload handleFileDrop={uploadFile} handleFileClick={uploadAvatar} />
           </div>
           <div className="flex w-full justify-start">
             <h1 className="p-4 text-3xl font-bold">Tell us about yourself!</h1>
