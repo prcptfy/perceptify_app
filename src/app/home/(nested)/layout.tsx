@@ -172,6 +172,25 @@ const Home = ({ children }: { children: React.ReactNode }) => {
     QuickviewItemProps
   > | null>(null);
 
+  interface UserObject {
+    first_name?: string,
+    last_name?: string,
+    company_id?: string,
+    avatar_url?: string,
+    id?: string,
+  }
+
+  const [user, setUser] = useState<UserObject>({});
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', session?.user.id);
+      console.log(data || error);
+      data && setUser(data[0]);
+    }
+    getUserInfo();
+  }, []);
+
   const addSocial = () => {
     if (username && platform) {
       const newInput = [
@@ -247,12 +266,12 @@ const Home = ({ children }: { children: React.ReactNode }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // @ts-ignore
-    setSessionData(session);
-  }, [session]);
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   setSessionData(session);
+  // }, [session]);
 
-  console.log(sessionData);
+  // console.log(sessionData);
 
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
@@ -267,7 +286,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               src={user.avatar}
             />
           ))}
-          </AvatarGroup> 
+          </AvatarGroup>
         <button className="rounded-full bg-purple-450 px-3 py-3">
           <FaPlus color="white"  />
         </button>*/}
@@ -283,10 +302,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
       <div className="grid grid-cols-[minmax(auto,_1fr)_minmax(auto,_400px)] gap-5">
         <div className="flex flex-col gap-10">
           <div className="flex-rows flex">
-            <div className="profile-img z-2">
+            <div className="profile-img z-2 h-full w-full rounded-full">
               <img
-                className="profile-picture object-cover"
-                src="https://unsplash.it/200/200/"
+                className="profile-picture object-cover w-full h-auto"
+                src={user && user?.avatar_url}
                 alt="profile-picture"
               />
             </div>
@@ -294,8 +313,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
               <div className="flex flex-col gap-2">
                 <h1 className="text-2xl">
                   👋 Hey{' '}
-                  {session?.user.user_metadata.first_name ||
-                    session?.user.email}
+                  {user && user?.first_name}
                   !
                 </h1>
                 <p className="text-gray-500">
