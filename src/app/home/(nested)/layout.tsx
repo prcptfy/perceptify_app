@@ -30,6 +30,7 @@ import TwitterIcon from '@/components/icons/TwitterIcon';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 import MagnifyingGlass from '@/components/icons/MagnifyingGlass';
+import { useRouter } from 'next/navigation';
 // import RedditIcon from '@/components/icons/RedditIcon';
 // import PinterestIcon from '@/components/icons/PinterestIcon';
 const avatarsData = [
@@ -151,6 +152,8 @@ const Home = ({ children }: { children: React.ReactNode }) => {
       platform: '',
     },
   ]);
+
+  const Router = useRouter();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { supabase, session } = useSupabase();
@@ -469,25 +472,6 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                             Add
                           </Button>
                           <div className="flex flex-row flex-wrap gap-2 py-3">
-                            {/* {socials.map((social, index) => (
-                                <Chip
-                                  key={social.name}
-                                  avatar={
-                                    <Avatar
-                                      name={social.name}
-                                      src={social.icon}
-                                      style={{backgroundColor: 'transparent'}}
-                                    />
-                                  }
-                                  variant="light"
-                                  className='px-5 py-2 flex flex-row gap-3'
-                                  onClose={() => {}}
-                                  style={{backgroundColor: social.color}}
-                                >
-                                  Username
-                                </Chip>
-                              ))} */}
-                              
                             {addedSocials.map((social, index) => {
                               const SocialIcon = socials.find(
                                 (e) => e.name === social.platform
@@ -498,10 +482,19 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                               return (
                                 <Chip
                                   key={index}
-                                  avatar={<Avatar src={iconSrc} />}
+                                  avatar={
+                                    SocialIcon && (
+                                      <SocialIcon.icon sideLength={19} />
+                                    )
+                                  }
                                   variant="light"
                                   className="flex flex-row gap-3 px-4 py-2"
-                                  onClose={() => {}}
+                                  onClose={() => {
+                                    const newAddedSocials = addedSocials.filter(
+                                      (_, i) => i !== index
+                                    );
+                                    setAddedSocials(newAddedSocials);
+                                  }}
                                   style={{
                                     backgroundColor: 'transparent',
                                     border: '1px solid #E5E5E5',
@@ -512,7 +505,17 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                               );
                             })}
                           </div>
-                          <Button className="button w-full text-white">
+                          <Button
+                            disabled={addedSocials.length === 0}
+                            className={`button w-full ${
+                              addedSocials.length === 0
+                                ? 'cursor-not-allowed bg-gray-400'
+                                : 'bg-purple-450 text-white'
+                            }`}
+                            onClick={() => {
+                              Router.push('/analytics');
+                            }}
+                          >
                             Submit
                           </Button>
                         </div>
