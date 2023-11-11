@@ -302,10 +302,10 @@ const Home = ({ children }: { children: React.ReactNode }) => {
       <div className="grid grid-cols-[minmax(auto,_1fr)_minmax(auto,_400px)] gap-5">
         <div className="flex flex-col gap-10">
           <div className="flex-rows flex">
-            <div className="profile-img z-2 h-full w-full rounded-full">
+            <div className="z-2 h-48 w-48 rounded-full overflow-hidden">
               <img
-                className="profile-picture object-cover w-full h-auto"
-                src={user && user?.avatar_url}
+                className="profile-picture object-cover"
+                src={user?.avatar_url}
                 alt="profile-picture"
               />
             </div>
