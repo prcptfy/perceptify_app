@@ -93,7 +93,7 @@ export default function createProfilePage() {
   async function getAvatarAfterUpload(file: any) {
     const { data, error } = await supabase.storage
       .from('avatars')
-      .createSignedUrl(`${session?.user.id}/${file.name}`, 31449600);
+      .createSignedUrl(`${session?.user.id}/${file.name}`, 631_139_040);
 
 
     data && console.log(data.signedUrl);
