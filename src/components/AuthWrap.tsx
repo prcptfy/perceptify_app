@@ -11,9 +11,9 @@ interface AuthWrapperProps {
 const AuthWrapper = ({ children, session }: AuthWrapperProps ) => {
   if (!session) {
     const blacklistedPaths = ['/', '/login', '/register'];
-    if (!blacklistedPaths.includes(window.location.pathname)) {
-      window.location.href = '/login';
-    }
+    // if (!blacklistedPaths.includes(window.location.pathname)) {
+    //   window.location.href = '/login';
+    // }
   }
 
   return children;
