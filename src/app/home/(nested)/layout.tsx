@@ -20,7 +20,7 @@ import {
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaPlus } from 'react-icons/fa';
+import { FaCheck, FaPlus } from 'react-icons/fa';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdClose } from 'react-icons/io';
@@ -163,6 +163,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   const [sessionData, setSessionData] = useState(null);
   const [addedSocials, setAddedSocials] = useState<InputInterface[]>([]);
   const [popOverOpen, setPopOverOpen] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [filteredSocial, setFilteredSocial] = useState(socials);
   const [error, setError] = useState<string | null>(null);
   const [quickviewData, setQuickviewData] = useState<Record<
@@ -252,24 +253,35 @@ const Home = ({ children }: { children: React.ReactNode }) => {
 
   console.log(sessionData);
 
+  const handleAddSocialMediaClick = () => {
+    // Clear the previous state
+    setAddedSocials([]);
+    setUsername('');
+    setPlatform('');
+
+    // Open the add social modal
+    // @ts-ignore
+    onOpenChange(true);
+  };
+
+  const handleSubmit = () => {
+    // Here you can also implement logic to actually submit the data to a server, etc.
+    // After submission:
+
+    // Close the add social media modal
+    // @ts-ignore
+    onOpenChange(false);
+
+    // Show the success message
+    setIsSubmitted(true);
+
+    // Optionally, clear the input after submission if the modal doesn't close immediately
+    setUsername('');
+    setPlatform('');
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
-      <div className="ml-auto flex flex-row gap-1">
-        {/* <AvatarGroup className="avatar_group" max={5} total={5}>
-          {userData.map((user) => (
-            <Avatar
-              key={user.name}
-              style={{ width: '40px', height: '40px' }}
-              showFallback
-              name={user.name}
-              src={user.avatar}
-            />
-          ))}
-          </AvatarGroup> 
-        <button className="rounded-full bg-purple-450 px-3 py-3">
-          <FaPlus color="white"  />
-        </button>*/}
-      </div>
       <div className="w-full">
         <Image
           className="banner aspect-[5/1] h-full rounded-lg bg-auto object-cover"
@@ -348,7 +360,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                   isIconOnly
                   color="secondary"
                   radius="full"
-                  onClick={onOpen}
+                  onClick={handleAddSocialMediaClick}
                 >
                   <FaPlus />
                 </Button>
@@ -476,9 +488,6 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                               const SocialIcon = socials.find(
                                 (e) => e.name === social.platform
                               );
-                              const iconSrc = SocialIcon ? (
-                                <SocialIcon.icon sideLength={24} />
-                              ) : null;
                               return (
                                 <Chip
                                   key={index}
@@ -512,9 +521,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                                 ? 'cursor-not-allowed bg-gray-400'
                                 : 'bg-purple-450 text-white'
                             }`}
-                            onClick={() => {
-                              Router.push('/analytics');
-                            }}
+                            onClick={handleSubmit}
                           >
                             Submit
                           </Button>
@@ -523,6 +530,35 @@ const Home = ({ children }: { children: React.ReactNode }) => {
                     )}
                   </ModalContent>
                 </Modal>
+                {isSubmitted && (
+                  <Modal
+                    isOpen={isSubmitted}
+                    onClose={() => setIsSubmitted(false)}
+                  >
+                    <ModalContent>
+                      <ModalHeader className="mt-10 flex flex-col items-center justify-center gap-10">
+                        <div className="flex rounded-full bg-purple-450 p-4 text-xl text-white">
+                          <FaCheck />
+                        </div>
+                        <div className="text-4xl font-medium text-zinc-900 ">
+                          Submitted!
+                        </div>
+                      </ModalHeader>
+                      <ModalBody className="-mt-2 text-center">
+                        Pretty soon you’ll be able to explore new analytics and
+                        insights.
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          className="button w-full bg-purple-450 text-white"
+                          onClick={() => setIsSubmitted(false)}
+                        >
+                          Close
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                )}
               </div>
             </div>
           </div>
