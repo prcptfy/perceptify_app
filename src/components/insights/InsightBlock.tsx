@@ -1,6 +1,5 @@
 'use client';
 
-
 /*
 
 TODOS
@@ -11,7 +10,7 @@ Create assigned to catagory after Register stages are done
 
 */
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import FacebookIcon from '../icons/FacebookIcon';
 import TwitterIcon from '../icons/TwitterIcon';
 import TikTokIcon from '../icons/TikTokIcon';
@@ -21,6 +20,7 @@ import InsightAlert from './InsightAlert';
 import InsightGraph from './InsightGraph';
 import CloseButtonIcon from '../icons/closeButtonIcon';
 import './InsightBlock.css';
+import { Spinner } from '@nextui-org/react';
 
 type Logos =
   | 'facebook'
@@ -97,79 +97,85 @@ const InsightBlock = (props: IProps) => {
   });
 
   return (
-    <div
-      className={`relative flex h-80 w-full flex-row rounded-[1rem] border-[2px] duration-150 ease-in-out hover:cursor-pointer hover:border-[#8915E4] max-w-full
-          ${isClosed ? 'fade-out my-0' : 'fade-in my-[1em]'}`}
-    >
+    <Suspense fallback={<Spinner size="lg" color="secondary" />}>
       <div
-        className={
-          'flex h-full max-w-[30%] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] py-3 px-9'
-        }
+        className={`relative flex h-80 w-full max-w-full flex-row rounded-[1rem] border-[2px] duration-150 ease-in-out hover:cursor-pointer hover:border-[#8915E4]
+          ${isClosed ? 'fade-out my-0' : 'fade-in my-[1em]'}`}
       >
-        <div className={'flex flex-row p-3'}>{logoComponent}</div>
-        <div
-          className={'p-[0.5rem_1rem] text-[1.1rem] font-[700] tracking-wide'}
-        >
-          {props.title}
-        </div>
         <div
           className={
-            'flex flex-row gap-[0.5rem] p-[1rem_0.75rem_0.4rem_0.75rem]'
+            'flex h-full max-w-[30%] flex-col rounded-[1rem_0_0_1rem] bg-[#F8F8F8] py-3 px-9'
           }
         >
-          {badFeedbackComponents}
-        </div>
-        <div className={'flex flex-row gap-[0.5rem] pl-3'}>
-          {goodFeedbackComponents}
-        </div>
-        <div
-          className={
-            'flex flex-row gap-[0.5rem] p-[1rem_0.75rem_0.75rem_0.75rem]'
-          }
-        >
-          <button
+          <div className={'flex flex-row p-3'}>{logoComponent}</div>
+          <div
+            className={'p-[0.5rem_1rem] text-[1.1rem] font-[700] tracking-wide'}
+          >
+            {props.title}
+          </div>
+          <div
             className={
-              'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] font-[700] text-[#FFFFFF] transition-[background-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:bg-[#2D2D2D]'
+              'flex flex-row gap-[0.5rem] p-[1rem_0.75rem_0.4rem_0.75rem]'
             }
-            onClick={() => {
-              console.log(`button for InsightBlock ${props.logo} clicked`);
-              setIsClosed(true);
-            }}
           >
-            Dismiss
-          </button>
-          <select
-            className="rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-0 text-center font-[500] text-[#2D2D2D] outline-0 ring-0 transition-[border-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:border-[#2D2D2D]"
-            id={'assign'}
-            value={selectedOption}
-            onChange={(event) => {
-              setSelectedOption(event.target.value);
-            }}
+            {badFeedbackComponents}
+          </div>
+          <div className={'flex flex-row gap-[0.5rem] pl-3'}>
+            {goodFeedbackComponents}
+          </div>
+          <div
+            className={
+              'flex flex-row gap-[0.5rem] p-[1rem_0.75rem_0.75rem_0.75rem]'
+            }
           >
-            <option value="" disabled hidden selected>
-              Assign
-            </option>
-            {dropdownOptions}
-          </select>
+            <button
+              className={
+                'rounded-[3rem] bg-[#8915E4] p-[0.3rem_0.9rem] font-[700] text-[#FFFFFF] transition-[background-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:bg-[#2D2D2D]'
+              }
+              onClick={() => {
+                console.log(`button for InsightBlock ${props.logo} clicked`);
+                setIsClosed(true);
+              }}
+            >
+              Dismiss
+            </button>
+            <select
+              className="rounded-[3rem] border-2 border-[#8915E4] bg-[#FFFFFF] p-0 text-center font-[500] text-[#2D2D2D] outline-0 ring-0 transition-[border-color] duration-150 ease-[ease-in-out] hover:cursor-pointer hover:border-[#2D2D2D]"
+              id={'assign'}
+              value={selectedOption}
+              onChange={(event) => {
+                setSelectedOption(event.target.value);
+              }}
+            >
+              <option value="" disabled hidden selected>
+                Assign
+              </option>
+              {dropdownOptions}
+            </select>
+          </div>
         </div>
-      </div>
 
-      {/*start of graph */}
-      <div className={'flex w-full items-center justify-start ml-16 mr-16 max-w-[50%]'}>
-        <InsightGraph activityValues={props.graphValues} />
-      </div>
+        {/*start of graph */}
+        <div
+          className={
+            'ml-16 mr-16 flex w-full max-w-[50%] items-center justify-start'
+          }
+        >
+          <InsightGraph activityValues={props.graphValues} />
+        </div>
 
-      {/*close button*/}
-      <button
-        className={'bg-transparent absolute right-[1.75rem] top-[1.75rem]'}
-        onClick={() => {
-          console.log('x button clicked.');
-          setIsClosed(true);
-        }}
-      >
-        <CloseButtonIcon sideLength={30} />
-      </button>
-    </div>
+        {/*close button*/}
+        <button
+          className={'absolute right-[1.75rem] top-[1.75rem] bg-transparent'}
+          onClick={() => {
+            console.log('x button clicked.');
+            setIsClosed(true);
+          }}
+        >
+          <CloseButtonIcon sideLength={30} />
+        </button>
+      </div>
+    </Suspense>
   );
 };
 
