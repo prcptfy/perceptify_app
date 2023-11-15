@@ -1,7 +1,7 @@
 'use client';
 
-import { FiDownload } from "react-icons/fi"
-import { BiChevronDown } from "react-icons/bi"
+import { FiDownload } from 'react-icons/fi';
+import { BiChevronDown } from 'react-icons/bi';
 import InsightBlock from '@/components/insights/InsightBlock';
 import { FullFeedback } from '@/components/insights/InsightBlock';
 
@@ -68,31 +68,43 @@ const Insights = () => {
   };
 
   return (
-    <div className={'flex flex-col gap-[1em] min-h-screen  max-w-full p-7 mr-[-1.75rem] h-full overflow-y-auto !relative'}>
+    <div
+      className={
+        '!relative mr-[-1.75rem] flex h-full  min-h-screen max-w-full flex-col gap-[1em] overflow-y-auto p-7'
+      }
+    >
       {/* div with a search bar on the right side */}
-      <div className={'flex flex-row justify-between items-center mt-[2.8rem] bg-white max-w-[100%] relative w-full'}>
+      <div
+        className={
+          'relative mt-[2.8rem] flex w-full max-w-[100%] flex-row items-center justify-between bg-white'
+        }
+      >
         {/* div with an all/filter button */}
-        <div className={'flex flex-row gap-[1em] items-center bg-neutral-100 p-2 rounded-xl'}>
+        <div
+          className={
+            'flex flex-row items-center gap-[1em] rounded-xl bg-neutral-100 p-2'
+          }
+        >
           <button
             className={
-              'bg-[#8915E4] hover:bg-[#000] duration-150 rounded-2xl w-24 h-12 text-md text-white'
+              'text-md h-12 w-24 rounded-2xl bg-[#8915E4] text-white duration-150 hover:bg-[#000]'
             }
           >
             All
           </button>
           <button
             className={
-              'text-black flex items-center justify-center gap-1 bg-transparent duration-150 rounded-md w-24 h-12 text-md '
+              'text-md flex h-12 w-24 items-center justify-center gap-1 rounded-md bg-transparent text-black duration-150 '
             }
           >
             <p className="font-semibold">Filter</p>
             <BiChevronDown />
           </button>
         </div>
-        <div className={'flex flex-row gap-[1em] w-[50%]  items-center'}>
+        <div className={'flex w-[50%] flex-row items-center  gap-[1em]'}>
           <button
             className={
-              'text-black flex items-center bg-neutral-100 justify-center gap-1  duration-150 rounded-2xl w-36 h-12 text-md '
+              'text-md flex h-12 w-36 items-center justify-center  gap-1 rounded-2xl bg-neutral-100 text-black duration-150 '
             }
           >
             <p className="font-semibold">Sort</p>
@@ -100,26 +112,25 @@ const Insights = () => {
           </button>
           <input
             className={
-              'bg-[#F5F5F5] px-8 rounded-2xl w-[100%] h-12 text-md text-gray-600'
+              'text-md h-12 w-[100%] rounded-2xl bg-[#F5F5F5] px-8 text-gray-600'
             }
             placeholder={'Search'}
           />
           <button
             className={
-              'text-black flex items-center bg-neutral-100 justify-center gap-1  duration-150 rounded-2xl w-24 h-12 text-md '
+              'text-md flex h-12 w-24 items-center justify-center  gap-1 rounded-2xl bg-neutral-100 text-black duration-150 '
             }
           >
             <FiDownload />
           </button>
-
         </div>
       </div>
-      <div className={'flex flex-col h-full max-w-full'}>
+      <div className={'flex h-full max-w-full flex-col'}>
         {insightData.sections.map((section, idx) => {
           const { logo, feedback, graphValues, title, companyMembers } =
             section;
           return (
-            <div key={idx} className=''>
+            <div key={idx} className="">
               <InsightBlock
                 logo={logo}
                 feedback={feedback}

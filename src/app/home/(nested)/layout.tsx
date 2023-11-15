@@ -21,7 +21,7 @@ import {
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaCheck, FaPlus } from 'react-icons/fa';
-
+import { Suspense } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdClose } from 'react-icons/io';
 import { useSupabase } from '@/components/supabase-provider';
@@ -254,7 +254,7 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   console.log(sessionData);
 
   const handleAddSocialMediaClick = () => {
-    // Clear the previous state
+    // Clear the  state
     setAddedSocials([]);
     setUsername('');
     setPlatform('');
@@ -265,17 +265,12 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleSubmit = () => {
-    // Here you can also implement logic to actually submit the data to a server, etc.
-    // After submission:
-
     // Close the add social media modal
     // @ts-ignore
     onOpenChange(false);
 
-    // Show the success message
     setIsSubmitted(true);
 
-    // Optionally, clear the input after submission if the modal doesn't close immediately
     setUsername('');
     setPlatform('');
   };
@@ -283,24 +278,29 @@ const Home = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen w-full flex-col gap-5 p-10">
       <div className="w-full">
-        <Image
-          className="banner aspect-[5/1] h-full rounded-lg bg-auto object-cover"
-          src="/images/banner.jpg"
-          id="header-background-id"
-          alt="background-img"
-          width={1200}
-          height={800}
-        />
+        <Suspense fallback={<Spinner size="lg" color="secondary" />}>
+          <Image
+            className="banner aspect-[5/1] h-full rounded-lg bg-auto object-cover"
+            src="/images/banner.jpg"
+            id="header-background-id"
+            alt="background-img"
+            width={1200}
+            height={800}
+            loading="lazy"
+          />
+        </Suspense>
       </div>
       <div className="grid grid-cols-[minmax(auto,_1fr)_minmax(auto,_400px)] gap-5">
         <div className="flex flex-col gap-10">
           <div className="flex-rows flex">
             <div className="profile-img z-2">
-              <img
-                className="profile-picture object-cover"
-                src="/images/avatar3.png"
-                alt="profile-picture"
-              />
+              <Suspense fallback={<Spinner size="lg" color="secondary" />}>
+                <img
+                  className="profile-picture object-cover"
+                  src="/images/avatar3.png"
+                  alt="profile-picture"
+                />
+              </Suspense>
             </div>
             <div className="profile-info z-2">
               <div className="flex flex-col gap-2">

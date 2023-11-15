@@ -1,14 +1,18 @@
 'use client';
 
+import { Skeleton, Spinner } from '@nextui-org/react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
 import { Suspense, useEffect, useState } from 'react';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
-  loading: () => <div>Loading</div>, // Replace <Loading /> with your custom loading component
+  loading: () => <Skeleton className="h-[263px] w-[600px] rounded-lg" />, // Replace <Loading /> with your custom loading component
 });
 
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
 interface IProps {
   activityValues: number[];
 }
@@ -104,11 +108,11 @@ const InsightGraph = (props: IProps) => {
   };
 
   return (
-    <div className="relative border border-2 rounded-lg border-[#8915E460]">
+    <div className="relative rounded-lg border border-2 border-[#8915E460]">
       <div className={'absolute left-[1.75rem] pt-2 font-semibold'}>
         Daily Activity
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner color="secondary" />}>
         <Chart
           options={chart}
           series={chart.series}
