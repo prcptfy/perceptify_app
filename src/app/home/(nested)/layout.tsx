@@ -29,6 +29,9 @@ import { createClient } from '@supabase/supabase-js';
 import TwitterIcon from '@/components/icons/TwitterIcon';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
+import LinkedinIcon from '@/components/icons/LinkedInIcon';
+import GoogleIcon from '@/components/icons/GoogleIcon';
+import TikTokIcon from '@/components/icons/TikTokIcon';
 import MagnifyingGlass from '@/components/icons/MagnifyingGlass';
 import { useRouter } from 'next/navigation';
 // import RedditIcon from '@/components/icons/RedditIcon';
@@ -83,6 +86,24 @@ const socials = [
     name: 'Facebook',
     icon: FacebookIcon,
     color: 'rgba(24,119,242, .2)',
+    connected: false,
+  },
+  {
+    name: 'LinkedIn',
+    icon: LinkedinIcon,
+    color: 'rgba(0,119,181, .2)',
+    connected: true,
+  },
+  {
+    name: 'Google',
+    icon: GoogleIcon,
+    color: 'rgba(66,133,244, .2)',
+    connected: false,
+  },
+  {
+    name: 'TikTok',
+    icon: TikTokIcon,
+    color: 'rgba(0,0,0, .2)',
     connected: false,
   },
 ];
