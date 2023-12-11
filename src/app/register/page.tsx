@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use, MouseEventHandler } from 'react';
+import React, { useState, useEffect, useRef, MouseEventHandler } from 'react';
 import { useSupabase } from '@/components/supabase-provider';
 import { Session } from "@supabase/supabase-js";
 import Input from '@/components/Input';
@@ -13,6 +13,7 @@ import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getImageSize } from 'next/dist/server/image-optimizer';
 // import Logo from '@/components/Logo';
 
 const Register = () => {
@@ -31,6 +32,7 @@ const Register = () => {
     const [errors, setErrors] = useState('')
     // const [session, setSession] = useState<Session | null>(null);
     const [members, setMembers] = useState([['', '', '']]);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -84,13 +86,13 @@ const Register = () => {
             const { data, error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
-                    emailRedirectTo: "http://localhost:3000/home",
+                    emailRedirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
                     data: {
                         first_name,
                         last_name,
                     }
                 }
-            })
+            });
         }
     }
 
@@ -103,19 +105,12 @@ const Register = () => {
         const { data, error } = await supabase.auth.signUp({
             email: credential,
             password,
-            options: {
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    updated_at: new Date(Date.now()).toISOString(),
-                }
-            }
         });
         if (error) {
             console.log('error', error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/home");
+            location.href = '/register/create-profile'
         }
         console.log(data)
     }
@@ -124,17 +119,48 @@ const Register = () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: "http://localhost:3000/home",
+                redirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
             }
         });
         if (error) {
             console.log("error", error);
             setErrors(JSON.stringify(error));
         } else {
-            router.push("/dashboard");
+            location.href = '/home'
         }
         console.log(data)
     }
+
+    // async function uploadImage(e:any) {
+    //     const file = e.target.files[0];
+    //     const uuid = supabase.auth.getUser()?.id;
+
+    //     setProfilePicture(file);
+
+    //     const { data, error } = await supabase
+    //         .storage
+    //         .from('avatars')
+    //         .upload(file)
+
+    //     if (data)
+    //         getImage('avatars', uuid);
+    //     else
+    //         console.log("error getting image")
+    // }
+
+    // async function getImage(bucket: string, imageName: string) {
+    //     const { data, error } = await supabase
+    //         .storage
+    //         .from(bucket)
+    //         .list('', {
+    //             limit: 1,
+    //             offset: 0,
+    //             sortBy: {
+    //                 column: 'name',
+    //                 order: 'asc'
+    //             }
+    //         })
+    // }
 
     const stages = new Map();
     stages.set(1, (
@@ -149,7 +175,7 @@ const Register = () => {
                         <h1 className='font-bold text-3xl mb-2'>Create an account</h1>
                         <p className='text-lg font-extralight'>Start managing your business insights better and faster.</p>
                     </div>
-                    <Input
+                    {/* <Input
                         id='firstName'
                         label='First Name'
                         disabled={false}
@@ -166,7 +192,7 @@ const Register = () => {
                         required
                         // icon={emailIcon}
                         onChange={(e:any) => setLastName(e.target.value)}
-                    />
+                    /> */}
                     <Input
                         id='email'
                         label='Email'
@@ -197,7 +223,7 @@ const Register = () => {
                         onChange={(e:any) => setConfirmPassword(e.target.value)}
                     />
                     <Button
-                        label='Register'
+                        label='Sign Up'
                         onClick={handleRegister}
                         light={false}
                         disabled={isDisabled()}
@@ -225,76 +251,6 @@ const Register = () => {
         </div>
     ));
 
-    stages.set(2, (
-        <>
-            <div className='pt-4 pl-4'>
-                <Link href="/home">
-                    <Image
-                        alt="logo"
-                        className="h-16 w-max absolute"
-                        height="250"
-                        width="250"
-                        src="/images/logo.svg"
-                    />
-                </Link>
-                <div className='flex flex-col justify-center items-center h-screen w-5/12 m-auto'>
-                    <div className='w-full h-48 mb-12'>
-                        <CoverImageUpload handleUpload="" />
-                        <ProfileImageUpload />
-                    </div>
-                    <div className='flex w-full justify-start'>
-                        <h1 className='font-bold text-3xl p-4'>Tell us about yourself!</h1>
-                    </div>
-                    <div className='grid grid-rows-2 grid-flow-col gap-4 w-full'>
-                        <Input
-                            id='firstName'
-                            label='First Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e:any) => setFirstName(e.target.value)}
-                        />
-                        <Input
-                            id='lastName'
-                            label='Last Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e:any) => setLastName(e.target.value)}
-                        />
-                        <Input
-                            id='companyName'
-                            label='Company Name'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e:any) => setCompanyName(e.target.value)}
-                        />
-                        <Input
-                            id='role'
-                            label='Your Position'
-                            disabled={false}
-                            errors={errors}
-                            required
-                            onChange={(e:any) => setRole(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex w-full justify-end">
-                        <div className='w-48 mt-5'>
-                            <Button
-                                label='Next →'
-                                onClick={() => stage < 3 && setStage(stage + 1)}
-                                // label="Register"
-                                // onClick={handleRegister}
-                                light={false}
-                                disabled={false}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    ));
     stages.set(3, (
         <>
             <div className='pl-4 pt-4'>
@@ -348,7 +304,7 @@ const Register = () => {
     return (
         <ClientOnly>
             {/* {stages.get(stage)} */}
-        {stages.get(1)}
+            {stages.get(1)}
         </ClientOnly>
     );
 }

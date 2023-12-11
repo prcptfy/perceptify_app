@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Logo from "./Logo";
 import { Button } from "@nextui-org/react";
+
 interface AuthLeftPanelProps {
   title?: string;
   subtitle?: string;
@@ -33,9 +34,7 @@ export default function AuthLeftPanel({ title, subtitle }: AuthLeftPanelProps) {
       />
       <div className="mb-5 text-xl font-semibold">{title}</div>
       <div className="mb-10">{subtitle}</div>
-      <Button size="lg" onClick={onClick} disabled={false} color="secondary">
-        {label}
-      </Button>
+      <Button onClick={onClick} disabled={false} label={label} light={false} />
     </div>
   );
 }

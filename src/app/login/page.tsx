@@ -10,6 +10,7 @@ import { Spinner, Button, Input } from '@nextui-org/react';
 import { EyeFilledIcon } from '../../components/icons/EyeFilledIcon';
 import { EyeSlashFilledIcon } from '../../components/icons/EyeSlashFilledIcon';
 
+
 const Login = () => {
   const router = useRouter();
   const { supabase, session } = useSupabase();
@@ -57,7 +58,7 @@ const Login = () => {
       password,
     });
     // console.log(email, password)
-    error ? console.log('error', error) : router.push('/dashboard');
+    error ? console.log('error', error) : location.href = '/home';
   }
 
   async function handleOTPLogin(e: any) {
@@ -65,10 +66,10 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: 'http://localhost:3000/home/',
+        emailRedirectTo: process.env.NODE_ENV === "development" ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
       },
     });
-    error ? console.log('error', error) : router.push('/dashboard');
+    error ? console.log('error', error) : location.href = '/home';
   }
 
   async function handleGoogleLogin(e: any) {
@@ -76,13 +77,13 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/home',
+        redirectTo: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/home' : 'https://perceptify-app.vercel.app/home',
       },
     });
     if (error) {
       console.log(error);
     } else {
-      router.push('/home');
+      window.location.href = '/home';
     }
   }
 
