@@ -1,7 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { Tabs, Tab, Progress, Spinner, Switch } from '@nextui-org/react';
+import {
+  Tabs,
+  Tab,
+  Progress,
+  Spinner,
+  Switch,
+  Skeleton,
+} from '@nextui-org/react';
 import Chart from 'react-apexcharts';
 import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
@@ -562,7 +569,9 @@ const AnalyticsChartSection = ({ data, title }: AnalyticsChartSectionProps) => {
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-8 h-max min-h-[50vh]">
           {(data && (
-            <Suspense fallback={<Spinner />}>
+            <Suspense
+              fallback={<Skeleton className="h-auto w-auto rounded-lg" />}
+            >
               <Switch
                 color="secondary"
                 isSelected={aggregateToggle}
@@ -603,7 +612,7 @@ const AnalyticsChartSection = ({ data, title }: AnalyticsChartSectionProps) => {
                 ))}
               </Tabs>
             </Suspense>
-          )) || <Spinner className="left-1/2" />}
+          )) || <Spinner className="left-1/2" color="secondary" />}
         </div>
         <div className="col-span-4 h-full rounded-lg bg-gray-50 p-6 font-medium">
           <h2 className="mb-2 text-lg">Relative Strength</h2>
